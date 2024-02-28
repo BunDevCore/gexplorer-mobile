@@ -3,6 +3,7 @@ package com.example.gexplorer_mobile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,25 +13,34 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 
@@ -44,110 +54,132 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GexplorerApp()
+                    MainPagePreview()
+                    SettingsPagePreview()
+
+                    val navController = rememberNavController()
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigation {
+                                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                                val currentDestination = navBackStackEntry?.destination
+                                items.forEach { screen ->
+                                    BottomNavigationItem(
+                                        icon = { Icon(screen.icon, contentDescription = null) },
+                                        label = { Text(stringResource(screen.resourceId)) },
+                                        selected = currentDestination?.hierarchy?.any
+                                        { navDest -> navDest.route == screen.route } == true,
+                                        onClick = {
+                                            navController.navigate(screen.route) {
+                                                // Pop up to the start destination of the graph to
+                                                // avoid building up a large stack of destinations
+                                                // on the back stack as users select items
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                // Avoid multiple copies of the same destination when
+                                                // reselecting the same item
+                                                launchSingleTop = true
+                                                // Restore state when reselecting a previously selected item
+                                                restoreState = true
+                                            }
+                                        }
+                                    )
+
+                                }
+                            }
+                        }
+                    ) { innerPadding ->
+                        NavHost(
+                            navController,
+                            startDestination = Screen.Main.route,
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            composable(Screen.Main.route) { MainPage() }
+                            composable(Screen.Map.route) { MapPage() }
+                            composable(Screen.Account.route) { AccountPage() }
+                            composable(Screen.Settings.route) { SettingsPage() }
+                        }
+
+                    }
                 }
             }
         }
     }
 }
 
+sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
+    data object Main : Screen("main", R.string.main, Icons.Default.Home)
+    data object Map : Screen("map", R.string.map, Icons.Default.LocationOn)
+    data object Account : Screen("account", R.string.account, Icons.Default.Person)
+    data object Settings : Screen("settings", R.string.settings, Icons.Default.Settings)
+}
+
+val items = listOf(
+    Screen.Main,
+    Screen.Map,
+    Screen.Account,
+    Screen.Settings
+)
+
 @Composable
-fun MainPage(onNavigateToSettingsPage: () -> Unit) {
+fun MainPage() {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier
+            .padding(top = 10.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .padding(top = 10.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Text(text = "Witaj w:", fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(15.dp))
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            shadowElevation = 5.dp,
+            modifier = Modifier.padding(10.dp)
         ) {
-            Text(text = "Witaj w:", fontSize = 30.sp)
-            Spacer(modifier = Modifier.height(15.dp))
-            Surface(
-                shape = MaterialTheme.shapes.extraLarge,
-                shadowElevation = 5.dp,
-                modifier = Modifier.padding(10.dp)
-            ) {
-                Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
-            }
-            Text(text = "Theme, language -> default from android")
-            Text(text = "achievements")
-            Text(text = "(połączenie z API)")
-
-
+            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
         }
-        Row(
-            modifier = Modifier
-                .background(color = Color(R.color.primary))
-                .fillMaxWidth()
-                .weight(1f, false)
-                .height(50.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.Default.Home, contentDescription = "home and map page")
-                Text(text = "Home")
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.Default.LocationOn, contentDescription = "home and map page")
-                Text(text = "Map")
-            }
-            Button(onClick = { onNavigateToSettingsPage() }) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(Icons.Default.Settings, contentDescription = "settings")
-                    Text(text = "Settings")
-                }
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.Default.AccountCircle, contentDescription = "account")
-                Text(text = "Account")
-            }
-        }
+        Text(text = "Theme, language -> default from android")
+        Text(text = "achievements")
+        Text(text = "(połączenie z API)")
     }
 }
 
 @Composable
-fun SettingsPage(onNavigateToMainPage: () -> Unit) {
-    Text(text = "Settings page")
-    Button(onClick = { onNavigateToMainPage() }) {
+fun SettingsPage() {
+    Column {
+        Text(text = "Settings page")
         Text(
-            text = "Go to main page",
-            modifier = Modifier.background(Color(R.color.primary))
+            text = "Go to main page BRUUUUH",
+            modifier = Modifier.background(colorResource(R.color.primary))
         )
     }
 }
 
 @Composable
-fun GexplorerApp(){
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") { MainPage(onNavigateToSettingsPage = { navController.navigate("settings")}) }
-        composable("settings") { SettingsPage(onNavigateToMainPage = { navController.navigate("main")}) }
+fun AccountPage() {
+    Column {
+        Text(text = "Użytkowniku!")
+        Text(text = "Zesrałeś się")
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-//fun MainPagePreview() {
-//    MainPage()
-fun GexplorerAppPreview() {
-    GexplorerApp()
+fun MapPage() {
+    Column {
+        Text(text = "Mapa tu będzie ig")
+        Text(text = "Powodzenia Stachu")
+    }
 }
-//
-//@Preview(showSystemUi = true)
-//@Composable
-//fun SettingsPagePreview() {
-//    SettingsPage()
-//}
+
+@Preview
+@Composable
+fun MainPagePreview() {
+    MainPage()
+}
+
+@Preview
+@Composable
+fun SettingsPagePreview() {
+    SettingsPage()
+}
