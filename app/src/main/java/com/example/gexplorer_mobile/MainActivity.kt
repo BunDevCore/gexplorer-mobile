@@ -5,29 +5,32 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -58,18 +61,31 @@ class MainActivity : ComponentActivity() {
                     SettingsPagePreview()
 
                     val navController = rememberNavController()
+                    var selectedTab by rememberSaveable {
+                        mutableStateOf(Screen.Main.route)
+                    }
                     Scaffold(
                         bottomBar = {
-                            BottomNavigation {
+                            NavigationBar {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination
                                 items.forEach { screen ->
-                                    BottomNavigationItem(
-                                        icon = { Icon(screen.icon, contentDescription = null) },
+                                    NavigationBarItem(
+                                        icon = {
+                                            Icon(
+                                                imageVector = if (selectedTab == screen.route) {
+                                                    screen.iconFilled
+                                                } else {
+                                                    screen.iconOutline
+                                                },
+                                                contentDescription = null
+                                            )
+                                        },
                                         label = { Text(stringResource(screen.resourceId)) },
                                         selected = currentDestination?.hierarchy?.any
                                         { navDest -> navDest.route == screen.route } == true,
                                         onClick = {
+                                            selectedTab = screen.route
                                             navController.navigate(screen.route) {
                                                 // Pop up to the start destination of the graph to
                                                 // avoid building up a large stack of destinations
@@ -108,11 +124,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    data object Main : Screen("main", R.string.main, Icons.Default.Home)
-    data object Map : Screen("map", R.string.map, Icons.Default.LocationOn)
-    data object Account : Screen("account", R.string.account, Icons.Default.Person)
-    data object Settings : Screen("settings", R.string.settings, Icons.Default.Settings)
+sealed class Screen(
+    val route: String,
+    @StringRes val resourceId: Int,
+    val iconFilled: ImageVector,
+    val iconOutline: ImageVector
+) {
+    data object Main :
+        Screen("main", R.string.main, Icons.Filled.Home, Icons.Outlined.Home)
+
+    data object Map :
+        Screen("map", R.string.map, Icons.Filled.LocationOn, Icons.Outlined.LocationOn)
+
+    data object Account :
+        Screen("account", R.string.account, Icons.Filled.Person, Icons.Outlined.Person)
+
+    data object Settings :
+        Screen("settings", R.string.settings, Icons.Filled.Settings, Icons.Outlined.Settings)
 }
 
 val items = listOf(
@@ -127,7 +155,7 @@ fun MainPage() {
     Column(
         modifier = Modifier
             .padding(top = 10.dp)
-            .fillMaxWidth(),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Witaj w:", fontSize = 30.sp)
@@ -139,7 +167,6 @@ fun MainPage() {
         ) {
             Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
         }
-        Text(text = "Theme, language -> default from android")
         Text(text = "achievements")
         Text(text = "(połączenie z API)")
     }
@@ -147,18 +174,24 @@ fun MainPage() {
 
 @Composable
 fun SettingsPage() {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Text(text = "Settings page")
         Text(
-            text = "Go to main page BRUUUUH",
+            text = "Choose 1",
             modifier = Modifier.background(colorResource(R.color.primary))
         )
+
+        Text(text = "Theme, language -> default from android")
     }
 }
 
 @Composable
 fun AccountPage() {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Text(text = "Użytkowniku!")
         Text(text = "Zesrałeś się")
     }
@@ -166,20 +199,34 @@ fun AccountPage() {
 
 @Composable
 fun MapPage() {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Text(text = "Mapa tu będzie ig")
         Text(text = "Powodzenia Stachu")
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
     MainPage()
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SettingsPagePreview() {
     SettingsPage()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MapPagePreview() {
+    MapPage()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AccountPagePreview() {
+    AccountPage()
 }
