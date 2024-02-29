@@ -71,16 +71,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // Enables checking the current configuration of the phone
+                    val configuration = LocalConfiguration.current
+
+                    // Everything for the navigation to work while in portrait and landscape orientation
                     val navController = rememberNavController()
                     var selectedTab by rememberSaveable {
                         mutableStateOf(Screen.Main.route)
                     }
-                    val configuration = LocalConfiguration.current
-
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
+                    // Single navigation host for both navigationBar and navigationRail
                     val navHost = remember {
-                        movableContentOf<PaddingValues> {innerPadding ->
+                        movableContentOf<PaddingValues> { innerPadding ->
                             NavHost(
                                 navController,
                                 startDestination = Screen.Main.route,
@@ -93,11 +96,9 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-
                     if (configuration.orientation == ORIENTATION_PORTRAIT) {
                         Scaffold(
                             topBar = {
-
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -105,8 +106,7 @@ class MainActivity : ComponentActivity() {
                                         .background(color = colorResource(id = R.color.primary)),
                                     horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically,
-
-                                    ) {
+                                ) {
                                     Text(
                                         text = stringResource(id = R.string.app_name),
                                         fontSize = 18.sp,
@@ -153,16 +153,14 @@ class MainActivity : ComponentActivity() {
                                                 }
                                             }
                                         )
-
                                     }
                                 }
-
                             }
-                        ) { innerPadding -> navHost(innerPadding)
-
+                        ) { innerPadding ->
+                            navHost(innerPadding)
                         }
-                    } else {
-                        Row (modifier = Modifier.fillMaxSize()){
+                    } else { //Navigation while phone is horizontal
+                        Row(modifier = Modifier.fillMaxSize()) {
                             NavigationRail {
                                 Image(
                                     painter = painterResource(id = R.drawable.gexplorer_logo),
@@ -234,16 +232,6 @@ val items = listOf(
     Screen.Settings
 )
 
-//@Composable
-//fun NavigationBarLayout(
-//    destination: NavDestination,
-//    onMenuItemSelected: (String) -> Unit,
-//    content: @Composable (innerPadding: PaddingValues) -> Unit
-//) {
-//
-//
-//}
-
 @Composable
 fun MainPage() {
     Column(
@@ -276,7 +264,6 @@ fun SettingsPage() {
             text = "Choose 1",
             modifier = Modifier.background(colorResource(R.color.primary))
         )
-
         Text(text = "Theme, language -> default from android")
     }
 }
