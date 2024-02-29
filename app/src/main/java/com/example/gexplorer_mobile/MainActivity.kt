@@ -2,15 +2,16 @@ package com.example.gexplorer_mobile
 
 import android.content.res.Configuration.*
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-//import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,10 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -35,6 +40,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
@@ -46,13 +52,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-//import androidx.navigation.NavDestination
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -64,6 +73,8 @@ import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("xx-YY")
+//        AppCompatDelegate.setApplicationLocales(appLocale)
         setContent {
             GexplorermobileTheme {
                 // A surface container using the 'background' color from the theme
@@ -213,7 +224,7 @@ sealed class Screen(
     val iconOutline: ImageVector
 ) {
     data object Main :
-        Screen("main", R.string.main, Icons.Filled.Home, Icons.Outlined.Home)
+        Screen("main", R.string.start, Icons.Filled.Home, Icons.Outlined.Home)
 
     data object Map :
         Screen("map", R.string.map, Icons.Filled.LocationOn, Icons.Outlined.LocationOn)
@@ -265,7 +276,110 @@ fun SettingsPage() {
             modifier = Modifier.background(colorResource(R.color.primary))
         )
         Text(text = "Theme, language -> default from android")
+        Text(
+            text = Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(15.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        LanguageDropdownMenu()
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LanguageDropdownMenu() {
+
+    val languageOptions =
+        mapOf(
+            R.string.en to "en",
+            R.string.pl to "pl",
+            R.string.de to "de"
+        ).mapKeys { stringResource(it.key) }
+
+//    languageOptions.keys.forEach { Text(text = it) }
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+//            val selectedLanguageIndex = languageOptions.values.indexOf(selectedLanguage)
+            TextField(
+                modifier = Modifier.menuAnchor(),
+                readOnly = true,
+                value = stringResource(id = R.string.language),
+                onValueChange = {},
+                label = { Text(text = stringResource(id = R.string.language_title)) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                colors = ExposedDropdownMenuDefaults.textFieldColors()
+            )
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                languageOptions.keys.forEach { selectionLanguage ->
+                    DropdownMenuItem(
+                        text = { Text(text = selectionLanguage) },
+                        onClick = {
+                            expanded = false
+                            AppCompatDelegate.setApplicationLocales(
+                                LocaleListCompat.forLanguageTags(
+                                    languageOptions[selectionLanguage]
+                                )
+                            )
+                            Toast.makeText(
+                                context,
+                                "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                }
+            }
+        }
+
+    //DROPDOWN FROM GOOGLE
+//    ExposedDropdownMenuBox(
+//        expanded = expanded,
+//        onExpandedChange = {
+//            expanded = !expanded
+//        }
+//    ) {
+//        TextField(
+//            modifier = Modifier.menuAnchor(),
+//            readOnly = true,
+//            value = stringResource(R.string.language),
+//            onValueChange = { },
+//            trailingIcon = {
+//                ExposedDropdownMenuDefaults.TrailingIcon(
+//                    expanded = expanded
+//                )
+//            }
+//        )
+//        ExposedDropdownMenu(
+//            expanded = expanded,
+//            onDismissRequest = {
+//                expanded = false
+//            }
+//        ) {
+//            languageOptions.keys.forEach { selectionLocale ->
+//                DropdownMenuItem(
+//                    text = { Text(selectionLocale) },
+//                    onClick = {
+//                        expanded = false
+//                        // set app locale given the user's selected locale
+//                        AppCompatDelegate.setApplicationLocales(
+//                            LocaleListCompat.forLanguageTags(
+//                                languageOptions[selectionLocale]
+//                            )
+//                        )
+//                    }
+//                )
+//            }
+//        }
+//    }
+    //IT WAS DROP DOWN
+
 }
 
 @Composable
@@ -288,22 +402,13 @@ fun MapPage() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MainPagePreview() {
-    MainPage()
-}
-
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "default")
+@Preview(showBackground = true, locale = "pl", name = "pl")
+@Preview(showBackground = true, locale = "de", name = "de")
+@Preview(showBackground = true, locale = "en", name = "en")
 @Composable
 fun SettingsPagePreview() {
     SettingsPage()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MapPagePreview() {
-    MapPage()
 }
 
 @Preview(showBackground = true)
