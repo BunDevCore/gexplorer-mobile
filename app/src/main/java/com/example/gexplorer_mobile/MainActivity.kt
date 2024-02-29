@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 //import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +37,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -68,9 +71,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainPagePreview()
-                    SettingsPagePreview()
-
                     val navController = rememberNavController()
                     var selectedTab by rememberSaveable {
                         mutableStateOf(Screen.Main.route)
@@ -79,6 +79,21 @@ class MainActivity : ComponentActivity() {
 
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
+                    val navHost = remember {
+                        movableContentOf<PaddingValues> {innerPadding ->
+                            NavHost(
+                                navController,
+                                startDestination = Screen.Main.route,
+                                modifier = Modifier.padding(innerPadding)
+                            ) {
+                                composable(Screen.Main.route) { MainPage() }
+                                composable(Screen.Map.route) { MapPage() }
+                                composable(Screen.Account.route) { AccountPage() }
+                                composable(Screen.Settings.route) { SettingsPage() }
+                            }
+                        }
+                    }
+
                     if (configuration.orientation == ORIENTATION_PORTRAIT) {
                         Scaffold(
                             topBar = {
@@ -143,17 +158,7 @@ class MainActivity : ComponentActivity() {
                                 }
 
                             }
-                        ) { innerPadding ->
-                            NavHost(
-                                navController,
-                                startDestination = Screen.Main.route,
-                                modifier = Modifier.padding(innerPadding)
-                            ) {
-                                composable(Screen.Main.route) { MainPage() }
-                                composable(Screen.Map.route) { MapPage() }
-                                composable(Screen.Account.route) { AccountPage() }
-                                composable(Screen.Settings.route) { SettingsPage() }
-                            }
+                        ) { innerPadding -> navHost(innerPadding)
 
                         }
                     } else {
@@ -194,15 +199,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-                            NavHost(
-                                navController,
-                                startDestination = Screen.Main.route
-                            ) {
-                                composable(Screen.Main.route) { MainPage() }
-                                composable(Screen.Map.route) { MapPage() }
-                                composable(Screen.Account.route) { AccountPage() }
-                                composable(Screen.Settings.route) { SettingsPage() }
-                            }
+                            navHost(PaddingValues())
                         }
                     }
                 }
