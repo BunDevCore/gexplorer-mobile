@@ -2,15 +2,18 @@ package com.example.gexplorer_mobile
 
 import android.content.res.Configuration.*
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.view.Window
+import android.widget.Toast
+//ORIGINAL ACTIVITY -> import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-//import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,13 +22,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -35,6 +40,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
@@ -46,24 +52,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-//import androidx.navigation.NavDestination
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.gexplorer_mobile.icons.slicons.Filled
+import com.example.gexplorer_mobile.icons.slicons.Outlined
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContent {
             GexplorermobileTheme {
                 // A surface container using the 'background' color from the theme
@@ -90,7 +102,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.padding(innerPadding)
                             ) {
                                 composable(Screen.Main.route) { MainPage() }
-                                composable(Screen.Map.route) { MapPage() }
+                                composable(Screen.Scores.route) { ScoresPage() }
                                 composable(Screen.Account.route) { AccountPage() }
                                 composable(Screen.Settings.route) { SettingsPage() }
                             }
@@ -213,10 +225,10 @@ sealed class Screen(
     val iconOutline: ImageVector
 ) {
     data object Main :
-        Screen("main", R.string.main, Icons.Filled.Home, Icons.Outlined.Home)
+        Screen("main", R.string.start, Icons.Filled.Home, Icons.Outlined.Home)
 
-    data object Map :
-        Screen("map", R.string.map, Icons.Filled.LocationOn, Icons.Outlined.LocationOn)
+    data object Scores :
+        Screen("scores", R.string.scores, SLIcons.Filled, SLIcons.Outlined)
 
     data object Account :
         Screen("account", R.string.account, Icons.Filled.Person, Icons.Outlined.Person)
@@ -227,7 +239,7 @@ sealed class Screen(
 
 val items = listOf(
     Screen.Main,
-    Screen.Map,
+    Screen.Scores,
     Screen.Account,
     Screen.Settings
 )
@@ -257,14 +269,70 @@ fun MainPage() {
 @Composable
 fun SettingsPage() {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Settings page")
         Text(
-            text = "Choose 1",
-            modifier = Modifier.background(colorResource(R.color.primary))
+            text = stringResource(id = R.string.settings),
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(all = 10.dp)
         )
-        Text(text = "Theme, language -> default from android")
+        LanguageDropdownMenu()
+        Text(text = "Theme, language --(on first load)-> default from android")
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LanguageDropdownMenu() {
+
+    val languageOptions =
+        mapOf(
+            R.string.en to "en",
+            R.string.pl to "pl",
+            R.string.de to "de"
+        ).mapKeys { stringResource(it.key) }
+    //context for Toast
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it }
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = stringResource(id = R.string.language),
+            onValueChange = {},
+            label = { Text(text = stringResource(id = R.string.language_title)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            languageOptions.keys.forEach { selectionLanguage ->
+                DropdownMenuItem(
+                    text = { Text(text = selectionLanguage) },
+                    onClick = {
+                        expanded = false
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(
+                                languageOptions[selectionLanguage]
+                            )
+                        )
+                        Toast.makeText(
+                            context,
+                            "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales()
+                                .toLanguageTags(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -279,31 +347,19 @@ fun AccountPage() {
 }
 
 @Composable
-fun MapPage() {
+fun ScoresPage() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Mapa tu będzie ig")
+        Text(text = "Tu będzie tablica wyników")
         Text(text = "Powodzenia Stachu")
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MainPagePreview() {
-    MainPage()
-}
-
-@Preview(showBackground = true)
+@Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
 fun SettingsPagePreview() {
     SettingsPage()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MapPagePreview() {
-    MapPage()
 }
 
 @Preview(showBackground = true)

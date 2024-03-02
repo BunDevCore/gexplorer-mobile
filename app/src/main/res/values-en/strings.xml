@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account">Account</string>
+    <string name="scores">Scores</string>
+    <string name="settings">Settings</string>
+    <string name="start">Start</string>
+    <string name="language_title">Language</string>
+    <string name="language">English</string>
+    <string name="theme">Theme</string>
+</resources>
