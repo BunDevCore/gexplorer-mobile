@@ -2,11 +2,12 @@
     <string name="app_name" translatable="false">Gexplorer</string>
     <string name="start">start</string>
     <string name="account">account</string>
-    <string name="map">map</string>
+    <string name="scores">scores</string>
     <string name="settings">settings</string>
     <string name="en" translatable="false">English</string>
     <string name="pl" translatable="false">Polski</string>
     <string name="de" translatable="false">Deutch</string>
-    <string name="language_title">language_title</string>
+    <string name="language_title">language</string>
     <string name="language">english</string>
+    <string name="theme">theme</string>
 </resources>

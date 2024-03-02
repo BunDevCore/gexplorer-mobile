@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account">Konto</string>
-    <string name="map">-map</string>
+    <string name="scores">Wyniki</string>
     <string name="settings">Ustawienia</string>
     <string name="start">Start</string>
     <string name="language_title">Język</string>
     <string name="language">Polski</string>
+    <string name="theme">Motyw</string>
 </resources>

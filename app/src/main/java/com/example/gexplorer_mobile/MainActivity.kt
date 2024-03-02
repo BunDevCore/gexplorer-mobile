@@ -2,10 +2,12 @@ package com.example.gexplorer_mobile
 
 import android.content.res.Configuration.*
 import android.os.Bundle
+import android.view.Window
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+//ORIGINAL ACTIVITY -> import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,11 +22,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DropdownMenuItem
@@ -42,6 +42,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
@@ -68,13 +69,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.gexplorer_mobile.icons.slicons.Filled
+import com.example.gexplorer_mobile.icons.slicons.Outlined
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("xx-YY")
-//        AppCompatDelegate.setApplicationLocales(appLocale)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContent {
             GexplorermobileTheme {
                 // A surface container using the 'background' color from the theme
@@ -101,7 +103,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.padding(innerPadding)
                             ) {
                                 composable(Screen.Main.route) { MainPage() }
-                                composable(Screen.Map.route) { MapPage() }
+                                composable(Screen.Scores.route) { ScoresPage() }
                                 composable(Screen.Account.route) { AccountPage() }
                                 composable(Screen.Settings.route) { SettingsPage() }
                             }
@@ -226,8 +228,8 @@ sealed class Screen(
     data object Main :
         Screen("main", R.string.start, Icons.Filled.Home, Icons.Outlined.Home)
 
-    data object Map :
-        Screen("map", R.string.map, Icons.Filled.LocationOn, Icons.Outlined.LocationOn)
+    data object Scores :
+        Screen("scores", R.string.scores, SLIcons.Filled, SLIcons.Outlined)
 
     data object Account :
         Screen("account", R.string.account, Icons.Filled.Person, Icons.Outlined.Person)
@@ -238,7 +240,7 @@ sealed class Screen(
 
 val items = listOf(
     Screen.Main,
-    Screen.Map,
+    Screen.Scores,
     Screen.Account,
     Screen.Settings
 )
@@ -268,23 +270,17 @@ fun MainPage() {
 @Composable
 fun SettingsPage() {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Settings page")
         Text(
-            text = "Choose 1",
-            modifier = Modifier.background(colorResource(R.color.primary))
-        )
-        Text(text = "Theme, language -> default from android")
-        Text(
-            text = Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales(),
-            fontSize = 20.sp,
+            text = stringResource(id = R.string.settings),
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier.padding(all = 10.dp)
         )
-        Spacer(modifier = Modifier.height(10.dp))
-
         LanguageDropdownMenu()
+        Text(text = "Theme, language --(on first load)-> default from android")
     }
 }
 
@@ -298,88 +294,47 @@ fun LanguageDropdownMenu() {
             R.string.pl to "pl",
             R.string.de to "de"
         ).mapKeys { stringResource(it.key) }
-
-//    languageOptions.keys.forEach { Text(text = it) }
+    //context for Toast
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-        ExposedDropdownMenuBox(
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it }
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = stringResource(id = R.string.language),
+            onValueChange = {},
+            label = { Text(text = stringResource(id = R.string.language_title)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        ExposedDropdownMenu(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onDismissRequest = { expanded = false }
         ) {
-//            val selectedLanguageIndex = languageOptions.values.indexOf(selectedLanguage)
-            TextField(
-                modifier = Modifier.menuAnchor(),
-                readOnly = true,
-                value = stringResource(id = R.string.language),
-                onValueChange = {},
-                label = { Text(text = stringResource(id = R.string.language_title)) },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors()
-            )
-            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                languageOptions.keys.forEach { selectionLanguage ->
-                    DropdownMenuItem(
-                        text = { Text(text = selectionLanguage) },
-                        onClick = {
-                            expanded = false
-                            AppCompatDelegate.setApplicationLocales(
-                                LocaleListCompat.forLanguageTags(
-                                    languageOptions[selectionLanguage]
-                                )
+            languageOptions.keys.forEach { selectionLanguage ->
+                DropdownMenuItem(
+                    text = { Text(text = selectionLanguage) },
+                    onClick = {
+                        expanded = false
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(
+                                languageOptions[selectionLanguage]
                             )
-                            Toast.makeText(
-                                context,
-                                "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    )
-                }
+                        )
+                        Toast.makeText(
+                            context,
+                            "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales()
+                                .toLanguageTags(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
             }
         }
-
-    //DROPDOWN FROM GOOGLE
-//    ExposedDropdownMenuBox(
-//        expanded = expanded,
-//        onExpandedChange = {
-//            expanded = !expanded
-//        }
-//    ) {
-//        TextField(
-//            modifier = Modifier.menuAnchor(),
-//            readOnly = true,
-//            value = stringResource(R.string.language),
-//            onValueChange = { },
-//            trailingIcon = {
-//                ExposedDropdownMenuDefaults.TrailingIcon(
-//                    expanded = expanded
-//                )
-//            }
-//        )
-//        ExposedDropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = {
-//                expanded = false
-//            }
-//        ) {
-//            languageOptions.keys.forEach { selectionLocale ->
-//                DropdownMenuItem(
-//                    text = { Text(selectionLocale) },
-//                    onClick = {
-//                        expanded = false
-//                        // set app locale given the user's selected locale
-//                        AppCompatDelegate.setApplicationLocales(
-//                            LocaleListCompat.forLanguageTags(
-//                                languageOptions[selectionLocale]
-//                            )
-//                        )
-//                    }
-//                )
-//            }
-//        }
-//    }
-    //IT WAS DROP DOWN
-
+    }
 }
 
 @Composable
@@ -393,19 +348,16 @@ fun AccountPage() {
 }
 
 @Composable
-fun MapPage() {
+fun ScoresPage() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Mapa tu będzie ig")
+        Text(text = "Tu będzie tablica wyników")
         Text(text = "Powodzenia Stachu")
     }
 }
 
-@Preview(showBackground = true, name = "default")
 @Preview(showBackground = true, locale = "pl", name = "pl")
-@Preview(showBackground = true, locale = "de", name = "de")
-@Preview(showBackground = true, locale = "en", name = "en")
 @Composable
 fun SettingsPagePreview() {
     SettingsPage()
