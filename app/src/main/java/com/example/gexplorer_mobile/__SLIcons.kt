@@ -5,15 +5,16 @@ import com.example.gexplorer_mobile.icons.slicons.Filled
 import com.example.gexplorer_mobile.icons.slicons.Outlined
 import kotlin.collections.List as ____KtList
 
-public object SLIcons
+object SLIcons
 
-private var __AllIcons: ____KtList<ImageVector>? = null
+private var AllIcons: ____KtList<ImageVector>? = null
 
-public val SLIcons.AllIcons: ____KtList<ImageVector>
+@Suppress("unused")
+val SLIcons.allIcons: ____KtList<ImageVector>
   get() {
-    if (__AllIcons != null) {
-      return __AllIcons!!
+    if (AllIcons != null) {
+      return AllIcons!!
     }
-    __AllIcons = listOf(Filled, Outlined)
-    return __AllIcons!!
+    AllIcons = listOf(Filled, Outlined)
+    return AllIcons!!
   }
