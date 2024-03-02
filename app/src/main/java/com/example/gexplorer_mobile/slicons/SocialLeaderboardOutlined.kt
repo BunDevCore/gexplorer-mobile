@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.example.gexplorer_mobile.icons.slicons
+package com.example.gexplorer_mobile.slicons
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero

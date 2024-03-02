@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -57,7 +58,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,8 +68,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.gexplorer_mobile.icons.slicons.Filled
-import com.example.gexplorer_mobile.icons.slicons.Outlined
+import com.example.gexplorer_mobile.slicons.Filled
+import com.example.gexplorer_mobile.slicons.Outlined
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 
 class MainActivity : AppCompatActivity() {
@@ -279,6 +279,7 @@ fun SettingsPage() {
             modifier = Modifier.padding(all = 10.dp)
         )
         LanguageDropdownMenu()
+        ThemeDropdownMenu()
         Text(text = "Theme, language --(on first load)-> default from android")
     }
 }
@@ -286,15 +287,12 @@ fun SettingsPage() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanguageDropdownMenu() {
-
     val languageOptions =
         mapOf(
             R.string.en to "en",
             R.string.pl to "pl",
             R.string.de to "de"
         ).mapKeys { stringResource(it.key) }
-    //context for Toast
-    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -323,17 +321,75 @@ fun LanguageDropdownMenu() {
                                 languageOptions[selectionLanguage]
                             )
                         )
-                        Toast.makeText(
-                            context,
-                            "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales()
-                                .toLanguageTags(),
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 )
             }
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
+}
+
+sealed class LocalTheme(
+    val name: String,
+    @StringRes val resourceId: Int
+) {
+    data object Dark : LocalTheme("dark", R.string.dark)
+    data object Light : LocalTheme("light", R.string.light)
+    data object Gexplorer : LocalTheme("gexplorer", R.string.app_name)
+}
+
+val themeList = listOf(
+    LocalTheme.Dark,
+    LocalTheme.Light,
+    LocalTheme.Gexplorer
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ThemeDropdownMenu() {
+    val isDark = isSystemInDarkTheme()
+    var theme: LocalTheme = remember {
+        if (isDark) {
+            LocalTheme.Dark
+        } else {
+            LocalTheme.Light
+        }
+    }
+    var expanded by remember { mutableStateOf(false) }
+    //context for Toast
+    val context = LocalContext.current
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it }
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = stringResource(id = theme.resourceId),
+            onValueChange = {},
+            label = { Text(text = stringResource(id = R.string.theme)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            themeList.forEach { themeOption ->
+                DropdownMenuItem(text = { Text(stringResource(id = themeOption.resourceId)) }, onClick = {
+                    theme = themeOption
+                    Toast.makeText(
+                        context,
+                        "Theme is set to: " + themeOption.name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
+            }
+        }
+    }
+    //todo Delete me
+    Text(text = stringResource(id = theme.resourceId), modifier = Modifier.padding(top = 10.dp))
+    Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Composable

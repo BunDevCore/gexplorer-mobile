@@ -10,4 +10,6 @@
     <string name="language_title">language</string>
     <string name="language">english</string>
     <string name="theme">theme</string>
+    <string name="dark">dark</string>
+    <string name="light">light</string>
 </resources>

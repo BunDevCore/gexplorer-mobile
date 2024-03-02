@@ -7,4 +7,6 @@
     <string name="language_title">Spache</string>
     <string name="language">Deutch</string>
     <string name="theme">-theme</string>
+    <string name="dark">-dark</string>
+    <string name="light">-light</string>
 </resources>

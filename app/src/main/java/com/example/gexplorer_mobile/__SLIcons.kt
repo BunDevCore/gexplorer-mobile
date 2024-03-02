@@ -1,8 +1,8 @@
 package com.example.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.gexplorer_mobile.icons.slicons.Filled
-import com.example.gexplorer_mobile.icons.slicons.Outlined
+import com.example.gexplorer_mobile.slicons.Filled
+import com.example.gexplorer_mobile.slicons.Outlined
 import kotlin.collections.List as ____KtList
 
 object SLIcons
