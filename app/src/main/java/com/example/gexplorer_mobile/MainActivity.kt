@@ -352,7 +352,7 @@ fun ScoresPage() {
         modifier = Modifier.fillMaxSize()
     ) {
         Text(text = "Tu będzie tablica wyników")
-        Text(text = "Powodzenia Stachu")
+        Text(text = "Powodzenia Fen")
     }
 }
 
