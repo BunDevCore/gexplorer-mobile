@@ -14,13 +14,6 @@ fun getLocalProperty(key: String, file: String = "local.properties"): String? {
 
     return properties.getProperty(key)
 }
-/*fun magic(key: String): String {
-
-    val propFile = File(settings.rootDir.path, "local.properties")
-    val properties = Properties()
-    properties.load(FileInputStream(propFile))
-    return properties[key] as String
-*/
 
 pluginManagement {
     repositories {
@@ -36,13 +29,11 @@ dependencyResolutionManagement {
         mavenCentral()
 
         maven {
+            //USE THE RIGHT DOCS -> https://docs.mapbox.com/android/maps/guides/install
             url = URI.create("https://api.mapbox.com/downloads/v2/releases/maven")
             authentication.create<BasicAuthentication>("basic")
-            credentials {
-                username = "mapbox"
-                password = getLocalProperty("MAPS_API_KEY")
-                //magic("MAPS_API_KEY")
-            }
+            credentials.username = "mapbox"
+            credentials.password = getLocalProperty("MAPS_API_KEY")
         }
     }
 }
