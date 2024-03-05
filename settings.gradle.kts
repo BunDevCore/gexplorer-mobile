@@ -37,11 +37,9 @@ dependencyResolutionManagement {
 
         maven {
             url = URI.create("https://api.mapbox.com/downloads/v2/releases/maven")
-            authentication {
-                BasicAuthentication { "kutas" }
-            }
+            authentication.create<BasicAuthentication>("basic")
             credentials {
-                username = "infinifen"
+                username = "mapbox"
                 password = getLocalProperty("MAPS_API_KEY")
                 //magic("MAPS_API_KEY")
             }
