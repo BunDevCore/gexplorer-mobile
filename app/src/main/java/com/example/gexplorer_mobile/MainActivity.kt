@@ -40,6 +40,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -115,24 +116,32 @@ class MainActivity : AppCompatActivity() {
                     if (configuration.orientation == ORIENTATION_PORTRAIT) {
                         Scaffold(
                             topBar = {
-                                Row(
+                                TextButton(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(56.dp)
                                         .background(color = colorResource(id = R.color.primary)),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
+                                    onClick = {
+                                        val route = Screen.Main.route
+                                        selectedTab = route
+                                        navController.navigate(route)
+                                    }
                                 ) {
-                                    Text(
-                                        text = stringResource(id = R.string.app_name),
-                                        fontSize = 18.sp,
-                                        color = colorResource(id = R.color.black)
-                                    )
-                                    Image(
-                                        painter = painterResource(id = R.drawable.gexplorer_logo),
-                                        contentDescription = null,
-                                        modifier = Modifier.padding(all = 2.dp)
-                                    )
+                                    Row(
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = stringResource(id = R.string.app_name),
+                                            fontSize = 18.sp,
+                                            color = colorResource(id = R.color.primaryText)
+                                        )
+                                        Image(
+                                            painter = painterResource(id = R.drawable.gexplorer_logo),
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(all = 2.dp)
+                                        )
+                                    }
                                 }
                             },
                             bottomBar = {
@@ -178,13 +187,19 @@ class MainActivity : AppCompatActivity() {
                     } else { //Navigation while phone is horizontal
                         Row(modifier = Modifier.fillMaxSize()) {
                             NavigationRail {
-                                Image(
-                                    painter = painterResource(id = R.drawable.gexplorer_logo),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(top = 6.dp, bottom = 6.dp)
-                                        .height(56.dp)
-                                )
+                                TextButton(onClick = {
+                                    val route = Screen.Main.route
+                                    selectedTab = route
+                                    navController.navigate(route)
+                                }) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.gexplorer_logo),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .padding(top = 6.dp, bottom = 6.dp)
+                                            .height(56.dp)
+                                    )
+                                }
                                 items.forEach { screen ->
                                     NavigationRailItem(
                                         icon = {
