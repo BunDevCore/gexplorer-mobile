@@ -40,6 +40,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -71,6 +72,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gexplorer_mobile.icons.slicons.Filled
 import com.example.gexplorer_mobile.icons.slicons.Outlined
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
+import com.mapbox.geojson.Point
+import com.mapbox.maps.MapboxExperimental
+import com.mapbox.maps.extension.compose.MapboxMap
+import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
+import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
+import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,24 +118,32 @@ class MainActivity : AppCompatActivity() {
                     if (configuration.orientation == ORIENTATION_PORTRAIT) {
                         Scaffold(
                             topBar = {
-                                Row(
+                                TextButton(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(56.dp)
                                         .background(color = colorResource(id = R.color.primary)),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
+                                    onClick = {
+                                        val route = Screen.Main.route
+                                        selectedTab = route
+                                        navController.navigate(route)
+                                    }
                                 ) {
-                                    Text(
-                                        text = stringResource(id = R.string.app_name),
-                                        fontSize = 18.sp,
-                                        color = colorResource(id = R.color.black)
-                                    )
-                                    Image(
-                                        painter = painterResource(id = R.drawable.gexplorer_logo),
-                                        contentDescription = null,
-                                        modifier = Modifier.padding(all = 2.dp)
-                                    )
+                                    Row(
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = stringResource(id = R.string.app_name),
+                                            fontSize = 18.sp,
+                                            color = colorResource(id = R.color.primaryText)
+                                        )
+                                        Image(
+                                            painter = painterResource(id = R.drawable.gexplorer_logo),
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(all = 2.dp)
+                                        )
+                                    }
                                 }
                             },
                             bottomBar = {
@@ -174,13 +189,19 @@ class MainActivity : AppCompatActivity() {
                     } else { //Navigation while phone is horizontal
                         Row(modifier = Modifier.fillMaxSize()) {
                             NavigationRail {
-                                Image(
-                                    painter = painterResource(id = R.drawable.gexplorer_logo),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(top = 6.dp, bottom = 6.dp)
-                                        .height(56.dp)
-                                )
+                                TextButton(onClick = {
+                                    val route = Screen.Main.route
+                                    selectedTab = route
+                                    navController.navigate(route)
+                                }) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.gexplorer_logo),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .padding(top = 6.dp, bottom = 6.dp)
+                                            .height(56.dp)
+                                    )
+                                }
                                 items.forEach { screen ->
                                     NavigationRailItem(
                                         icon = {
@@ -244,25 +265,47 @@ val items = listOf(
     Screen.Settings
 )
 
+@OptIn(MapboxExperimental::class)
 @Composable
 fun MainPage() {
     Column(
-        modifier = Modifier
-            .padding(top = 10.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Witaj w:", fontSize = 30.sp)
-        Spacer(modifier = Modifier.height(15.dp))
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            shadowElevation = 5.dp,
-            modifier = Modifier.padding(10.dp)
+        //Documentation here: https://docs.mapbox.com/android/maps/guides/
+        MapboxMap(
+            modifier = Modifier.fillMaxSize(),
+            mapViewportState = MapViewportState().apply {
+                setCameraOptions {
+                    zoom(10.0)
+                    center(Point.fromLngLat(18.6570989, 54.3542712))
+                    pitch(0.0)
+                    bearing(0.0)
+                }
+            }
         ) {
-            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
+            val points = listOf(
+                listOf(
+                    Point.fromLngLat(18.615274605637016, 54.40211158342004),
+                    Point.fromLngLat(18.730974363868317, 54.37152378253998),
+                    Point.fromLngLat(18.6650564007217, 54.29906183330589),
+                    Point.fromLngLat(18.6547192660595, 54.355547811237834),
+                    Point.fromLngLat(18.615274605637016, 54.40211158342004)
+                )
+            )
+            PolygonAnnotation(
+                points = points,
+                fillColorString = "#FFEE4E8B",
+                fillOpacity = 0.4
+            )
+            // I want to find a way to outline a polygon and delete the Polyline
+            points.forEach { point ->
+                PolylineAnnotation(
+                    points = point,
+                    lineColorString = "#FFBB0B",
+                    lineOpacity = 1.0,
+                    lineWidth = 5.0)
+            }
         }
-        Text(text = "achievements")
-        Text(text = "(połączenie z API)")
     }
 }
 
@@ -339,10 +382,23 @@ fun LanguageDropdownMenu() {
 @Composable
 fun AccountPage() {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .padding(top = 10.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Użytkowniku!")
-        Text(text = "Zesrałeś się")
+        Text(text = "Witaj w:", fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(15.dp))
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            shadowElevation = 5.dp,
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
+        }
+        Text(text = "ta strona będzie dla użytkownika, ale to później")
+        Text(text = "achievements")
+        Text(text = "(połączenie z API)")
     }
 }
 
@@ -352,7 +408,7 @@ fun ScoresPage() {
         modifier = Modifier.fillMaxSize()
     ) {
         Text(text = "Tu będzie tablica wyników")
-        Text(text = "Powodzenia Stachu")
+        Text(text = "Powodzenia Fen")
     }
 }
 
