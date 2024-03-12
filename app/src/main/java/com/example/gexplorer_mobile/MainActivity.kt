@@ -71,6 +71,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gexplorer_mobile.icons.slicons.Filled
 import com.example.gexplorer_mobile.icons.slicons.Outlined
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
+import com.mapbox.geojson.Point
+import com.mapbox.maps.MapboxExperimental
+import com.mapbox.maps.extension.compose.MapboxMap
+import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -244,25 +248,24 @@ val items = listOf(
     Screen.Settings
 )
 
+@OptIn(MapboxExperimental::class)
 @Composable
 fun MainPage() {
     Column(
-        modifier = Modifier
-            .padding(top = 10.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Witaj w:", fontSize = 30.sp)
-        Spacer(modifier = Modifier.height(15.dp))
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            shadowElevation = 5.dp,
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
-        }
-        Text(text = "achievements")
-        Text(text = "(połączenie z API)")
+        //Documentation here: https://docs.mapbox.com/android/maps/guides/
+        MapboxMap(
+            modifier = Modifier.fillMaxSize(),
+            mapViewportState = MapViewportState().apply {
+                setCameraOptions {
+                    zoom(10.0)
+                    center(Point.fromLngLat(18.6570989, 54.3542712))
+                    pitch(0.0)
+                    bearing(0.0)
+                }
+            }
+        )
     }
 }
 
@@ -339,10 +342,23 @@ fun LanguageDropdownMenu() {
 @Composable
 fun AccountPage() {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .padding(top = 10.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Użytkowniku!")
-        Text(text = "Zesrałeś się")
+        Text(text = "Witaj w:", fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(15.dp))
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            shadowElevation = 5.dp,
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
+        }
+        Text(text = "ta strona będzie dla użytkownika, ale to później")
+        Text(text = "achievements")
+        Text(text = "(połączenie z API)")
     }
 }
 
