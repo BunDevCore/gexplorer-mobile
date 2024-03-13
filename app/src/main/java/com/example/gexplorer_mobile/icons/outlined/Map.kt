@@ -1,3 +1,5 @@
+@file:Suppress("UnusedReceiverParameter")
+
 package com.example.gexplorer_mobile.icons.outlined
 
 import androidx.compose.ui.graphics.Color

@@ -287,7 +287,6 @@ val items = listOf(
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun MainPage() {
 fun MapPage() {
     Column(
         modifier = Modifier.fillMaxSize()
