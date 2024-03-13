@@ -21,10 +21,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DropdownMenuItem
@@ -69,8 +67,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.gexplorer_mobile.icons.slicons.Filled
-import com.example.gexplorer_mobile.icons.slicons.Outlined
+import com.example.gexplorer_mobile.icons.filled.Map
+import com.example.gexplorer_mobile.icons.outlined.Map
+import com.example.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.example.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                     // Everything for the navigation to work while in portrait and landscape orientation
                     val navController = rememberNavController()
                     var selectedTab by rememberSaveable {
-                        mutableStateOf(Screen.Main.route)
+                        mutableStateOf(Screen.Map.route)
                     }
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
@@ -105,10 +105,10 @@ class MainActivity : AppCompatActivity() {
                         movableContentOf<PaddingValues> { innerPadding ->
                             NavHost(
                                 navController,
-                                startDestination = Screen.Main.route,
+                                startDestination = Screen.Map.route,
                                 modifier = Modifier.padding(innerPadding)
                             ) {
-                                composable(Screen.Main.route) { MainPage() }
+                                composable(Screen.Map.route) { MapPage() }
                                 composable(Screen.Scores.route) { ScoresPage() }
                                 composable(Screen.Account.route) { AccountPage() }
                                 composable(Screen.Settings.route) { SettingsPage() }
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                                         .height(56.dp)
                                         .background(color = colorResource(id = R.color.primary)),
                                     onClick = {
-                                        val route = Screen.Main.route
+                                        val route = Screen.Map.route
                                         selectedTab = route
                                         navController.navigate(route)
                                     }
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                         Row(modifier = Modifier.fillMaxSize()) {
                             NavigationRail {
                                 TextButton(onClick = {
-                                    val route = Screen.Main.route
+                                    val route = Screen.Map.route
                                     selectedTab = route
                                     navController.navigate(route)
                                 }) {
@@ -245,21 +245,41 @@ sealed class Screen(
     val iconFilled: ImageVector,
     val iconOutline: ImageVector
 ) {
-    data object Main :
-        Screen("main", R.string.start, Icons.Filled.Home, Icons.Outlined.Home)
+    data object Map :
+        Screen(
+            "map",
+            R.string.map,
+            GexplorerIcons.Filled.Map,
+            GexplorerIcons.Outlined.Map
+        )
 
     data object Scores :
-        Screen("scores", R.string.scores, SLIcons.Filled, SLIcons.Outlined)
+        Screen(
+            "scores",
+            R.string.scores,
+            GexplorerIcons.Filled.SocialLeaderboard,
+            GexplorerIcons.Outlined.SocialLeaderboard
+        )
 
     data object Account :
-        Screen("account", R.string.account, Icons.Filled.Person, Icons.Outlined.Person)
+        Screen(
+            "account",
+            R.string.account,
+            Icons.Filled.Person,
+            Icons.Outlined.Person
+        )
 
     data object Settings :
-        Screen("settings", R.string.settings, Icons.Filled.Settings, Icons.Outlined.Settings)
+        Screen(
+            "settings",
+            R.string.settings,
+            Icons.Filled.Settings,
+            Icons.Outlined.Settings
+        )
 }
 
 val items = listOf(
-    Screen.Main,
+    Screen.Map,
     Screen.Scores,
     Screen.Account,
     Screen.Settings
@@ -268,6 +288,7 @@ val items = listOf(
 @OptIn(MapboxExperimental::class)
 @Composable
 fun MainPage() {
+fun MapPage() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -303,7 +324,8 @@ fun MainPage() {
                     points = point,
                     lineColorString = "#FFBB0B",
                     lineOpacity = 1.0,
-                    lineWidth = 5.0)
+                    lineWidth = 5.0
+                )
             }
         }
     }

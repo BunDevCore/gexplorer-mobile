@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.example.gexplorer_mobile.icons.slicons
+package com.example.gexplorer_mobile.icons.filled
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
@@ -11,14 +11,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
-import com.example.gexplorer_mobile.SLIcons
+import com.example.gexplorer_mobile.GexplorerIcons
 
-val SLIcons.Filled: ImageVector
+val GexplorerIcons.Filled.SocialLeaderboard: ImageVector
     get() {
-        if (socialLeaderboardFilled != null) {
-            return socialLeaderboardFilled!!
+        if (socialLeaderboard != null) {
+            return socialLeaderboard!!
         }
-        socialLeaderboardFilled = Builder(
+        socialLeaderboard = Builder(
             name = "SocialLeaderboardFilled", defaultWidth = 24.0.dp,
             defaultHeight = 24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f
         ).apply {
@@ -84,7 +84,7 @@ val SLIcons.Filled: ImageVector
             }
         }
             .build()
-        return socialLeaderboardFilled!!
+        return socialLeaderboard!!
     }
 
-private var socialLeaderboardFilled: ImageVector? = null
+private var socialLeaderboard: ImageVector? = null
