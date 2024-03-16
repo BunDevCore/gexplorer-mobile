@@ -125,8 +125,10 @@ class MainActivity : AppCompatActivity() {
                                         .background(color = colorResource(id = R.color.primary)),
                                     onClick = {
                                         val route = Screen.Map.route
-                                        selectedTab = route
-                                        navController.navigate(route)
+                                        if (selectedTab != route) {
+                                            selectedTab = route
+                                            navController.navigate(route)
+                                        }
                                     }
                                 ) {
                                     Row(
@@ -191,8 +193,10 @@ class MainActivity : AppCompatActivity() {
                             NavigationRail {
                                 TextButton(onClick = {
                                     val route = Screen.Map.route
-                                    selectedTab = route
-                                    navController.navigate(route)
+                                    if (selectedTab != route){
+                                        selectedTab = route
+                                        navController.navigate(route)
+                                    }
                                 }) {
                                     Image(
                                         painter = painterResource(id = R.drawable.gexplorer_logo),
