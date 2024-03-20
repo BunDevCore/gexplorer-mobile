@@ -4,7 +4,12 @@
     <string name="scores">Wyniki</string>
     <string name="settings">Ustawienia</string>
     <string name="map">Mapa</string>
-    <string name="language_title">Język</string>
-    <string name="language">Polski</string>
+    <string name="language">Język</string>
+    <string name="language_chosen">Polski</string>
     <string name="theme">Motyw</string>
+    <string name="location_needed">Aby korzystać w całości z naszej aplikacji należy zezwolić na dostęp do lokalizacji.</string>
+    <string name="cancel">Anuluj</string>
+    <string name="light_theme">Jasny</string>
+    <string name="dark_theme">Ciemny</string>
+    <string name="black_amoled_theme">Czarny (AMOLED)</string>
 </resources>

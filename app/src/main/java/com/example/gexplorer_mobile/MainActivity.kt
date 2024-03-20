@@ -2,7 +2,7 @@ package com.example.gexplorer_mobile
 
 import android.content.res.Configuration.*
 import android.os.Bundle
-import android.view.Window
+import android.util.Log
 import android.widget.Toast
 //ORIGINAL ACTIVITY -> import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,21 +20,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +49,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -55,11 +62,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -243,52 +254,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-sealed class Screen(
-    val route: String,
-    @StringRes val resourceId: Int,
-    val iconFilled: ImageVector,
-    val iconOutline: ImageVector
-) {
-    data object Map :
-        Screen(
-            "map",
-            R.string.map,
-            GexplorerIcons.Filled.Map,
-            GexplorerIcons.Outlined.Map
-        )
-
-    data object Scores :
-        Screen(
-            "scores",
-            R.string.scores,
-            GexplorerIcons.Filled.SocialLeaderboard,
-            GexplorerIcons.Outlined.SocialLeaderboard
-        )
-
-    data object Account :
-        Screen(
-            "account",
-            R.string.account,
-            Icons.Filled.Person,
-            Icons.Outlined.Person
-        )
-
-    data object Settings :
-        Screen(
-            "settings",
-            R.string.settings,
-            Icons.Filled.Settings,
-            Icons.Outlined.Settings
-        )
-}
-
-val items = listOf(
-    Screen.Map,
-    Screen.Scores,
-    Screen.Account,
-    Screen.Settings
-)
-
 @OptIn(MapboxExperimental::class)
 @Composable
 fun MapPage() {
@@ -346,62 +311,167 @@ fun SettingsPage() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(all = 10.dp)
         )
-        LanguageDropdownMenu()
-        Text(text = "Theme, language --(on first load)-> default from android")
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LanguageDropdownMenu() {
-
-    val languageOptions =
-        mapOf(
-            R.string.en to "en",
-            R.string.pl to "pl",
-            R.string.de to "de"
-        ).mapKeys { stringResource(it.key) }
-    //context for Toast
-    val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it }
-    ) {
-        TextField(
-            modifier = Modifier.menuAnchor(),
-            readOnly = true,
-            value = stringResource(id = R.string.language),
-            onValueChange = {},
-            label = { Text(text = stringResource(id = R.string.language_title)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
-        )
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            languageOptions.keys.forEach { selectionLanguage ->
-                DropdownMenuItem(
-                    text = { Text(text = selectionLanguage) },
-                    onClick = {
-                        expanded = false
-                        AppCompatDelegate.setApplicationLocales(
-                            LocaleListCompat.forLanguageTags(
-                                languageOptions[selectionLanguage]
-                            )
-                        )
-                        Toast.makeText(
-                            context,
-                            "Language now is: " + Locale.current.language + " | " + AppCompatDelegate.getApplicationLocales()
-                                .toLanguageTags(),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        val context = LocalContext.current
+        val languageOptions = listOf(R.string.en, R.string.pl, R.string.de)
+        val languageIndex = when (AppCompatDelegate.getApplicationLocales().toLanguageTags()) {
+            "en" -> 0
+            "pl" -> 1
+            "de" -> 2
+            else -> 0
+        }
+        val (selectedLanguage, onLanguageSelected) = remember {
+            mutableIntStateOf(
+                languageOptions[languageIndex]
+            )
+        }
+        val themeOptions =
+            listOf(R.string.light_theme, R.string.dark_theme, R.string.black_amoled_theme)
+        val (selectedTheme, onThemeSelected) = remember {
+            mutableIntStateOf(themeOptions[1])
+        }
+        val openLanguageDialog = remember {
+            mutableStateOf(false)
+        }
+        when {
+            openLanguageDialog.value -> {
+                Dialog(
+                    onDismissRequest = { openLanguageDialog.value = false },
+                    options = languageOptions,
+                    selectedOption = selectedLanguage,
+                    onOptionSelected = onLanguageSelected
+                )
+                changeLanguage(context, selectedLanguage)
+            }
+        }
+        DialogButton(
+            label = stringResource(id = R.string.language),
+            subLabel = stringResource(id = R.string.language_chosen),
+            onClick = { openLanguageDialog.value = true })
+        val openThemeDialog = remember {
+            mutableStateOf(false)
+        }
+        when {
+            openThemeDialog.value -> {
+                Dialog(
+                    onDismissRequest = { openThemeDialog.value = false },
+                    options = themeOptions,
+                    selectedOption = selectedTheme,
+                    onOptionSelected = onThemeSelected
                 )
             }
         }
+        DialogButton(
+            label = stringResource(id = R.string.theme),
+            subLabel = stringResource(id = selectedTheme),
+            onClick = { openThemeDialog.value = true })
+        Text(text = "Theme --(on first load)-> default from android")
+        HorizontalDivider(thickness = Dp.Hairline)
+        Text(text = "About us page")
     }
+}
+
+@Composable
+fun DialogButton(
+    label: String,
+    subLabel: String,
+    onClick: () -> Unit
+) {
+    TextButton(
+        shape = RoundedCornerShape(0.dp),
+        onClick = { onClick() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                fontSize = 18.sp,
+                text = label
+            )
+            Text(
+                fontSize = 12.sp,
+                text = subLabel
+            )
+        }
+    }
+}
+
+@Composable
+fun Dialog(
+    onDismissRequest: () -> Unit,
+    options: List<Int>,
+    selectedOption: Int,
+    onOptionSelected: (Int) -> Unit,
+) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((56 * (options.size) + 68 * 2).dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+
+            ) {
+            Text(
+                text = stringResource(id = R.string.language),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(all = 20.dp)
+            )
+            Column(modifier = Modifier.selectableGroup()) {
+                options.forEach { option ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .selectable(
+                                selected = (option == selectedOption),
+                                onClick = {
+                                    onOptionSelected(option)
+                                },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (option == selectedOption),
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(id = option),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                TextButton(
+                    onClick = { onDismissRequest() }) {
+                    Text(text = stringResource(id = R.string.cancel))
+                }
+            }
+        }
+    }
+}
+
+fun changeLanguage(
+    context: Context,
+    languageStringResource: Int
+) {
+    AppCompatDelegate.setApplicationLocales(
+        LocaleListCompat.forLanguageTags(
+            context.resources.getResourceEntryName(languageStringResource)
+        )
+    )
 }
 
 @Composable

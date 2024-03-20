@@ -7,8 +7,13 @@
     <string name="en" translatable="false">English</string>
     <string name="pl" translatable="false">Polski</string>
     <string name="de" translatable="false">Deutch</string>
-    <string name="language_title">language</string>
-    <string name="language">english</string>
+    <string name="language">language</string>
+    <string name="language_chosen">english</string>
     <string name="theme">theme</string>
     <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiaW5maW5pZmVuIiwiYSI6ImNsZ21uc3d1YjA3b2QzZW1tcWQ4ZWhuZ3kifQ.ide6_yWZQVDRD546IXsfDw</string>
+    <string name="location_needed">location_needed</string>
+    <string name="cancel">cancel</string>
+    <string name="light_theme">light</string>
+    <string name="dark_theme">dark</string>
+    <string name="black_amoled_theme">black (AMOLED)</string>
 </resources>
