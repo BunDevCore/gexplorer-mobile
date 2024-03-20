@@ -84,6 +84,52 @@ import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 
+sealed class Screen(
+    val route: String,
+    @StringRes val resourceId: Int,
+    val iconFilled: ImageVector,
+    val iconOutline: ImageVector
+) {
+    data object Map :
+        Screen(
+            "map",
+            R.string.map,
+            GexplorerIcons.Filled.Map,
+            GexplorerIcons.Outlined.Map
+        )
+
+    data object Scores :
+        Screen(
+            "scores",
+            R.string.scores,
+            GexplorerIcons.Filled.SocialLeaderboard,
+            GexplorerIcons.Outlined.SocialLeaderboard
+        )
+
+    data object Account :
+        Screen(
+            "account",
+            R.string.account,
+            Icons.Filled.Person,
+            Icons.Outlined.Person
+        )
+
+    data object Settings :
+        Screen(
+            "settings",
+            R.string.settings,
+            Icons.Filled.Settings,
+            Icons.Outlined.Settings
+        )
+}
+
+val items = listOf(
+    Screen.Map,
+    Screen.Scores,
+    Screen.Account,
+    Screen.Settings
+)
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,7 +6,7 @@
     <string name="settings">settings</string>
     <string name="en" translatable="false">English</string>
     <string name="pl" translatable="false">Polski</string>
-    <string name="de" translatable="false">Deutch</string>
+    <string name="de" translatable="false">Deutsch</string>
     <string name="language">language</string>
     <string name="language_chosen">english</string>
     <string name="theme">theme</string>
