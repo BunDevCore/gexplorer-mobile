@@ -1,5 +1,6 @@
 package com.example.gexplorer_mobile
 
+import android.content.Context
 import android.content.res.Configuration.*
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,9 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -64,7 +68,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.app.ActivityCompat
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -83,6 +86,7 @@ import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
+import com.mapbox.maps.extension.style.types.transitionOptions
 
 sealed class Screen(
     val route: String,
@@ -133,7 +137,6 @@ val items = listOf(
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContent {
             GexplorermobileTheme {
                 // A surface container using the 'background' color from the theme
@@ -157,7 +160,9 @@ class MainActivity : AppCompatActivity() {
                             NavHost(
                                 navController,
                                 startDestination = Screen.Map.route,
-                                modifier = Modifier.padding(innerPadding)
+                                modifier = Modifier.padding(innerPadding),
+                                enterTransition = { EnterTransition.None },
+                                exitTransition = { ExitTransition.None }
                             ) {
                                 composable(Screen.Map.route) { MapPage() }
                                 composable(Screen.Scores.route) { ScoresPage() }
