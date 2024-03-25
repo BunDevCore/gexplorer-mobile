@@ -7,9 +7,11 @@
     <string name="language">Sprache</string>
     <string name="language_chosen">Deutsch</string>
     <string name="theme">Thema</string>
-    <string name="location_needed">Ich muss localization haben. Danke</string>
+    <string name="location_dialog_content">Ich muss localization haben. Danke</string>
     <string name="cancel">Abbrechen</string>
     <string name="light_theme">Licht</string>
     <string name="dark_theme">Dunkel</string>
     <string name="black_amoled_theme">Schwarz (AMOLED)</string>
+    <string name="location_dialog_title">-need_location</string>
+    <string name="go_to_settings">-gotosettings</string>
 </resources>

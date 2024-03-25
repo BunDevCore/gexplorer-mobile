@@ -7,9 +7,11 @@
     <string name="language">Language</string>
     <string name="language_chosen">English</string>
     <string name="theme">Theme</string>
-    <string name="location_needed">To use our app to its fullest you need to give the location permission</string>
+    <string name="location_dialog_content">To use our app to its fullest you need to give the location permission</string>
     <string name="cancel">Cancel</string>
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="black_amoled_theme">Black (AMOLED)</string>
+    <string name="location_dialog_title">Fine location permission needed</string>
+    <string name="go_to_settings">Go to app settings</string>
 </resources>
