@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="map">-map</string>
-    <string name="account">-account</string>
-    <string name="scores">-scores</string>
-    <string name="settings">-settings</string>
+    <string name="map">Karte</string>
+    <string name="account">Konto</string>
+    <string name="scores">Resultate</string>
+    <string name="settings">Einstellungen</string>
     <string name="language">Sprache</string>
     <string name="language_chosen">Deutsch</string>
     <string name="theme">Thema</string>
-    <string name="location_needed">Ich muss localization haben. Danke</string>
+    <string name="location_needed">Zugang zu Ihre Lokalization ist notwendig. Danke</string>
     <string name="cancel">Abbrechen</string>
     <string name="light_theme">Licht</string>
     <string name="dark_theme">Dunkel</string>
     <string name="black_amoled_theme">Schwarz (AMOLED)</string>
-    <string name="about_us">-about_us</string>
+    <string name="about_us">Über uns</string>
 </resources>
