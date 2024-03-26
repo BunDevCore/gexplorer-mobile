@@ -3,8 +3,6 @@ package com.example.gexplorer_mobile
 import android.content.Context
 import android.content.res.Configuration.*
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 //ORIGINAL ACTIVITY -> import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
@@ -12,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -64,7 +61,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -86,7 +82,7 @@ import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
-import com.mapbox.maps.extension.style.types.transitionOptions
+import java.util.Locale
 
 sealed class Screen(
     val route: String,
@@ -138,6 +134,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(Locale.getDefault().language))
             GexplorermobileTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -249,7 +246,7 @@ class MainActivity : AppCompatActivity() {
                             NavigationRail {
                                 TextButton(onClick = {
                                     val route = Screen.Map.route
-                                    if (selectedTab != route){
+                                    if (selectedTab != route) {
                                         selectedTab = route
                                         navController.navigate(route)
                                     }
@@ -379,7 +376,7 @@ fun SettingsPage() {
         }
         when {
             openLanguageDialog.value -> {
-                Dialog(
+                RadioDialog(
                     onDismissRequest = { openLanguageDialog.value = false },
                     options = languageOptions,
                     selectedOption = selectedLanguage,
@@ -397,28 +394,65 @@ fun SettingsPage() {
         }
         when {
             openThemeDialog.value -> {
-                Dialog(
+                RadioDialog(
                     onDismissRequest = { openThemeDialog.value = false },
                     options = themeOptions,
                     selectedOption = selectedTheme,
                     onOptionSelected = onThemeSelected
                 )
+                TODO("Handle theme change")
             }
         }
+        val openAboutUsDialog = remember {
+            mutableStateOf(false)
+        }
+
         DialogButton(
             label = stringResource(id = R.string.theme),
             subLabel = stringResource(id = selectedTheme),
             onClick = { openThemeDialog.value = true })
-        Text(text = "Theme --(on first load)-> default from android")
-        HorizontalDivider(thickness = Dp.Hairline)
-        Text(text = "About us page")
+        HorizontalDivider(thickness = 1.dp)
+        DialogButton(
+            label = stringResource(id = R.string.about_us),
+            onClick = { openAboutUsDialog.value = true })
+
+        when {
+            openAboutUsDialog.value -> {
+                Dialog(onDismissRequest = { openAboutUsDialog.value = false }) {
+                    Card {
+                        Column(modifier = Modifier.padding(20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                modifier = Modifier.padding(bottom = 10.dp),
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.Bold,
+                                text = "BunDev team"
+                            )
+                            val fontSize = 20.sp
+                            val fontSizeSecond = 14.sp
+                            val topPadding = 10.dp
+                            Text(modifier = Modifier.padding(top = topPadding), fontSize = fontSize, text = "wiKapo")
+                            Text(fontSize = fontSizeSecond, text = "aplikacja mobilna")
+                            Text(modifier = Modifier.padding(top = topPadding), fontSize = fontSize, text = "Lempek")
+                            Text(fontSize = fontSizeSecond, text = "aplikacja webowa")
+                            Text(modifier = Modifier.padding(top = topPadding), fontSize = fontSize, text = "Fen")
+                            Text(fontSize = fontSizeSecond, text = "backend")
+                            Text(modifier = Modifier.padding(top = topPadding), fontSize = fontSize, text = "random")
+                            Text(fontSize = fontSizeSecond, text = "dokumentacja, design, prezentacja")
+                            Text(modifier = Modifier.padding(top = topPadding), fontSize = fontSize, text = "SR")
+                            Text(fontSize = fontSizeSecond, text = "dokumentacja, design, prezentacja")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun DialogButton(
     label: String,
-    subLabel: String,
+    subLabel: String = "",
     onClick: () -> Unit
 ) {
     TextButton(
@@ -435,16 +469,18 @@ fun DialogButton(
                 fontSize = 18.sp,
                 text = label
             )
-            Text(
-                fontSize = 12.sp,
-                text = subLabel
-            )
+            if (subLabel.isNotEmpty()) {
+                Text(
+                    fontSize = 12.sp,
+                    text = subLabel
+                )
+            }
         }
     }
 }
 
 @Composable
-fun Dialog(
+fun RadioDialog(
     onDismissRequest: () -> Unit,
     options: List<Int>,
     selectedOption: Int,

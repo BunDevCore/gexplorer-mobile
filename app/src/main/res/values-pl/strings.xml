@@ -12,4 +12,5 @@
     <string name="light_theme">Jasny</string>
     <string name="dark_theme">Ciemny</string>
     <string name="black_amoled_theme">Czarny (AMOLED)</string>
+    <string name="about_us">O nas</string>
 </resources>

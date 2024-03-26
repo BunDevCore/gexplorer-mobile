@@ -12,4 +12,5 @@
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="black_amoled_theme">Black (AMOLED)</string>
+    <string name="about_us">About us</string>
 </resources>
