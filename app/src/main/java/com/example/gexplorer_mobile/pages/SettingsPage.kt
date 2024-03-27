@@ -96,7 +96,6 @@ fun SettingsPage() {
                     selectedOption = selectedTheme,
                     onOptionSelected = onThemeSelected
                 )
-                TODO("Handle theme change")
             }
         }
         DialogButton(
