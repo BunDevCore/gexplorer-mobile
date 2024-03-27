@@ -12,7 +12,6 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,8 +63,11 @@ import com.example.gexplorer_mobile.icons.outlined.Map
 import com.example.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.example.gexplorer_mobile.pages.AccountPage
 import com.example.gexplorer_mobile.pages.MapPage
+import com.example.gexplorer_mobile.pages.ScoresPage
 import com.example.gexplorer_mobile.pages.SettingsPage
 import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
+import com.example.gexplorer_mobile.classes.Funi
+import com.example.gexplorer_mobile.classes.JustAVariable
 import java.util.Locale
 
 sealed class Screen(
@@ -114,6 +116,8 @@ val items = listOf(
     Screen.Settings
 )
 
+val funi = Funi()
+val systemOfUnits = JustAVariable("metric")
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,10 +149,10 @@ class MainActivity : AppCompatActivity() {
                                 enterTransition = { EnterTransition.None },
                                 exitTransition = { ExitTransition.None }
                             ) {
-                                composable(Screen.Map.route) { MapPage() }
-                                composable(Screen.Scores.route) { ScoresPage() }
+                                composable(Screen.Map.route) { MapPage(funi) }
+                                composable(Screen.Scores.route) { ScoresPage(systemOfUnits) }
                                 composable(Screen.Account.route) { AccountPage() }
-                                composable(Screen.Settings.route) { SettingsPage() }
+                                composable(Screen.Settings.route) { SettingsPage(systemOfUnits, funi) }
                             }
                         }
                     }
@@ -277,16 +281,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ScoresPage() {
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(text = "Tu będzie tablica wyników")
-        Text(text = "Powodzenia Fen")
     }
 }
 

@@ -17,4 +17,7 @@
     <string name="dark_theme">dark</string>
     <string name="black_amoled_theme">black (AMOLED)</string>
     <string name="about_us">about_us</string>
+    <string name="metric">metric</string>
+    <string name="imperial">imperial</string>
+    <string name="system_of_units">system_of_units</string>
 </resources>

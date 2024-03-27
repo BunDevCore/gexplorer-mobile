@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -23,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -32,9 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
 import com.example.gexplorer_mobile.R
+import com.example.gexplorer_mobile.classes.Funi
+import com.example.gexplorer_mobile.classes.JustAVariable
 
 @Composable
-fun SettingsPage() {
+fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -83,7 +89,7 @@ fun SettingsPage() {
         val themeOptions =
             listOf(R.string.light_theme, R.string.dark_theme, R.string.black_amoled_theme)
         val (selectedTheme, onThemeSelected) = remember {
-            mutableIntStateOf(themeOptions[1])
+            mutableIntStateOf(themeOptions[1]) //TODO: On first load set phones defaults
         }
         val openThemeDialog = remember {
             mutableStateOf(false)
@@ -102,20 +108,32 @@ fun SettingsPage() {
             label = stringResource(id = R.string.theme),
             subLabel = stringResource(id = selectedTheme),
             onClick = { openThemeDialog.value = true })
+
+        //Change measuring system
+        val systemOfUnitsOptions = listOf(R.string.metric, R.string.imperial)
+        val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
+            mutableIntStateOf(systemOfUnitsOptions[0])
+        }
+        val openSystemOfUnitsDialog = remember {
+            mutableStateOf(false)
+        }
+        when {
+            openSystemOfUnitsDialog.value -> {
+                RadioDialog(
+                    onDismissRequest = { openSystemOfUnitsDialog.value = false },
+                    options = systemOfUnitsOptions,
+                    selectedOption = selectedSystemOfUnits,
+                    onOptionSelected = onSystemOfUnitsSelected
+                )
+                systemOfUnits?.value = context.resources.getResourceEntryName(selectedSystemOfUnits)
+            }
+        }
+        DialogButton(
+            label = stringResource(id = R.string.system_of_units),
+            subLabel = stringResource(id = selectedSystemOfUnits),
+            onClick = { openSystemOfUnitsDialog.value = true })
+
         HorizontalDivider(thickness = 1.dp)
-
-//        //Change measuring system
-//        val measurementOptions = listOf("Metric", "Imperial")
-//        val openMeasurementDialog = remember {
-//            mutableStateOf(false)
-//        }
-//        DialogButton(
-//            label = "System",
-//            onClick = { openMeasurementDialog.value = true })
-//        when ->RadioDialog(onDismissRequest = { openMeasurementDialog.value = false }, options = measurementOptions, selectedOption = ) {
-//
-//        }
-
         //Open About us dialog
         val openAboutUsDialog = remember {
             mutableStateOf(false)
@@ -137,12 +155,33 @@ fun SettingsPage() {
                             val fontSize = 20.sp
                             val fontSizeSecond = 14.sp
                             val topPadding = 10.dp
-                            Text(
-                                modifier = Modifier.padding(top = topPadding),
-                                fontSize = fontSize,
-                                text = "wiKapo"
-                            )
-                            Text(fontSize = fontSizeSecond, text = "aplikacja mobilna")
+
+                            val dialogTextColor = LocalContentColor.current
+                            val dialogTextStyle = LocalTextStyle.current
+                            TextButton(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = topPadding),
+                                onClick = { funi?.set(value = 1, timeOutInSeconds = 60) },
+                                colors = ButtonDefaults.textButtonColors(Color.Unspecified)
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(
+                                        fontSize = fontSize,
+                                        fontStyle = dialogTextStyle.fontStyle,
+                                        fontWeight = dialogTextStyle.fontWeight,
+                                        color = dialogTextColor,
+                                        text = "wiKapo"
+                                    )
+                                    Text(
+                                        fontSize = fontSizeSecond,
+                                        fontStyle = dialogTextStyle.fontStyle,
+                                        fontWeight = dialogTextStyle.fontWeight,
+                                        color = dialogTextColor,
+                                        text = "aplikacja mobilna"
+                                    )
+                                }
+                            }
                             Text(
                                 modifier = Modifier.padding(top = topPadding),
                                 fontSize = fontSize,

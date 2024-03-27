@@ -4,16 +4,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.gexplorer_mobile.R
+import com.example.gexplorer_mobile.classes.Funi
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
+import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun MapPage() {
+fun MapPage(funi: Funi? = null) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -52,6 +55,11 @@ fun MapPage() {
                     lineWidth = 5.0
                 )
             }
+            if ( funi?.get() == 1) CircleAnnotation(
+                point = Point.fromLngLat(18.6650564007217, 54.29906183330589),
+                circleOpacity = 0.5,
+                circleColorInt = R.color.green
+            )
         }
     }
 }

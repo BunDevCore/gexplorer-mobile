@@ -13,4 +13,7 @@
     <string name="dark_theme">Ciemny</string>
     <string name="black_amoled_theme">Czarny (AMOLED)</string>
     <string name="about_us">O nas</string>
+    <string name="metric">Metryczny</string>
+    <string name="imperial">Imperialny</string>
+    <string name="system_of_units">System jednostek</string>
 </resources>
