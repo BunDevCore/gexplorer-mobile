@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -26,6 +26,8 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarDefaults.containerColor
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -33,6 +35,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
@@ -44,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -118,6 +120,7 @@ val items = listOf(
 
 val funi = Funi()
 val systemOfUnits = JustAVariable("metric")
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,40 +155,53 @@ class MainActivity : AppCompatActivity() {
                                 composable(Screen.Map.route) { MapPage(funi) }
                                 composable(Screen.Scores.route) { ScoresPage(systemOfUnits) }
                                 composable(Screen.Account.route) { AccountPage() }
-                                composable(Screen.Settings.route) { SettingsPage(systemOfUnits, funi) }
+                                composable(Screen.Settings.route) {
+                                    SettingsPage(
+                                        systemOfUnits,
+                                        funi
+                                    )
+                                }
                             }
                         }
                     }
                     if (configuration.orientation == ORIENTATION_PORTRAIT) {
                         Scaffold(
                             topBar = {
-                                TextButton(
+                                Surface(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(56.dp)
-                                        .background(color = colorResource(id = R.color.primary)),
-                                    onClick = {
-                                        val route = Screen.Map.route
-                                        if (selectedTab != route) {
-                                            selectedTab = route
-                                            navController.navigate(route)
-                                        }
-                                    }
+                                        .height(56.dp),
+                                    color = containerColor,
+                                    tonalElevation = NavigationBarDefaults.Elevation
                                 ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Center,
-                                        verticalAlignment = Alignment.CenterVertically
+                                    TextButton(
+                                        modifier = Modifier.fillMaxSize(),
+                                        onClick = {
+                                            val route = Screen.Map.route
+                                            if (selectedTab != route) {
+                                                selectedTab = route
+                                                navController.navigate(route)
+                                            }
+                                        },
+                                        shape = RoundedCornerShape(0.dp)
                                     ) {
-                                        Text(
-                                            text = stringResource(id = R.string.app_name),
-                                            fontSize = 18.sp,
-                                            color = colorResource(id = R.color.primaryText)
-                                        )
-                                        Image(
-                                            painter = painterResource(id = R.drawable.gexplorer_logo),
-                                            contentDescription = null,
-                                            modifier = Modifier.padding(all = 2.dp)
-                                        )
+                                        Row(
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = stringResource(id = R.string.app_name),
+                                                fontSize = 18.sp,
+                                                color = MaterialTheme.colorScheme.contentColorFor(
+                                                    containerColor
+                                                )
+                                            )
+                                            Image(
+                                                painter = painterResource(id = R.drawable.gexplorer_logo),
+                                                contentDescription = null,
+                                                modifier = Modifier.padding(all = 2.dp)
+                                            )
+                                        }
                                     }
                                 }
                             },
