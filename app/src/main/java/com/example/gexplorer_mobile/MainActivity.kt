@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                             ) {
                                 composable(Screen.Map.route) { MapPage(funi) }
                                 composable(Screen.Scores.route) { ScoresPage(systemOfUnits) }
-                                composable(Screen.Account.route) { AccountPage() }
+                                composable(Screen.Account.route) { AccountPage(funi) }
                                 composable(Screen.Settings.route) {
                                     SettingsPage(
                                         systemOfUnits,

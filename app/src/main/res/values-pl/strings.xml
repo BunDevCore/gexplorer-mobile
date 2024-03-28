@@ -16,4 +16,7 @@
     <string name="metric">Metryczny</string>
     <string name="imperial">Imperialny</string>
     <string name="system_of_units">System jednostek</string>
+    <string name="mobile_app">aplikacja mobilna</string>
+    <string name="web_app">aplikacja webowa</string>
+    <string name="creative_department">dokumentacja, projekt aplikacji, prezentacja</string>
 </resources>

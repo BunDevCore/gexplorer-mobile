@@ -55,7 +55,7 @@ fun MapPage(funi: Funi? = null) {
                     lineWidth = 5.0
                 )
             }
-            if ( funi?.get() == 1) CircleAnnotation(
+            if ( funi?.getValue() == 1) CircleAnnotation(
                 point = Point.fromLngLat(18.6650564007217, 54.29906183330589),
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green

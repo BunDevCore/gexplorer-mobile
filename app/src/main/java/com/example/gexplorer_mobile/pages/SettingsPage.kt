@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
@@ -30,7 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -150,7 +151,7 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                                 modifier = Modifier.padding(bottom = 10.dp),
                                 fontSize = 26.sp,
                                 fontWeight = FontWeight.Bold,
-                                text = "BunDev team"
+                                text = stringResource(id = R.string.bundev)
                             )
                             val fontSize = 20.sp
                             val fontSizeSecond = 14.sp
@@ -158,59 +159,58 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
 
                             val dialogTextColor = LocalContentColor.current
                             val dialogTextStyle = LocalTextStyle.current
-                            TextButton(
+                            val timeOut = 10L
+                            FuniButton(
+                                fontSize = fontSize,
+                                fontSizeSecond = fontSizeSecond,
+                                dialogTextColor = dialogTextColor,
+                                dialogTextStyle = dialogTextStyle,
+                                name = "wiKapo",
+                                responsibleFor = R.string.mobile_app,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = topPadding),
-                                onClick = { funi?.set(value = 1, timeOutInSeconds = 60) },
-                                colors = ButtonDefaults.textButtonColors(Color.Unspecified)
-                            ) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        fontSize = fontSize,
-                                        fontStyle = dialogTextStyle.fontStyle,
-                                        fontWeight = dialogTextStyle.fontWeight,
-                                        color = dialogTextColor,
-                                        text = "wiKapo"
-                                    )
-                                    Text(
-                                        fontSize = fontSizeSecond,
-                                        fontStyle = dialogTextStyle.fontStyle,
-                                        fontWeight = dialogTextStyle.fontWeight,
-                                        color = dialogTextColor,
-                                        text = "aplikacja mobilna"
-                                    )
-                                }
-                            }
-                            Text(
-                                modifier = Modifier.padding(top = topPadding),
+                                onClick = { funi?.append(value = 20, timeOutInSeconds = timeOut) }
+                            )
+                            FuniButton(
                                 fontSize = fontSize,
-                                text = "Lempek"
+                                fontSizeSecond = fontSizeSecond,
+                                dialogTextColor = dialogTextColor,
+                                dialogTextStyle = dialogTextStyle,
+                                name = "Lempek",
+                                responsibleFor = R.string.web_app,
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { funi?.append(value = 1, timeOutInSeconds = timeOut) }
                             )
-                            Text(fontSize = fontSizeSecond, text = "aplikacja webowa")
-                            Text(
-                                modifier = Modifier.padding(top = topPadding),
+                            FuniButton(
                                 fontSize = fontSize,
-                                text = "Fen"
+                                fontSizeSecond = fontSizeSecond,
+                                dialogTextColor = dialogTextColor,
+                                dialogTextStyle = dialogTextStyle,
+                                name = "Fen",
+                                responsibleFor = R.string.backend,
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { funi?.append(value = 3, timeOutInSeconds = timeOut) }
                             )
-                            Text(fontSize = fontSizeSecond, text = "backend")
-                            Text(
-                                modifier = Modifier.padding(top = topPadding),
+                            FuniButton(
                                 fontSize = fontSize,
-                                text = "random"
+                                fontSizeSecond = fontSizeSecond,
+                                dialogTextColor = dialogTextColor,
+                                dialogTextStyle = dialogTextStyle,
+                                name = "random",
+                                responsibleFor = R.string.creative_department,
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { funi?.append(value = 4, timeOutInSeconds = timeOut) }
                             )
-                            Text(
-                                fontSize = fontSizeSecond,
-                                text = "dokumentacja, design, prezentacja"
-                            )
-                            Text(
-                                modifier = Modifier.padding(top = topPadding),
+                            FuniButton(
                                 fontSize = fontSize,
-                                text = "SR"
-                            )
-                            Text(
-                                fontSize = fontSizeSecond,
-                                text = "dokumentacja, design, prezentacja"
+                                fontSizeSecond = fontSizeSecond,
+                                dialogTextColor = dialogTextColor,
+                                dialogTextStyle = dialogTextStyle,
+                                name = "SR",
+                                responsibleFor = R.string.creative_department,
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { funi?.append(value = 5, timeOutInSeconds = timeOut) }
                             )
                         }
                     }
@@ -249,6 +249,41 @@ fun DialogButton(
                     text = subLabel
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun FuniButton(
+    fontSize: TextUnit,
+    fontSizeSecond: TextUnit,
+    dialogTextColor: Color,
+    dialogTextStyle: TextStyle,
+    name: String,
+    responsibleFor: Int,
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    TextButton(
+        modifier = modifier,
+        onClick = { onClick() }//,
+//        colors = ButtonDefaults.textButtonColors(Color.Unspecified)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                fontSize = fontSize,
+                fontStyle = dialogTextStyle.fontStyle,
+                fontWeight = dialogTextStyle.fontWeight,
+                color = dialogTextColor,
+                text = name
+            )
+            Text(
+                fontSize = fontSizeSecond,
+                fontStyle = dialogTextStyle.fontStyle,
+                fontWeight = dialogTextStyle.fontWeight,
+                color = dialogTextColor,
+                text = stringResource(id = responsibleFor)//"aplikacja mobilna"
+            )
         }
     }
 }

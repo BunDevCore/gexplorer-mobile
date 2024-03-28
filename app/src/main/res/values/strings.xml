@@ -20,4 +20,9 @@
     <string name="metric">metric</string>
     <string name="imperial">imperial</string>
     <string name="system_of_units">system_of_units</string>
+    <string name="mobile_app">mobile_app</string>
+    <string name="web_app">web_app</string>
+    <string name="backend" translatable="false">backend</string>
+    <string name="creative_department">creative_department</string>
+    <string name="bundev" translatable="false">BunDev</string>
 </resources>

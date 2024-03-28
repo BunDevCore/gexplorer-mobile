@@ -13,9 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gexplorer_mobile.classes.Funi
 
 @Composable
-fun AccountPage() {
+fun AccountPage(funi: Funi? = null) {
     Column(
         modifier = Modifier
             .padding(top = 10.dp)
@@ -34,5 +35,12 @@ fun AccountPage() {
         Text(text = "ta strona będzie dla użytkownika, ale to później")
         Text(text = "achievements")
         Text(text = "(połączenie z API)")
+        if (funi?.getValue() != 0) {
+            Text(
+                text = "val:${
+                    funi?.getValue().toString()
+                } time left:${funi?.getTimeRemaining("s")}"
+            )
+        }
     }
 }
