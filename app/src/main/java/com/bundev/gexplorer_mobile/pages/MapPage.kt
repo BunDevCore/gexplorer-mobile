@@ -1,11 +1,11 @@
-package com.example.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.gexplorer_mobile.R
-import com.example.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.classes.Funi
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap

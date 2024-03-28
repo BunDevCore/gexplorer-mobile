@@ -1,4 +1,4 @@
-package com.example.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.classes.Funi
 
 @Composable
 fun AccountPage(funi: Funi? = null) {

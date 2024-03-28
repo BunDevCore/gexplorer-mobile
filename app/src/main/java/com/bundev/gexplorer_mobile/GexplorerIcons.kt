@@ -1,10 +1,10 @@
-package com.example.gexplorer_mobile
+package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.gexplorer_mobile.icons.filled.Map
-import com.example.gexplorer_mobile.icons.outlined.Map
-import com.example.gexplorer_mobile.icons.filled.SocialLeaderboard
-import com.example.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.filled.Map
+import com.bundev.gexplorer_mobile.icons.outlined.Map
+import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import kotlin.collections.List as __KtList
 
 @Suppress("unused")

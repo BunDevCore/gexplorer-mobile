@@ -1,4 +1,4 @@
-package com.example.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
-import com.example.gexplorer_mobile.R
-import com.example.gexplorer_mobile.classes.Funi
-import com.example.gexplorer_mobile.classes.JustAVariable
+import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.classes.JustAVariable
 
 @Composable
 fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {

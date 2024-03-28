@@ -1,4 +1,4 @@
-package com.example.gexplorer_mobile.classes
+package com.bundev.gexplorer_mobile.classes
 
 import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds

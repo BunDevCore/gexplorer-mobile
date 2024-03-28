@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.example.gexplorer_mobile.icons.outlined
+package com.bundev.gexplorer_mobile.icons.outlined
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
-import com.example.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.GexplorerIcons
 
 val GexplorerIcons.Outlined.Map: ImageVector
     get() {

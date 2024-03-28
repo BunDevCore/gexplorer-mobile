@@ -1,4 +1,4 @@
-package com.example.gexplorer_mobile.ui.theme
+package com.bundev.gexplorer_mobile.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

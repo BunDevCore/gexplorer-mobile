@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gexplorer_mobile"
+    namespace = "com.bundev.gexplorer_mobile"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.gexplorer_mobile"
+        applicationId = "com.bundev.gexplorer_mobile"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -66,7 +66,8 @@ secrets {
 }
 
 dependencies {
-
+    implementation("com.squareup.retrofit2:retrofit:2.10.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.10.0")
     implementation("com.mapbox.maps:android:11.2.0")
     implementation("com.mapbox.extension:maps-compose:11.2.0")
     implementation("androidx.core:core-ktx:1.12.0")

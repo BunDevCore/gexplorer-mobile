@@ -1,6 +1,5 @@
-package com.example.gexplorer_mobile
+package com.bundev.gexplorer_mobile
 
-//ORIGINAL ACTIVITY -> import androidx.activity.ComponentActivity
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -59,17 +58,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.gexplorer_mobile.icons.filled.Map
-import com.example.gexplorer_mobile.icons.filled.SocialLeaderboard
-import com.example.gexplorer_mobile.icons.outlined.Map
-import com.example.gexplorer_mobile.icons.outlined.SocialLeaderboard
-import com.example.gexplorer_mobile.pages.AccountPage
-import com.example.gexplorer_mobile.pages.MapPage
-import com.example.gexplorer_mobile.pages.ScoresPage
-import com.example.gexplorer_mobile.pages.SettingsPage
-import com.example.gexplorer_mobile.ui.theme.GexplorermobileTheme
-import com.example.gexplorer_mobile.classes.Funi
-import com.example.gexplorer_mobile.classes.JustAVariable
+import com.bundev.gexplorer_mobile.icons.filled.Map
+import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.outlined.Map
+import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.pages.AccountPage
+import com.bundev.gexplorer_mobile.pages.MapPage
+import com.bundev.gexplorer_mobile.pages.ScoresPage
+import com.bundev.gexplorer_mobile.pages.SettingsPage
+import com.bundev.gexplorer_mobile.ui.theme.GexplorermobileTheme
+import com.bundev.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.classes.JustAVariable
 import java.util.Locale
 
 sealed class Screen(
