@@ -35,7 +35,7 @@ fun AccountPage(funi: Funi? = null) {
         Text(text = "ta strona będzie dla użytkownika, ale to później")
         Text(text = "achievements")
         Text(text = "(połączenie z API)")
-        if (funi?.getValue() != 0) {
+        if (funi?.getValue() != 0L) {
             Text(
                 text = "val:${
                     funi?.getValue().toString()

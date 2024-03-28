@@ -7,29 +7,29 @@ import kotlin.time.DurationUnit
 import kotlin.math.pow
 
 class Funi {
-    private var value: Int = 0
+    private var value: Long = 0
     private var timeOut: Long = System.currentTimeMillis()
 
-    fun set(value: Int, timeOutInSeconds: Long) {
+    fun set(value: Long, timeOutInSeconds: Long) {
         this.value = value
         this.timeOut =
             System.currentTimeMillis() + timeOutInSeconds.seconds.toLong(DurationUnit.MILLISECONDS)
     }
 
-    fun append(value: Int, timeOutInSeconds: Long) {
+    fun append(value: Long, timeOutInSeconds: Long) {
         val thisValueLength = this.value.toString().length
         val valueLength = value.toString().length
-        if (thisValueLength + valueLength > 10) {
+        if (thisValueLength + valueLength > 18) {
             this.value =
-                this.value.toString().subSequence(valueLength - 1, thisValueLength - 1).toString()
-                    .toInt()
+                this.value.toString().subSequence(valueLength, thisValueLength).toString()
+                    .toLong()
         }
         this.value = this.value * 10f.pow(valueLength).toInt() + value
         this.timeOut =
             System.currentTimeMillis() + timeOutInSeconds.seconds.toLong(DurationUnit.MILLISECONDS)
     }
 
-    fun getValue(): Int {
+    fun getValue(): Long {
         val currentTime = System.currentTimeMillis()
         if (currentTime > this.timeOut) {
             value = 0
@@ -37,7 +37,7 @@ class Funi {
         return value
     }
 
-    fun getTimeRemaining(getDurationIn: String): Long {
+    fun getTimeRemaining(getDurationIn: String): Double {
         val currentTime = System.currentTimeMillis()
         var timeDifference = this.timeOut - currentTime
         if (timeDifference > 0) {
@@ -57,11 +57,24 @@ class Funi {
             }
             if (timeDifference == (-1).toLong()) {
                 Log.e("time conversion", "non existent duration type: $getDurationIn")
-                return 0
+                return 0.0
             }
-            return timeDifference
+            if (!(getDurationIn.lowercase() == "nanoseconds" || getDurationIn.lowercase() == "ns") ){
+                var remainder = when (getDurationIn.lowercase()) {//TODO complete it
+                    "microseconds", "us", "μs" ->
+                        timeDifference.milliseconds.inWholeMicroseconds
+
+                    "miliseconds", "ms" -> timeDifference
+                    "seconds", "s" -> timeDifference.milliseconds.inWholeSeconds
+                    "minutes", "min" -> timeDifference.milliseconds.inWholeMinutes
+                    "hours", "h" -> timeDifference.milliseconds.inWholeHours
+                    "days", "d" -> timeDifference.milliseconds.inWholeDays
+                    else -> 0.0
+                }
+            }
+            return timeDifference.toDouble()
         }
-        return 0
+        return 0.0
     }
 
     fun addTime(addSeconds: Long) {

@@ -220,6 +220,13 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
         DialogButton(
             label = stringResource(id = R.string.about_us),
             onClick = { openAboutUsDialog.value = true })
+        if (funi?.getValue() != 0L) {
+            Text(
+                text = "val:${
+                    funi?.getValue().toString()
+                } time left:${funi?.getTimeRemaining("s")}"
+            )
+        }
     }
 }
 
