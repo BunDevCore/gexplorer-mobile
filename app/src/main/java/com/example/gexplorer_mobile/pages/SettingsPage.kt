@@ -224,7 +224,7 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
             Text(
                 text = "val:${
                     funi?.getValue().toString()
-                } time left:${funi?.getTimeRemaining("s")}"
+                } time left:${funi?.getTimeRemaining()}"
             )
         }
     }

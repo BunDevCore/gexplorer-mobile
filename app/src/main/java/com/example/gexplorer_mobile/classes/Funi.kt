@@ -1,7 +1,6 @@
 package com.example.gexplorer_mobile.classes
 
-import android.util.Log
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 import kotlin.math.pow
@@ -37,44 +36,10 @@ class Funi {
         return value
     }
 
-    fun getTimeRemaining(getDurationIn: String): Double {
+    fun getTimeRemaining(): Long {
         val currentTime = System.currentTimeMillis()
-        var timeDifference = this.timeOut - currentTime
-        if (timeDifference > 0) {
-            timeDifference = when (getDurationIn.lowercase()) {
-                "nanoseconds", "ns" ->
-                    timeDifference.milliseconds.inWholeNanoseconds
-
-                "microseconds", "us", "μs" ->
-                    timeDifference.milliseconds.inWholeMicroseconds
-
-                "miliseconds", "ms" -> timeDifference
-                "seconds", "s" -> timeDifference.milliseconds.inWholeSeconds
-                "minutes", "min" -> timeDifference.milliseconds.inWholeMinutes
-                "hours", "h" -> timeDifference.milliseconds.inWholeHours
-                "days", "d" -> timeDifference.milliseconds.inWholeDays
-                else -> -1
-            }
-            if (timeDifference == (-1).toLong()) {
-                Log.e("time conversion", "non existent duration type: $getDurationIn")
-                return 0.0
-            }
-            if (!(getDurationIn.lowercase() == "nanoseconds" || getDurationIn.lowercase() == "ns") ){
-                var remainder = when (getDurationIn.lowercase()) {//TODO complete it
-                    "microseconds", "us", "μs" ->
-                        timeDifference.milliseconds.inWholeMicroseconds
-
-                    "miliseconds", "ms" -> timeDifference
-                    "seconds", "s" -> timeDifference.milliseconds.inWholeSeconds
-                    "minutes", "min" -> timeDifference.milliseconds.inWholeMinutes
-                    "hours", "h" -> timeDifference.milliseconds.inWholeHours
-                    "days", "d" -> timeDifference.milliseconds.inWholeDays
-                    else -> 0.0
-                }
-            }
-            return timeDifference.toDouble()
-        }
-        return 0.0
+        val timeDifference = this.timeOut - currentTime
+        return max(timeDifference, 0)
     }
 
     fun addTime(addSeconds: Long) {
