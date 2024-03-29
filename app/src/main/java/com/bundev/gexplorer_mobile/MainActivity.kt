@@ -1,7 +1,11 @@
 package com.bundev.gexplorer_mobile
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -52,12 +56,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bundev.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Map
@@ -67,8 +74,6 @@ import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.ScoresPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorermobileTheme
-import com.bundev.gexplorer_mobile.classes.Funi
-import com.bundev.gexplorer_mobile.classes.JustAVariable
 import java.util.Locale
 
 sealed class Screen(
@@ -122,6 +127,7 @@ val systemOfUnits = JustAVariable("metric")
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+//        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(Locale.getDefault().language))
@@ -294,6 +300,22 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+        //Hides the ugly action bar at the top
+        actionBar?.hide()
+
+        //Hide the status bars
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            @Suppress("DEPRECATION")
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        } else {
+            window.insetsController?.apply {
+                hide(WindowInsets.Type.statusBars())
+                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
     }

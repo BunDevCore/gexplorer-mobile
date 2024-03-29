@@ -1,9 +1,11 @@
 package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import kotlin.collections.List as __KtList
 
@@ -18,7 +20,8 @@ object GexplorerIcons {
                 }
                 _filled = listOf(
                     Filled.SocialLeaderboard,
-                    Filled.Map
+                    Filled.Map,
+                    Filled.Location
                 )
                 return _filled!!
             }
@@ -32,7 +35,8 @@ object GexplorerIcons {
                 }
                 _outlined = listOf(
                     Outlined.SocialLeaderboard,
-                    Outlined.Map
+                    Outlined.Map,
+                    Outlined.Location
                 )
                 return _outlined!!
             }

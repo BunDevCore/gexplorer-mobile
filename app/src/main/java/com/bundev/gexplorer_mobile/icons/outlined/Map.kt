@@ -18,7 +18,7 @@ val GexplorerIcons.Outlined.Map: ImageVector
         if (map != null) {
             return map!!
         }
-        map = Builder(name = "Map-outlined", defaultWidth = 24.0.dp, defaultHeight =
+        map = Builder(name = "MapOutlined", defaultWidth = 24.0.dp, defaultHeight =
                 24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
