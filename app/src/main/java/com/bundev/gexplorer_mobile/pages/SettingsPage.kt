@@ -25,12 +25,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -157,14 +156,10 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                             val fontSizeSecond = 14.sp
                             val topPadding = 10.dp
 
-                            val dialogTextColor = LocalContentColor.current
-                            val dialogTextStyle = LocalTextStyle.current
                             val timeOut = 10L
                             FuniButton(
                                 fontSize = fontSize,
                                 fontSizeSecond = fontSizeSecond,
-                                dialogTextColor = dialogTextColor,
-                                dialogTextStyle = dialogTextStyle,
                                 name = "wiKapo",
                                 responsibleFor = R.string.mobile_app,
                                 modifier = Modifier
@@ -175,8 +170,6 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                             FuniButton(
                                 fontSize = fontSize,
                                 fontSizeSecond = fontSizeSecond,
-                                dialogTextColor = dialogTextColor,
-                                dialogTextStyle = dialogTextStyle,
                                 name = "Lempek",
                                 responsibleFor = R.string.web_app,
                                 modifier = Modifier.fillMaxWidth(),
@@ -185,8 +178,6 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                             FuniButton(
                                 fontSize = fontSize,
                                 fontSizeSecond = fontSizeSecond,
-                                dialogTextColor = dialogTextColor,
-                                dialogTextStyle = dialogTextStyle,
                                 name = "Fen",
                                 responsibleFor = R.string.backend,
                                 modifier = Modifier.fillMaxWidth(),
@@ -195,8 +186,6 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                             FuniButton(
                                 fontSize = fontSize,
                                 fontSizeSecond = fontSizeSecond,
-                                dialogTextColor = dialogTextColor,
-                                dialogTextStyle = dialogTextStyle,
                                 name = "random",
                                 responsibleFor = R.string.creative_department,
                                 modifier = Modifier.fillMaxWidth(),
@@ -205,8 +194,6 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                             FuniButton(
                                 fontSize = fontSize,
                                 fontSizeSecond = fontSizeSecond,
-                                dialogTextColor = dialogTextColor,
-                                dialogTextStyle = dialogTextStyle,
                                 name = "SR",
                                 responsibleFor = R.string.creative_department,
                                 modifier = Modifier.fillMaxWidth(),
@@ -264,13 +251,13 @@ fun DialogButton(
 fun FuniButton(
     fontSize: TextUnit,
     fontSizeSecond: TextUnit,
-    dialogTextColor: Color,
-    dialogTextStyle: TextStyle,
     name: String,
     responsibleFor: Int,
     modifier: Modifier,
     onClick: () -> Unit
 ) {
+    val textColor = LocalContentColor.current
+    val textStyle = LocalTextStyle.current
     TextButton(
         modifier = modifier,
         onClick = { onClick() }//,
@@ -279,16 +266,16 @@ fun FuniButton(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 fontSize = fontSize,
-                fontStyle = dialogTextStyle.fontStyle,
-                fontWeight = dialogTextStyle.fontWeight,
-                color = dialogTextColor,
+                fontStyle = textStyle.fontStyle,
+                fontWeight = textStyle.fontWeight,
+                color = textColor,
                 text = name
             )
             Text(
                 fontSize = fontSizeSecond,
-                fontStyle = dialogTextStyle.fontStyle,
-                fontWeight = dialogTextStyle.fontWeight,
-                color = dialogTextColor,
+                fontStyle = textStyle.fontStyle,
+                fontWeight = textStyle.fontWeight,
+                color = textColor,
                 text = stringResource(id = responsibleFor)//"aplikacja mobilna"
             )
         }
@@ -369,4 +356,10 @@ fun changeLanguage(
             context.resources.getResourceEntryName(languageStringResource)
         )
     )
+}
+
+@Preview(showBackground = true, locale = "pl", name = "pl")
+@Composable
+fun SettingsPagePreview() {
+    SettingsPage()
 }

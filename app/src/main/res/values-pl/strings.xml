@@ -19,4 +19,5 @@
     <string name="mobile_app">aplikacja mobilna</string>
     <string name="web_app">aplikacja webowa</string>
     <string name="creative_department">dokumentacja, projekt aplikacji, prezentacja</string>
+    <string name="trip">Podróż</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="backend" translatable="false">backend</string>
     <string name="creative_department">creative_department</string>
     <string name="bundev" translatable="false">BunDev</string>
+    <string name="trip">trip</string>
 </resources>

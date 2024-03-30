@@ -19,4 +19,5 @@
     <string name="mobile_app">-mobile_app</string>
     <string name="web_app">-web_app</string>
     <string name="creative_department">-creative_department</string>
+    <string name="trip">-trip</string>
 </resources>
