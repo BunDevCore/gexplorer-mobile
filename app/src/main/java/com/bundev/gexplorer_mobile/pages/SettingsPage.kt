@@ -55,15 +55,11 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
 
         // Change language dialog
         val languageOptions = listOf(R.string.en, R.string.pl, R.string.de)
-        val languageIndex = when (AppCompatDelegate.getApplicationLocales().toLanguageTags()) {
-            "en" -> 0
-            "pl" -> 1
-            "de" -> 2
-            else -> 0
-        }
+        val languageMap = mapOf("en" to R.string.en, "pl" to R.string.pl, "de" to R.string.de)
         val (selectedLanguage, onLanguageSelected) = remember {
             mutableIntStateOf(
-                languageOptions[languageIndex]
+                languageMap[AppCompatDelegate.getApplicationLocales().toLanguageTags()]
+                    ?: R.string.en
             )
         }
         val openLanguageDialog = remember {

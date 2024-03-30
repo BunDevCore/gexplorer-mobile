@@ -66,6 +66,7 @@ secrets {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.0-RC.2")
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.10.0")
     implementation("com.mapbox.maps:android:11.2.0")

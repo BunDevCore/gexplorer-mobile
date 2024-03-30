@@ -11,6 +11,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import kotlin.collections.List as __KtList
 
+@Suppress("unused")
 object GexplorerIcons {
     object Filled {
         private var _filled: __KtList<ImageVector>? = null
