@@ -69,8 +69,8 @@ import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.pages.AccountPage
 import com.bundev.gexplorer_mobile.pages.MapPage
-import com.bundev.gexplorer_mobile.pages.ScoresPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
+import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorermobileTheme
 import java.util.Locale
 
@@ -125,7 +125,6 @@ val systemOfUnits = JustAVariable("metric")
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-//        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(Locale.getDefault().language))
@@ -156,13 +155,10 @@ class MainActivity : AppCompatActivity() {
                                 exitTransition = { ExitTransition.None }
                             ) {
                                 composable(Screen.Map.route) { MapPage(funi) }
-                                composable(Screen.Scores.route) { ScoresPage(systemOfUnits) }
+                                composable(Screen.Scores.route) { TripsPage(systemOfUnits) }
                                 composable(Screen.Account.route) { AccountPage(funi) }
                                 composable(Screen.Settings.route) {
-                                    SettingsPage(
-                                        systemOfUnits,
-                                        funi
-                                    )
+                                    SettingsPage(systemOfUnits, funi)
                                 }
                             }
                         }

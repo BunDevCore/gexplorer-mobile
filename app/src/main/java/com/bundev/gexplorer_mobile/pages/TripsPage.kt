@@ -4,8 +4,6 @@ import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +28,6 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.filled.Walk
-import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap
 import kotlinx.datetime.Clock
@@ -46,86 +43,73 @@ import kotlin.time.Duration.Companion.hours
 var isMetric = false
 
 @Composable
-fun ScoresPage(systemOfUnits: JustAVariable) {
+fun TripsPage(systemOfUnits: JustAVariable) {
     isMetric = systemOfUnits.value == "metric"
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         val tempTrips = listOf(
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.3,
                 timeBegun = Clock.System.now() - 3.hours,
                 timeEnded = Clock.System.now() - 2.9.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.9,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.9,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.9,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.9,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 34.5,
                 timeBegun = Clock.System.now() - 25.6.hours,
                 timeEnded = Clock.System.now() - 24.9.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 99.999,
                 timeBegun = Clock.System.now() - 27.hours,
                 timeEnded = Clock.System.now() - 26.1.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.45,
                 timeBegun = Clock.System.now() - 48.hours,
                 timeEnded = Clock.System.now() - 47.7.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 6.7,
                 timeBegun = Clock.System.now() - 56.hours,
                 timeEnded = Clock.System.now() - 55.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 42.0,
                 timeBegun = Clock.System.now() - 57.hours,
                 timeEnded = Clock.System.now() - 56.8.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 20.2,
                 timeBegun = Clock.System.now() - 59.hours,
                 timeEnded = Clock.System.now() - 58.4.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.987,
                 timeBegun = Clock.System.now() - 61.hours,
                 timeEnded = Clock.System.now() - 60.6.hours
             ),
             Trip(
-                points = listOf(Point.fromLngLat(18.6650564007217, 54.29906183330589)),
                 distance = 0.987,
                 timeBegun = Clock.System.now() - 112.hours,
                 timeEnded = Clock.System.now() - 111.02.hours
@@ -221,8 +205,8 @@ fun TripDialog(trip: Trip, onDismissRequest: () -> Unit) {
     ) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(112.dp)
+                .fillMaxSize(),
+            shape = RoundedCornerShape(0.dp)
         ) {
             MapboxMap(){}
             Text("Bruh you got me")
@@ -250,5 +234,5 @@ fun formatDuration(duration: Duration): String {
 @Preview(showBackground = true, locale = "pl")
 @Composable
 fun ScoresPagePreview() {
-    ScoresPage(JustAVariable("metric"))
+    TripsPage(JustAVariable("metric"))
 }
