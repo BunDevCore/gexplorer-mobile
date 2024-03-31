@@ -46,7 +46,6 @@ fun TripDetailPage(tripId: String?) {
         }
     }
 
-    Log.wtf("sdfkjksdgj", "please ffs")
 
     MapboxMap(
         mapViewportState = mapViewportState,
@@ -58,7 +57,6 @@ fun TripDetailPage(tripId: String?) {
             run {
                 mapView.mapboxMap.loadStyle(style)
                 mapView.mapboxMap.style?.styleLayers
-                Log.wtf("aawawaw", "sdfkjnsfkgdnd")
             }
         }
     }
