@@ -23,17 +23,18 @@ import com.mapbox.maps.extension.style.style
 fun TripDetailPage(tripId: String?) {
     //TODO Fetch points from backend using tripId
     val mapView = MapView
-    val style = style(Style.LIGHT) {
+    val style = style(Style.MAPBOX_STREETS) {
 
         +geoJsonSource(id = "Trip") { data("asset://gdansk_4326.geojson") }
         +lineLayer("line-layer", "Trip") {
             lineColor(Color.RED)
             lineWidth(3.0)
         }
-        +fillLayer("fill-layer", "Trip") {
+        +layerAtPosition(fillLayer("fill-layer", "Trip") {
             fillOpacity(0.4)
             fillColor("#0000ff")
-        }
+            
+        }, at = 18)
     }
 
     val mapViewportState = rememberMapViewportState {
@@ -56,6 +57,7 @@ fun TripDetailPage(tripId: String?) {
         MapEffect(Unit) { mapView ->
             run {
                 mapView.mapboxMap.loadStyle(style)
+                mapView.mapboxMap.style?.styleLayers
                 Log.wtf("aawawaw", "sdfkjnsfkgdnd")
             }
         }
