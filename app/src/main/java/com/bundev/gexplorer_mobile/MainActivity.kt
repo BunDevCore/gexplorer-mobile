@@ -64,9 +64,8 @@ import androidx.navigation.compose.rememberNavController
 import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.icons.filled.Map
-import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.filled.Walk
 import com.bundev.gexplorer_mobile.icons.outlined.Map
-import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.pages.AccountPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
@@ -88,12 +87,12 @@ sealed class Screen(
             GexplorerIcons.Outlined.Map
         )
 
-    data object Scores :
+    data object Trips :
         Screen(
-            "scores",
-            R.string.scores,
-            GexplorerIcons.Filled.SocialLeaderboard,
-            GexplorerIcons.Outlined.SocialLeaderboard
+            "trips",
+            R.string.trip,
+            GexplorerIcons.Filled.Walk,
+            GexplorerIcons.Filled.Walk
         )
 
     data object Account :
@@ -115,7 +114,7 @@ sealed class Screen(
 
 val items = listOf(
     Screen.Map,
-    Screen.Scores,
+    Screen.Trips,
     Screen.Account,
     Screen.Settings
 )
@@ -155,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                                 exitTransition = { ExitTransition.None }
                             ) {
                                 composable(Screen.Map.route) { MapPage(funi) }
-                                composable(Screen.Scores.route) { TripsPage(systemOfUnits) }
+                                composable(Screen.Trips.route) { TripsPage(systemOfUnits) }
                                 composable(Screen.Account.route) { AccountPage(funi) }
                                 composable(Screen.Settings.route) {
                                     SettingsPage(systemOfUnits, funi)
