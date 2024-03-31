@@ -208,9 +208,7 @@ fun TripDialog(trip: Trip, onDismissRequest: () -> Unit) {
                 .fillMaxSize(),
             shape = RoundedCornerShape(0.dp)
         ) {
-            MapboxMap(){}
-            Text("Bruh you got me")
-            Text(trip.distance.toString())
+            TripDetailPage("")
         }
     }
 }
