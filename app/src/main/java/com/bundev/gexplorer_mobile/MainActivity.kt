@@ -69,6 +69,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.pages.AccountPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
+import com.bundev.gexplorer_mobile.pages.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorermobileTheme
 import java.util.Locale
@@ -158,6 +159,11 @@ class MainActivity : AppCompatActivity() {
                                 composable(Screen.Account.route) { AccountPage(funi) }
                                 composable(Screen.Settings.route) {
                                     SettingsPage(systemOfUnits, funi)
+                                }
+                                composable("trip/{tripId}") { backStackEntry ->
+                                    TripDetailPage(
+                                        backStackEntry.arguments?.getString("tripId")
+                                    )
                                 }
                             }
                         }
