@@ -107,8 +107,12 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
 
         //Change measuring system
         val systemOfUnitsOptions = listOf(R.string.metric, R.string.imperial)
+        val systemOfUnitsMap = mapOf("metric" to R.string.metric, "imperial" to R.string.imperial)
         val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
-            mutableIntStateOf(systemOfUnitsOptions[0])
+            mutableIntStateOf(
+                systemOfUnitsMap[systemOfUnits?.value]
+                    ?: R.string.metric
+            )
         }
         val openSystemOfUnitsDialog = remember {
             mutableStateOf(false)
