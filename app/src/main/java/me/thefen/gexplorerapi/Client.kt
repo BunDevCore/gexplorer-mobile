@@ -59,7 +59,7 @@ object RetrofitClient {
     }
 }
 
-object ApiClient {
+object GexplorerClient {
     val gexplorerApi: GexplorerApi by lazy {
         RetrofitClient.retrofit.create(GexplorerApi::class.java)
     }
