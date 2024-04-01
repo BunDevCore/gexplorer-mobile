@@ -67,7 +67,7 @@ import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.Walk
 import com.bundev.gexplorer_mobile.icons.outlined.Map
-import com.bundev.gexplorer_mobile.pages.AccountPage
+import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
