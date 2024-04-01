@@ -1,5 +1,6 @@
 package com.bundev.gexplorer_mobile
 
+import android.app.Application
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Build
 import android.os.Bundle
@@ -71,7 +72,14 @@ import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorermobileTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
+
+@HiltAndroidApp
+class GexplorerApplication : Application() {}
+
+
 
 sealed class Screen(
     val route: String,
@@ -122,6 +130,7 @@ val items = listOf(
 val funi = Funi()
 val systemOfUnits = JustAVariable("metric")
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
