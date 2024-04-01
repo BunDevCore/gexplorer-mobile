@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,14 +24,18 @@ import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
+import com.mapbox.maps.Style
 import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
+import com.mapbox.maps.extension.localization.localizeLabels
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
+import java.util.Locale
 
 @OptIn(MapboxExperimental::class)
 @Composable
@@ -53,6 +58,14 @@ fun MapPage(funi: Funi? = null) {
             modifier = Modifier.fillMaxSize(),
             mapViewportState = mapViewportState
         ) {
+            MapEffect { mapView ->
+                mapView.mapboxMap.loadStyle(Style.STANDARD) {}
+                mapView.mapboxMap.style?.localizeLabels(
+                    Locale.forLanguageTag(
+                        AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                    )
+                )
+            }
             val points = listOf(
                 listOf(
                     Point.fromLngLat(18.615274605637016, 54.40211158342004),
@@ -123,7 +136,7 @@ fun MapPage(funi: Funi? = null) {
     }*/
     FloatingActionButton(
         onClick = {
-            if (followingUser.value){
+            if (followingUser.value) {
                 exploreMode.value = !exploreMode.value
             }
             if (exploreMode.value) {

@@ -23,13 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.filled.Walk
-import com.mapbox.maps.MapboxExperimental
-import com.mapbox.maps.extension.compose.MapboxMap
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -50,27 +49,32 @@ fun TripsPage(systemOfUnits: JustAVariable) {
     ) {
         val tempTrips = listOf(
             Trip(
+                distance = 1.0,
+                timeBegun = Clock.System.now() - 2.hours,
+                timeEnded = Clock.System.now() - 1.hours
+            ),
+            Trip(
                 distance = 0.3,
                 timeBegun = Clock.System.now() - 3.hours,
                 timeEnded = Clock.System.now() - 2.9.hours
             ),
             Trip(
-                distance = 0.9,
+                distance = 0.5,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                distance = 0.9,
+                distance = 0.3,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                distance = 0.9,
+                distance = 0.1,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
             Trip(
-                distance = 0.9,
+                distance = 0.499,
                 timeBegun = Clock.System.now() - 7.hours,
                 timeEnded = Clock.System.now() - 5.hours
             ),
@@ -113,6 +117,11 @@ fun TripsPage(systemOfUnits: JustAVariable) {
                 distance = 0.987,
                 timeBegun = Clock.System.now() - 112.hours,
                 timeEnded = Clock.System.now() - 111.02.hours
+            ),
+            Trip(
+                distance = 0.0,
+                timeBegun = Clock.System.now() - 124.hours,
+                timeEnded = Clock.System.now() - 124.hours
             )
         )
         TripList(trips = tempTrips)
@@ -197,24 +206,14 @@ fun TripItem(trip: Trip, onClick: () -> Unit) {
     }
 }
 
-@OptIn(MapboxExperimental::class)
 @Composable
 fun TripDialog(trip: Trip, onDismissRequest: () -> Unit) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxSize(),
-            shape = RoundedCornerShape(0.dp)
-        ) {
-            TripDetailPage("")
-        }
+        TripDetailPage(trip, onDismissRequest)
     }
-}
-
-fun Double.roundTo(n: Int): Double {
-    return round(this * 10f.pow(n)) / 10f.pow(n)
 }
 
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
@@ -227,6 +226,9 @@ fun formatTime(instant: Instant, format: Int = DateFormat.DEFAULT): String {
 
 fun formatDuration(duration: Duration): String {
     return DateUtils.formatElapsedTime(duration.inWholeSeconds)
+}
+fun Double.roundTo(n: Int): Double {
+    return round(this * 10f.pow(n)) / 10f.pow(n)
 }
 
 @Preview(showBackground = true, locale = "pl")

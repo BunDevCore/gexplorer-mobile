@@ -19,5 +19,10 @@
     <string name="mobile_app">mobile app</string>
     <string name="web_app">web app</string>
     <string name="creative_department">documentation, design, presentation</string>
+    <string name="trips">Trips</string>
     <string name="trip">Trip</string>
+    <string name="distance">Distance</string>
+    <string name="total_time">Total time</string>
+    <string name="avg_speed">Average speed</string>
+    <string name="avg_pace">Average pace</string>
 </resources>

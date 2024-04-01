@@ -19,5 +19,10 @@
     <string name="mobile_app">aplikacja mobilna</string>
     <string name="web_app">aplikacja webowa</string>
     <string name="creative_department">dokumentacja, projekt aplikacji, prezentacja</string>
+    <string name="trips">Podróże</string>
     <string name="trip">Podróż</string>
+    <string name="distance">Dystans</string>
+    <string name="total_time">Całkowity czas</string>
+    <string name="avg_speed">Średnia prędkość</string>
+    <string name="avg_pace">Średnie tempo</string>
 </resources>
