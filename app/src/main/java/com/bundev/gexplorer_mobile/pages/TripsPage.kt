@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.text.format.DateUtils
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +42,84 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
 var isMetric = false
+var DEBUG = true
+val tempTrips = listOf(
+    Trip(
+        distance = 1.0,
+        timeBegun = Clock.System.now() - 2.hours,
+        timeEnded = Clock.System.now() - 1.hours
+    ),
+    Trip(
+        distance = 0.3,
+        timeBegun = Clock.System.now() - 3.hours,
+        timeEnded = Clock.System.now() - 2.9.hours
+    ),
+    Trip(
+        distance = 0.5,
+        timeBegun = Clock.System.now() - 7.hours,
+        timeEnded = Clock.System.now() - 5.hours
+    ),
+    Trip(
+        distance = 0.3,
+        timeBegun = Clock.System.now() - 7.hours,
+        timeEnded = Clock.System.now() - 5.hours
+    ),
+    Trip(
+        distance = 0.1,
+        timeBegun = Clock.System.now() - 7.hours,
+        timeEnded = Clock.System.now() - 5.hours
+    ),
+    Trip(
+        distance = 0.499,
+        timeBegun = Clock.System.now() - 7.hours,
+        timeEnded = Clock.System.now() - 5.hours
+    ),
+    Trip(
+        distance = 34.5,
+        timeBegun = Clock.System.now() - 25.6.hours,
+        timeEnded = Clock.System.now() - 24.9.hours
+    ),
+    Trip(
+        distance = 99.999,
+        timeBegun = Clock.System.now() - 27.hours,
+        timeEnded = Clock.System.now() - 26.1.hours
+    ),
+    Trip(
+        distance = 0.45,
+        timeBegun = Clock.System.now() - 48.hours,
+        timeEnded = Clock.System.now() - 47.7.hours
+    ),
+    Trip(
+        distance = 6.7,
+        timeBegun = Clock.System.now() - 56.hours,
+        timeEnded = Clock.System.now() - 55.hours
+    ),
+    Trip(
+        distance = 42.0,
+        timeBegun = Clock.System.now() - 57.hours,
+        timeEnded = Clock.System.now() - 56.8.hours
+    ),
+    Trip(
+        distance = 20.2,
+        timeBegun = Clock.System.now() - 59.hours,
+        timeEnded = Clock.System.now() - 58.4.hours
+    ),
+    Trip(
+        distance = 0.987,
+        timeBegun = Clock.System.now() - 61.hours,
+        timeEnded = Clock.System.now() - 60.6.hours
+    ),
+    Trip(
+        distance = 0.987,
+        timeBegun = Clock.System.now() - 112.hours,
+        timeEnded = Clock.System.now() - 111.02.hours
+    ),
+    Trip(
+        distance = 0.0,
+        timeBegun = Clock.System.now() - 124.hours,
+        timeEnded = Clock.System.now() - 124.hours
+    )
+)
 
 @Composable
 fun TripsPage(systemOfUnits: JustAVariable) {
@@ -47,97 +127,24 @@ fun TripsPage(systemOfUnits: JustAVariable) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        val tempTrips = listOf(
-            Trip(
-                distance = 1.0,
-                timeBegun = Clock.System.now() - 2.hours,
-                timeEnded = Clock.System.now() - 1.hours
-            ),
-            Trip(
-                distance = 0.3,
-                timeBegun = Clock.System.now() - 3.hours,
-                timeEnded = Clock.System.now() - 2.9.hours
-            ),
-            Trip(
-                distance = 0.5,
-                timeBegun = Clock.System.now() - 7.hours,
-                timeEnded = Clock.System.now() - 5.hours
-            ),
-            Trip(
-                distance = 0.3,
-                timeBegun = Clock.System.now() - 7.hours,
-                timeEnded = Clock.System.now() - 5.hours
-            ),
-            Trip(
-                distance = 0.1,
-                timeBegun = Clock.System.now() - 7.hours,
-                timeEnded = Clock.System.now() - 5.hours
-            ),
-            Trip(
-                distance = 0.499,
-                timeBegun = Clock.System.now() - 7.hours,
-                timeEnded = Clock.System.now() - 5.hours
-            ),
-            Trip(
-                distance = 34.5,
-                timeBegun = Clock.System.now() - 25.6.hours,
-                timeEnded = Clock.System.now() - 24.9.hours
-            ),
-            Trip(
-                distance = 99.999,
-                timeBegun = Clock.System.now() - 27.hours,
-                timeEnded = Clock.System.now() - 26.1.hours
-            ),
-            Trip(
-                distance = 0.45,
-                timeBegun = Clock.System.now() - 48.hours,
-                timeEnded = Clock.System.now() - 47.7.hours
-            ),
-            Trip(
-                distance = 6.7,
-                timeBegun = Clock.System.now() - 56.hours,
-                timeEnded = Clock.System.now() - 55.hours
-            ),
-            Trip(
-                distance = 42.0,
-                timeBegun = Clock.System.now() - 57.hours,
-                timeEnded = Clock.System.now() - 56.8.hours
-            ),
-            Trip(
-                distance = 20.2,
-                timeBegun = Clock.System.now() - 59.hours,
-                timeEnded = Clock.System.now() - 58.4.hours
-            ),
-            Trip(
-                distance = 0.987,
-                timeBegun = Clock.System.now() - 61.hours,
-                timeEnded = Clock.System.now() - 60.6.hours
-            ),
-            Trip(
-                distance = 0.987,
-                timeBegun = Clock.System.now() - 112.hours,
-                timeEnded = Clock.System.now() - 111.02.hours
-            ),
-            Trip(
-                distance = 0.0,
-                timeBegun = Clock.System.now() - 124.hours,
-                timeEnded = Clock.System.now() - 124.hours
-            )
-        )
-        TripList(trips = tempTrips)
+        TripList(trips = if (DEBUG) tempTrips else listOf())
     }
 }
 
 @Composable
 fun TripList(trips: List<Trip>) {
-    val tripSections =
-        trips.groupBy { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date }
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
-    ) {
-        tripSections.forEach {
-            TripSection(trips = it.value)
+    if (trips.isNotEmpty()) {
+        val tripSections =
+            trips.groupBy { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date }
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            tripSections.forEach {
+                TripSection(trips = it.value)
+            }
         }
+    } else {
+        EmptyTripsPage()
     }
 }
 
@@ -216,6 +223,19 @@ fun TripDialog(trip: Trip, onDismissRequest: () -> Unit) {
     }
 }
 
+@Composable
+fun EmptyTripsPage() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Card {
+            Text(text = "Tu pojawią się twoje podróże", Modifier.padding(10.dp))
+        }
+    }
+}
+
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
     return DateFormat.getDateInstance(format).format(instant.toEpochMilliseconds())
 }
@@ -227,12 +247,14 @@ fun formatTime(instant: Instant, format: Int = DateFormat.DEFAULT): String {
 fun formatDuration(duration: Duration): String {
     return DateUtils.formatElapsedTime(duration.inWholeSeconds)
 }
+
 fun Double.roundTo(n: Int): Double {
     return round(this * 10f.pow(n)) / 10f.pow(n)
 }
 
 @Preview(showBackground = true, locale = "pl")
 @Composable
-fun ScoresPagePreview() {
+fun TripsPagePreview() {
+    DEBUG = false
     TripsPage(JustAVariable("metric"))
 }

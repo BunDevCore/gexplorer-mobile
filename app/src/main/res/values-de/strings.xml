@@ -25,4 +25,5 @@
     <string name="total_time">-total_time</string>
     <string name="avg_speed">-avg_speed</string>
     <string name="avg_pace">-avg_pace</string>
+    <string name="no_trips">-no_trips</string>
 </resources>

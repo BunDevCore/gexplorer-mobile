@@ -25,4 +25,5 @@
     <string name="total_time">Total time</string>
     <string name="avg_speed">Average speed</string>
     <string name="avg_pace">Average pace</string>
+    <string name="no_trips">Your trips will show up here</string>
 </resources>
