@@ -9,24 +9,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.data.ApiResource
-import me.thefen.gexplorerapi.dtos.DistrictDto
+import androidx.hilt.navigation.compose.hiltViewModel
+
 
 @Composable
 fun AccountPage(funi: Funi? = null) {
     val username = "fen."
-    val vm = viewModel(AccountViewModel::class.java)
+    val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()
     LaunchedEffect(vm) {
-        vm.fetchUser("fen.")
+        vm.fetchUser(username)
     }
     
     Column(

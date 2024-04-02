@@ -7,10 +7,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import me.thefen.gexplorerapi.dtos.UserDto
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import me.thefen.gexplorerapi.GexplorerClient
+import repo.GexplorerRepository
+import javax.inject.Inject
 
-class AccountViewModel : ViewModel() {
+@HiltViewModel
+class AccountViewModel @Inject constructor(
+    private val repo: GexplorerRepository
+) : ViewModel() {
     private val _state = MutableStateFlow<ApiResource<UserDto>>(ApiResource.Loading())
     private var fetchAttempted: Boolean = false
     val state: StateFlow<ApiResource<UserDto>>
@@ -22,14 +27,7 @@ class AccountViewModel : ViewModel() {
         fetchAttempted = true
         viewModelScope.launch {
             Log.d("gexapi", "launching user fetch...")
-            val result = GexplorerClient.runCatching {
-                this.gexplorerApi.getUser(username)
-            }
-            Log.d("gexapi", "got result!!")
-            _state.value = result.fold(
-                { ApiResource.Success(it) },
-                { fetchAttempted = false; ApiResource.Error() }
-            )
+            _state.value = repo.getUser(username)
         }
     }
 }

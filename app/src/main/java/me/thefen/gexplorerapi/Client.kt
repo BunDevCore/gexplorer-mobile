@@ -10,9 +10,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object AuthorizationInterceptor : Interceptor {
+class AuthorizationInterceptor(private val getToken: () -> String? = {null}) : Interceptor {
+    
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (CredentialHolder.gexplorerApiToken == null) {
+        if (getToken() == null) {
             return chain.proceed(chain.request())
         }
 
@@ -20,15 +21,22 @@ object AuthorizationInterceptor : Interceptor {
         val requestWithHeader = chain.request()
             .newBuilder()
             .header(
-                "Authorization", "Bearer ${CredentialHolder.gexplorerApiToken}"
+                "Authorization", "Bearer ${getToken()}"
             ).build()
         return chain.proceed(requestWithHeader)
     }
 }
 
-object RetrofitClient {
-    private const val BASE_URL = "http://fendeavour:5107/"
+private const val BASE_URL = "http://fendeavour:5107/"
+
+class RetrofitClient(private var _token: String? = null) {
+    fun setToken(token: String?) {
+        _token = token
+    }
     
+    
+    private val authInterceptor = AuthorizationInterceptor { _token }
+
     private val httpClient: OkHttpClient by lazy {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -36,7 +44,7 @@ object RetrofitClient {
         OkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
-            .addNetworkInterceptor(AuthorizationInterceptor)
+            .addNetworkInterceptor(authInterceptor)
             .build()
     }
 
@@ -56,11 +64,5 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create(gson))
 //            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-    }
-}
-
-object GexplorerClient {
-    val gexplorerApi: GexplorerApi by lazy {
-        RetrofitClient.retrofit.create(GexplorerApi::class.java)
     }
 }
