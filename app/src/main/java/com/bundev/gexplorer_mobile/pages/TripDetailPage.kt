@@ -38,6 +38,7 @@ import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
+import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -54,7 +55,7 @@ import com.mapbox.maps.extension.style.style
 import kotlinx.datetime.Clock
 import java.text.DateFormat
 import java.util.Locale
-import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -190,7 +191,10 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ValueElement(title = stringResource(id = R.string.distance)) {
+        ValueElement(
+            imageVector = GexplorerIcons.Simple.Path,
+            title = stringResource(id = R.string.distance)
+        ) {
             if (distance > 0.5)
                 if (isMetric) {
                     "${distance.roundTo(3)} km"
@@ -199,9 +203,9 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                 }
             else
                 if (isMetric) {
-                    "${distance.convert(3).roundTo(3)} m"
+                    "${(distance * 1000).roundToInt()} m"
                 } else {
-                    "${(distance * 0.621371 * 5280).roundTo(3)} ft"
+                    "${(distance * 0.621371 * 5280).roundToInt()} ft"
                 }
         }
         ValueElement(
@@ -224,7 +228,7 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                     }
                 else
                     if (isMetric) {
-                        "${avgSpeed.convert(3).roundTo(3)} m/h"
+                        "${(avgSpeed * 1000).roundTo(3)} m/h"
                     } else {
                         "${(avgSpeed * 0.621371 * 5280).roundTo(3)} mi/h"
                     }
@@ -412,11 +416,6 @@ fun ValueCard(modifier: Modifier = Modifier, title: String, value: () -> String)
             }
         }
     }
-
-}
-
-fun Double.convert(n: Int): Double {
-    return this * 10f.pow(n)
 }
 
 @Preview(locale = "pl")

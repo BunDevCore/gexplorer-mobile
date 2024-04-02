@@ -4,11 +4,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.filled.Trophy
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Explore
+import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import kotlin.collections.List as __KtList
 
@@ -24,7 +27,8 @@ object GexplorerIcons {
                 _simple = listOf(
                     Simple.Walk,
                     Simple.Explore,
-                    Simple.AvgPace
+                    Simple.AvgPace,
+                    Simple.Path
                 )
                 return _simple!!
             }
@@ -40,6 +44,7 @@ object GexplorerIcons {
                     Filled.SocialLeaderboard,
                     Filled.Map,
                     Filled.Location,
+                    Filled.Trophy
                 )
                 return _filled!!
             }
@@ -54,7 +59,8 @@ object GexplorerIcons {
                 _outlined = listOf(
                     Outlined.SocialLeaderboard,
                     Outlined.Map,
-                    Outlined.Location
+                    Outlined.Location,
+                    Outlined.Trophy
                 )
                 return _outlined!!
             }
