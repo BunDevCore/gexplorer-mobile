@@ -1,18 +1,25 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,12 +30,13 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.systemOfUnits
+import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
-import com.bundev.gexplorer_mobile.ui.GroupingList
-import kotlinx.datetime.*
 import java.text.DateFormat
 import kotlin.math.pow
 import kotlin.math.round
@@ -124,9 +132,9 @@ fun TripsPage() {
     }
     isMetric = systemOfUnits == "metric"
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
-
     ) {
         GroupingList(
             items,
@@ -138,49 +146,6 @@ fun TripsPage() {
             when {
                 openTripDialog.value -> {
                     TripDialog(trip) { openTripDialog.value = false }
-                }
-            }
-        }
-
-//        TripList(trips = if (DEBUG) tempTrips else listOf())
-    }
-}
-
-@Composable
-fun TripList(trips: List<Trip>) {
-    if (trips.isNotEmpty()) {
-        val tripSections =
-            trips.groupBy { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date }
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
-            tripSections.forEach {
-                TripSection(trips = it.value)
-            }
-        }
-    } else {
-        EmptyTripsPage()
-    }
-}
-
-@Composable
-fun TripSection(trips: List<Trip>) {
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .padding(top = 10.dp)
-    ) {
-        Text(
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 7.5.dp),
-            text = formatDate(trips[0].timeBegun, DateFormat.LONG),
-            fontWeight = FontWeight.Bold
-        )
-        trips.forEach { trip ->
-            val openTripDialog = remember { mutableStateOf(false) }
-            TripItem(trip = trip) { openTripDialog.value = true }
-            when {
-                openTripDialog.value -> {
-                    TripDialog(trip = trip) { openTripDialog.value = false }
                 }
             }
         }
@@ -273,9 +238,9 @@ fun Double.roundTo(n: Int): Double {
     return round(this * 10f.pow(n)) / 10f.pow(n)
 }
 
-@Preview(showBackground = true, locale = "pl")
+@Preview(showBackground = true, locale = "en")
 @Composable
 fun TripsPagePreview() {
-    DEBUG = false
+    DEBUG = true
     TripsPage()
 }

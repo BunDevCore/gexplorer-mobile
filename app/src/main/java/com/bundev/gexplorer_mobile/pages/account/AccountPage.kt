@@ -13,8 +13,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.data.ApiResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -32,7 +29,6 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.selectedTabSave
-import me.thefen.gexplorerapi.dtos.DistrictDto
 
 @Composable
 fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Unit) {
