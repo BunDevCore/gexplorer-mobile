@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -31,8 +32,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.icons.outlined.Speed
+import com.bundev.gexplorer_mobile.icons.outlined.Timer
+import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -199,11 +204,17 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                     "${(distance * 0.621371 * 5280).roundTo(3)} ft"
                 }
         }
-        ValueElement(title = stringResource(id = R.string.total_time)) {
+        ValueElement(
+            imageVector = GexplorerIcons.Outlined.Timer,
+            title = stringResource(id = R.string.total_time)
+        ) {
             formatDuration(duration)
         }
         if (duration.inWholeSeconds > 0 && distance > 0.0) {
-            ValueElement(title = stringResource(id = R.string.avg_speed)) {
+            ValueElement(
+                imageVector = GexplorerIcons.Outlined.Speed,
+                title = stringResource(id = R.string.avg_speed)
+            ) {
                 val avgSpeed = distance / (duration.inWholeSeconds / 3600.0)
                 if (avgSpeed > 0.5)
                     if (isMetric) {
@@ -218,7 +229,10 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                         "${(avgSpeed * 0.621371 * 5280).roundTo(3)} mi/h"
                     }
             }
-            ValueElement(title = stringResource(id = R.string.avg_pace)) {
+            ValueElement(
+                imageVector = GexplorerIcons.Simple.AvgPace,
+                title = stringResource(id = R.string.avg_pace)
+            ) {
                 val avgPace = if (isMetric) {
                     ((duration.inWholeSeconds / 60) / distance)
                         .toDuration(DurationUnit.MINUTES)
@@ -229,8 +243,12 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                 "${formatDuration(avgPace)}/${if (isMetric) "km" else "mi"}"
             }
         } else {
-            ValueElement(title = stringResource(id = R.string.avg_speed)) { "Null" }
             ValueElement(
+                imageVector = GexplorerIcons.Outlined.Speed,
+                title = stringResource(id = R.string.avg_speed)
+            ) { "Null" }
+            ValueElement(
+                imageVector = GexplorerIcons.Simple.AvgPace,
                 modifier = Modifier.padding(bottom = 10.dp),
                 title = stringResource(id = R.string.avg_pace)
             ) { "Null" }
@@ -312,7 +330,13 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
 }
 
 @Composable
-fun ValueElement(modifier: Modifier = Modifier, title: String, value: () -> String) {
+fun ValueElement(
+    modifier: Modifier = Modifier,
+    imageVector: ImageVector? = null,
+    contentDescription: String = "",
+    title: String,
+    value: () -> String
+) {
     ElevatedCard(
         modifier = modifier
             .padding(horizontal = 10.dp)
@@ -325,19 +349,26 @@ fun ValueElement(modifier: Modifier = Modifier, title: String, value: () -> Stri
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp),
-                text = title,
-                textAlign = TextAlign.Center,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = value(),
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp
-            )
+            if (imageVector is ImageVector)
+                Icon(imageVector = imageVector, contentDescription = contentDescription)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp),
+                    text = title,
+                    textAlign = TextAlign.Start,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = value(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp
+                )
+            }
         }
     }
 }

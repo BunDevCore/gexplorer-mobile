@@ -29,7 +29,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
-import com.bundev.gexplorer_mobile.icons.filled.Walk
+import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.systemOfUnits
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -199,7 +199,7 @@ fun TripItem(trip: Trip, onClick: () -> Unit) {
             },
             leadingContent = {
                 Icon(
-                    GexplorerIcons.Filled.Walk,
+                    GexplorerIcons.Simple.Walk,
                     contentDescription = null,
                 )
             },

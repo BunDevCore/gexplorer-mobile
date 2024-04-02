@@ -64,9 +64,9 @@ import androidx.navigation.compose.rememberNavController
 import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
-import com.bundev.gexplorer_mobile.icons.filled.Walk
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.pages.AccountPage
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.MapPage
@@ -79,7 +79,7 @@ sealed class Screen(
     val route: String,
     @StringRes val resourceId: Int,
     val iconFilled: ImageVector,
-    val iconOutline: ImageVector
+    val iconOutline: ImageVector = iconFilled
 ) {
     data object Map :
         Screen(
@@ -93,8 +93,7 @@ sealed class Screen(
         Screen(
             "trips",
             R.string.trips,
-            GexplorerIcons.Filled.Walk,
-            GexplorerIcons.Filled.Walk
+            GexplorerIcons.Simple.Walk
         )
 
     data object Achievements :

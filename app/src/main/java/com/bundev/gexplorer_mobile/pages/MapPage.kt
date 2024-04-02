@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.funi
-import com.bundev.gexplorer_mobile.icons.filled.Explore
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
+import com.bundev.gexplorer_mobile.icons.simple.Explore
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -180,7 +180,7 @@ fun MapPage() {
             if (exploreMode.value) {
                 Icon(
                     modifier = Modifier.size(24.dp),
-                    imageVector = GexplorerIcons.Filled.Explore,
+                    imageVector = GexplorerIcons.Simple.Explore,
                     contentDescription = null
                 )
             } else {

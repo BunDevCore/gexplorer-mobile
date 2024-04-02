@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.bundev.gexplorer_mobile.icons.filled
+package com.bundev.gexplorer_mobile.icons.simple
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.bundev.gexplorer_mobile.GexplorerIcons
 
-val GexplorerIcons.Filled.Walk: ImageVector
+val GexplorerIcons.Simple.Walk: ImageVector
     get() {
         if (walk != null) {
             return walk!!

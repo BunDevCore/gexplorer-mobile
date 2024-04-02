@@ -1,18 +1,34 @@
 package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.bundev.gexplorer_mobile.icons.filled.Explore
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
-import com.bundev.gexplorer_mobile.icons.filled.Walk
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.simple.AvgPace
+import com.bundev.gexplorer_mobile.icons.simple.Explore
+import com.bundev.gexplorer_mobile.icons.simple.Walk
 import kotlin.collections.List as __KtList
 
 @Suppress("unused")
 object GexplorerIcons {
+    object Simple {
+        private var _simple: __KtList<ImageVector>? = null
+        val simple: __KtList<ImageVector>
+            get() {
+                if (_simple != null) {
+                    return _simple!!
+                }
+                _simple = listOf(
+                    Simple.Walk,
+                    Simple.Explore,
+                    Simple.AvgPace
+                )
+                return _simple!!
+            }
+    }
     object Filled {
         private var _filled: __KtList<ImageVector>? = null
         val filled: __KtList<ImageVector>
@@ -24,8 +40,6 @@ object GexplorerIcons {
                     Filled.SocialLeaderboard,
                     Filled.Map,
                     Filled.Location,
-                    Filled.Explore,
-                    Filled.Walk
                 )
                 return _filled!!
             }
