@@ -1,4 +1,4 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.account
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,6 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bundev.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.data.ApiResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.R
@@ -32,9 +36,13 @@ import me.thefen.gexplorerapi.dtos.DistrictDto
 
 @Composable
 fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Unit) {
-    val districts = rememberSaveable {
-        mutableStateOf<List<DistrictDto>>(listOf())
+    val username = "fen."
+    val vm = hiltViewModel<AccountViewModel>()
+    val state by vm.state.collectAsState()
+    LaunchedEffect(vm) {
+        vm.fetchUser(username)
     }
+
     Column(
         modifier = Modifier
             .padding(top = 10.dp)
@@ -69,8 +77,13 @@ fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Un
         Text(text = "ta strona będzie dla użytkownika, ale to później")
         Text(text = "achievements")
         Text(text = "(połączenie z API)")
-        Text("hooooaa ${districts.value.size}")
-        if (funi.hasValue()) {
+        if (state is ApiResource.Loading) {
+            Text("loading.....")
+        }
+        if (state is ApiResource.Success) {
+            Text(state.data?.overallAreaAmount.toString())
+        }
+        if (funi.getValue() != 0L) {
             Text(
                 text = "val:${
                     funi.getValue()

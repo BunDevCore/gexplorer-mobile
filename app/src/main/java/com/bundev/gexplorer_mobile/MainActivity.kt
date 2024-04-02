@@ -1,5 +1,6 @@
 package com.bundev.gexplorer_mobile
 
+import android.app.Application
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -67,13 +68,18 @@ import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.simple.Walk
-import com.bundev.gexplorer_mobile.pages.AccountPage
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
+import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
+
+@HiltAndroidApp
+class GexplorerApplication : Application() {}
 
 sealed class Screen(
     val route: String,
@@ -132,6 +138,7 @@ val funi = Funi()
 var systemOfUnits = "metric"
 var selectedTabSave = ""
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

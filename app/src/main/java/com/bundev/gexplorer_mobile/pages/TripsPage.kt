@@ -1,19 +1,11 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +27,8 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import com.bundev.gexplorer_mobile.ui.GroupingList
+import kotlinx.datetime.*
 import java.text.DateFormat
 import kotlin.math.pow
 import kotlin.math.round
@@ -123,11 +117,32 @@ val tempTrips = listOf(
 
 @Composable
 fun TripsPage() {
+    val items = tempTrips
+    if (items.isEmpty()) {
+        EmptyTripsPage()
+        return
+    }
     isMetric = systemOfUnits == "metric"
     Column(
         modifier = Modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
+
     ) {
-        TripList(trips = if (DEBUG) tempTrips else listOf())
+        GroupingList(
+            items,
+            groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+            title = { formatDate(it) },
+        ) { trip ->
+            val openTripDialog = remember { mutableStateOf(false) }
+            TripItem(trip) { openTripDialog.value = true }
+            when {
+                openTripDialog.value -> {
+                    TripDialog(trip) { openTripDialog.value = false }
+                }
+            }
+        }
+
+//        TripList(trips = if (DEBUG) tempTrips else listOf())
     }
 }
 
@@ -239,6 +254,12 @@ fun EmptyTripsPage() {
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
     return DateFormat.getDateInstance(format).format(instant.toEpochMilliseconds())
 }
+
+fun formatDate(date: LocalDate, format: Int = DateFormat.DEFAULT): String {
+    return DateFormat.getDateInstance(format)
+        .format(date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
+}
+
 
 fun formatTime(instant: Instant, format: Int = DateFormat.DEFAULT): String {
     return DateFormat.getTimeInstance(format).format(instant.toEpochMilliseconds())

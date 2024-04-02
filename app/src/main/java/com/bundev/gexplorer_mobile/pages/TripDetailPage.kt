@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -257,79 +256,6 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                 title = stringResource(id = R.string.avg_pace)
             ) { "Null" }
         }
-        /*
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    ValueCard(
-        //                modifier = Modifier.width(180.dp),
-                        title = stringResource(id = R.string.distance)
-                    ) {
-                        if (distance > 0.5)
-                            if (isMetric) {
-                                "${distance.roundTo(3)} km"
-                            } else {
-                                "${(distance * 0.621371).roundTo(3)} mi"
-                            }
-                        else
-                            if (isMetric) {
-                                "${distance.convert(3).roundTo(3)} m"
-                            } else {
-                                "${(distance * 0.621371 * 5280).roundTo(3)} ft"
-                            }
-                    }
-                    ValueCard(
-        //                modifier = Modifier.width(180.dp),
-                        modifier = Modifier.padding(end = 10.dp),
-                        title = stringResource(id = R.string.total_time)
-                    ) {
-                        formatDuration(duration)
-                    }
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (duration.inWholeSeconds > 0 && distance > 0.0) {
-                        ValueCard(title = stringResource(id = R.string.avg_speed)) {
-                            val avgSpeed = distance / (duration.inWholeSeconds / 3600.0)
-                            if (avgSpeed > 0.5)
-                                if (isMetric) {
-                                    "${avgSpeed.roundTo(3)} km/h"
-                                } else {
-                                    "${(avgSpeed * 0.621371).roundTo(3)} mi/h"
-                                }
-                            else
-                                if (isMetric) {
-                                    "${avgSpeed.convert(3).roundTo(3)} m/h"
-                                } else {
-                                    "${(avgSpeed * 0.621371 * 5280).roundTo(3)} mi/h"
-                                }
-                        }
-                        ValueCard(
-                            modifier = Modifier.padding(end = 10.dp),
-                            title = stringResource(id = R.string.avg_pace)
-                        ) {
-                            val avgPace = if (isMetric) {
-                                ((duration.inWholeSeconds / 60) / distance)
-                                    .toDuration(DurationUnit.MINUTES)
-                            } else {
-                                ((duration.inWholeSeconds / 60) / (distance * 0.621371))
-                                    .toDuration(DurationUnit.MINUTES)
-                            }
-                            "${formatDuration(avgPace)}/${if (isMetric) "km" else "mi"}"
-                        }
-                    } else {
-                        ValueCard(title = stringResource(id = R.string.avg_speed)) { "Null" }
-                        ValueCard(
-                            modifier = Modifier.padding(end = 10.dp),
-                            title = stringResource(id = R.string.avg_pace)
-                        ) { "Null" }
-                    }
-                }*/
     }
 }
 
@@ -357,7 +283,8 @@ fun ValueElement(
                 Icon(imageVector = imageVector, contentDescription = contentDescription)
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     modifier = Modifier
@@ -367,47 +294,6 @@ fun ValueElement(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = value(),
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ValueCard(modifier: Modifier = Modifier, title: String, value: () -> String) {
-    ElevatedCard(
-        modifier = modifier
-            .width(189.dp)
-            .aspectRatio(1f)
-            .padding(start = 10.dp)
-            .padding(vertical = 10.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-                text = title,
-                textAlign = TextAlign.Center,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                minLines = 2
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
                 Text(
                     text = value(),
                     textAlign = TextAlign.Center,
