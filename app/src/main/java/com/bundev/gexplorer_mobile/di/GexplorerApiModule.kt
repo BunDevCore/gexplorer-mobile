@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import repo.GexplorerRepository
+import com.bundev.gexplorer_mobile.repo.GexplorerRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

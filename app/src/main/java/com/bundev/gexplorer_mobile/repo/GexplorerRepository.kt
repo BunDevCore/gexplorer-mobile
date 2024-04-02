@@ -1,4 +1,4 @@
-package repo
+package com.bundev.gexplorer_mobile.repo
 
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.mapbox.geojson.Geometry

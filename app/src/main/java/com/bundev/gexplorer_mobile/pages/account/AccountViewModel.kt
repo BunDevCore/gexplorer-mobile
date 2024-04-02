@@ -9,7 +9,7 @@ import me.thefen.gexplorerapi.dtos.UserDto
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import repo.GexplorerRepository
+import com.bundev.gexplorer_mobile.repo.GexplorerRepository
 import javax.inject.Inject
 
 @HiltViewModel
