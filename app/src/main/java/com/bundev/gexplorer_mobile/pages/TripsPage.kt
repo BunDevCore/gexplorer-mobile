@@ -1,19 +1,11 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,8 +26,6 @@ import com.bundev.gexplorer_mobile.icons.filled.Walk
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.*
 import java.text.DateFormat
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.time.Duration
@@ -128,12 +118,12 @@ fun TripsPage(systemOfUnits: JustAVariable) {
         EmptyTripsPage()
         return
     }
-    
+
     isMetric = systemOfUnits.value == "metric"
     Column(
         modifier = Modifier.fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        
+            .verticalScroll(rememberScrollState())
+
     ) {
         GroupingList(
             items,
