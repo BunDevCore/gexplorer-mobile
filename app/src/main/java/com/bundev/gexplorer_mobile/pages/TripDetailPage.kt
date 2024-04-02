@@ -333,7 +333,7 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
 fun ValueElement(
     modifier: Modifier = Modifier,
     imageVector: ImageVector? = null,
-    contentDescription: String = "",
+    contentDescription: String? = null,
     title: String,
     value: () -> String
 ) {
