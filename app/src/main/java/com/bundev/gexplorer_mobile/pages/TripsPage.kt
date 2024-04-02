@@ -31,11 +31,11 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.filled.Walk
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import com.bundev.gexplorer_mobile.ui.GroupingList
+import kotlinx.datetime.*
 import java.text.DateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.time.Duration
@@ -123,11 +123,33 @@ val tempTrips = listOf(
 
 @Composable
 fun TripsPage(systemOfUnits: JustAVariable) {
+    val items = tempTrips
+    if (items.isEmpty()) {
+        EmptyTripsPage()
+        return
+    }
+    
     isMetric = systemOfUnits.value == "metric"
     Column(
         modifier = Modifier.fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        
     ) {
-        TripList(trips = if (DEBUG) tempTrips else listOf())
+        GroupingList(
+            items,
+            groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+            title = { formatDate(it) },
+        ) { trip ->
+            val openTripDialog = remember { mutableStateOf(false) }
+            TripItem(trip) { openTripDialog.value = true }
+            when {
+                openTripDialog.value -> {
+                    TripDialog(trip) { openTripDialog.value = false }
+                }
+            }
+        }
+
+//        TripList(trips = if (DEBUG) tempTrips else listOf())
     }
 }
 
@@ -239,6 +261,12 @@ fun EmptyTripsPage() {
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
     return DateFormat.getDateInstance(format).format(instant.toEpochMilliseconds())
 }
+
+fun formatDate(date: LocalDate, format: Int = DateFormat.DEFAULT): String {
+    return DateFormat.getDateInstance(format)
+        .format(date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
+}
+
 
 fun formatTime(instant: Instant, format: Int = DateFormat.DEFAULT): String {
     return DateFormat.getTimeInstance(format).format(instant.toEpochMilliseconds())
