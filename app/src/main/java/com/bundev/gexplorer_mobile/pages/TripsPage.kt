@@ -28,9 +28,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.classes.JustAVariable
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.icons.filled.Walk
+import com.bundev.gexplorer_mobile.systemOfUnits
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -122,8 +122,8 @@ val tempTrips = listOf(
 )
 
 @Composable
-fun TripsPage(systemOfUnits: JustAVariable) {
-    isMetric = systemOfUnits.value == "metric"
+fun TripsPage() {
+    isMetric = systemOfUnits == "metric"
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -256,5 +256,5 @@ fun Double.roundTo(n: Int): Double {
 @Composable
 fun TripsPagePreview() {
     DEBUG = false
-    TripsPage(JustAVariable("metric"))
+    TripsPage()
 }

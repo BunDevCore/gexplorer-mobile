@@ -1,9 +1,9 @@
 package com.bundev.gexplorer_mobile.classes
 
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
-import kotlin.math.pow
 
 class Funi {
     private var value: Long = 0
@@ -34,6 +34,10 @@ class Funi {
             value = 0
         }
         return value
+    }
+
+    fun hasValue(): Boolean {
+        return getValue() > 0L
     }
 
     fun getTimeRemaining(): Long {

@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.classes.Funi
+import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.icons.filled.Explore
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
@@ -39,7 +39,7 @@ import java.util.Locale
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun MapPage(funi: Funi? = null) {
+fun MapPage() {
     val configuration = LocalConfiguration.current
     val mapViewportState = rememberMapViewportState {
         setCameraOptions {
@@ -89,7 +89,7 @@ fun MapPage(funi: Funi? = null) {
                     lineWidth = 5.0
                 )
             }
-            if (funi?.getValue() == 1L) CircleAnnotation(
+            if (funi.getValue() == 20L) CircleAnnotation(
                 point = Point.fromLngLat(18.6650564007217, 54.29906183330589),
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green

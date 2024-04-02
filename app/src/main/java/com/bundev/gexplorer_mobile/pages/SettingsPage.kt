@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.classes.Funi
-import com.bundev.gexplorer_mobile.classes.JustAVariable
+import com.bundev.gexplorer_mobile.funi
+import com.bundev.gexplorer_mobile.systemOfUnits
 
 @Composable
-fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
+fun SettingsPage() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -110,7 +110,7 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
         val systemOfUnitsMap = mapOf("metric" to R.string.metric, "imperial" to R.string.imperial)
         val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
             mutableIntStateOf(
-                systemOfUnitsMap[systemOfUnits?.value]
+                systemOfUnitsMap[systemOfUnits]
                     ?: R.string.metric
             )
         }
@@ -125,7 +125,7 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
                     selectedOption = selectedSystemOfUnits,
                     onOptionSelected = onSystemOfUnitsSelected
                 )
-                systemOfUnits?.value = context.resources.getResourceEntryName(selectedSystemOfUnits)
+                systemOfUnits = context.resources.getResourceEntryName(selectedSystemOfUnits)
             }
         }
         DialogButton(
@@ -140,78 +140,17 @@ fun SettingsPage(systemOfUnits: JustAVariable? = null, funi: Funi? = null) {
         }
         when {
             openAboutUsDialog.value -> {
-                Dialog(onDismissRequest = { openAboutUsDialog.value = false }) {
-                    Card {
-                        Column(
-                            modifier = Modifier.padding(20.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(bottom = 10.dp),
-                                fontSize = 26.sp,
-                                fontWeight = FontWeight.Bold,
-                                text = stringResource(id = R.string.bundev)
-                            )
-                            val fontSize = 20.sp
-                            val fontSizeSecond = 14.sp
-                            val topPadding = 10.dp
-
-                            val timeOut = 10L
-                            FuniButton(
-                                fontSize = fontSize,
-                                fontSizeSecond = fontSizeSecond,
-                                name = "wiKapo",
-                                responsibleFor = R.string.mobile_app,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = topPadding),
-                                onClick = { funi?.append(value = 20, timeOutInSeconds = timeOut) }
-                            )
-                            FuniButton(
-                                fontSize = fontSize,
-                                fontSizeSecond = fontSizeSecond,
-                                name = "Lempek",
-                                responsibleFor = R.string.web_app,
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = { funi?.append(value = 1, timeOutInSeconds = timeOut) }
-                            )
-                            FuniButton(
-                                fontSize = fontSize,
-                                fontSizeSecond = fontSizeSecond,
-                                name = "Fen",
-                                responsibleFor = R.string.backend,
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = { funi?.append(value = 3, timeOutInSeconds = timeOut) }
-                            )
-                            FuniButton(
-                                fontSize = fontSize,
-                                fontSizeSecond = fontSizeSecond,
-                                name = "random",
-                                responsibleFor = R.string.creative_department,
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = { funi?.append(value = 4, timeOutInSeconds = timeOut) }
-                            )
-                            FuniButton(
-                                fontSize = fontSize,
-                                fontSizeSecond = fontSizeSecond,
-                                name = "SR",
-                                responsibleFor = R.string.creative_department,
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = { funi?.append(value = 5, timeOutInSeconds = timeOut) }
-                            )
-                        }
-                    }
-                }
+                AboutUsDialog { openAboutUsDialog.value = false }
             }
         }
         DialogButton(
             label = stringResource(id = R.string.about_us),
             onClick = { openAboutUsDialog.value = true })
-        if (funi?.getValue() != 0L) {
+        if (funi.getValue() != 0L) {
             Text(
                 text = "val:${
-                    funi?.getValue().toString()
-                } time left:${funi?.getTimeRemaining()}"
+                    funi.getValue().toString()
+                } time left:${funi.getTimeRemaining()}"
             )
         }
     }
@@ -241,6 +180,72 @@ fun DialogButton(
                 Text(
                     fontSize = 12.sp,
                     text = subLabel
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun AboutUsDialog(onDismissRequest: () -> Unit) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    text = stringResource(id = R.string.bundev)
+                )
+                val fontSize = 20.sp
+                val fontSizeSecond = 14.sp
+                val topPadding = 10.dp
+
+                val timeOut = 10L
+                FuniButton(
+                    fontSize = fontSize,
+                    fontSizeSecond = fontSizeSecond,
+                    name = "wiKapo",
+                    responsibleFor = R.string.mobile_app,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = topPadding),
+                    onClick = { funi.append(value = 20, timeOutInSeconds = timeOut) }
+                )
+                FuniButton(
+                    fontSize = fontSize,
+                    fontSizeSecond = fontSizeSecond,
+                    name = "Lempek",
+                    responsibleFor = R.string.web_app,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { funi.append(value = 1, timeOutInSeconds = timeOut) }
+                )
+                FuniButton(
+                    fontSize = fontSize,
+                    fontSizeSecond = fontSizeSecond,
+                    name = "Fen",
+                    responsibleFor = R.string.backend,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { funi.append(value = 3, timeOutInSeconds = timeOut) }
+                )
+                FuniButton(
+                    fontSize = fontSize,
+                    fontSizeSecond = fontSizeSecond,
+                    name = "random",
+                    responsibleFor = R.string.creative_department,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { funi.append(value = 4, timeOutInSeconds = timeOut) }
+                )
+                FuniButton(
+                    fontSize = fontSize,
+                    fontSizeSecond = fontSizeSecond,
+                    name = "SR",
+                    responsibleFor = R.string.creative_department,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { funi.append(value = 5, timeOutInSeconds = timeOut) }
                 )
             }
         }
