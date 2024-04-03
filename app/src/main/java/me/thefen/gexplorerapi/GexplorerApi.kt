@@ -1,6 +1,7 @@
 package me.thefen.gexplorerapi
 
 import com.mapbox.geojson.Geometry
+import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
@@ -45,4 +46,7 @@ interface GexplorerApi {
 
     @GET("User/id/{uuid}/polygon")
     suspend fun getUserPolygon(@Path("uuid") id: UUID): Geometry
+
+    @GET("Trip/id/{tripId}")
+    suspend fun getTrip(@Path("tripId") id: UUID): DetailedTripDto
 }

@@ -4,12 +4,12 @@ import com.bundev.gexplorer_mobile.data.ApiResource
 import com.mapbox.geojson.Geometry
 import me.thefen.gexplorerapi.GexplorerApi
 import me.thefen.gexplorerapi.RetrofitClient
+import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.UserDto
-import retrofit2.http.Path
-import java.util.*
+import java.util.UUID
 
 class GexplorerRepository(token: String?) {
     private var gexplorerApiToken: String? = null
@@ -60,28 +60,36 @@ class GexplorerRepository(token: String?) {
             { ApiResource.Error(Exception()) }
         )
     }
+
     // this will throw an exception if username is null and therefore produce an ApiResource.Error, which is exactly what we want
     // maybe replace this with a custom error type further down the line
-    suspend fun getSelf(): ApiResource<UserDto> = apiWrapper { api.getUser(username!!) } 
+    suspend fun getSelf(): ApiResource<UserDto> = apiWrapper { api.getUser(username!!) }
 
     suspend fun getDistricts(): ApiResource<List<DistrictDto>> = apiWrapper { api.getDistricts() }
 
     suspend fun getOverallLeaderboard(): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getOverallLeaderboard() }
 
-    suspend fun getOverallLeaderboard(@Path("page") page: Int): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
+    suspend fun getOverallLeaderboard(page: Int): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getOverallLeaderboard(page) }
 
-    suspend fun getDistrictLeaderboard(@Path("id") districtId: UUID): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
+    suspend fun getDistrictLeaderboard(districtId: UUID): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getDistrictLeaderboard(districtId) }
 
     suspend fun getDistrictLeaderboard(
-        @Path("id") districtId: UUID,
-        @Path("page") page: Int
-    ): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> = apiWrapper { api.getDistrictLeaderboard(districtId, page) }
+        districtId: UUID,
+        page: Int
+    ): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
+        apiWrapper { api.getDistrictLeaderboard(districtId, page) }
 
-    suspend fun getUser(@Path("username") username: String): ApiResource<UserDto> = apiWrapper { api.getUser(username) }
-    suspend fun getUser(@Path("uuid") id: UUID): ApiResource<UserDto> = apiWrapper { api.getUser(id) }
+    suspend fun getUser(username: String): ApiResource<UserDto> =
+        apiWrapper { api.getUser(username) }
 
-    suspend fun getUserPolygon(@Path("uuid") id: UUID): ApiResource<Geometry> = apiWrapper { api.getUserPolygon(id) }
+    suspend fun getUser(id: UUID): ApiResource<UserDto> = apiWrapper { api.getUser(id) }
+
+    suspend fun getUserPolygon(id: UUID): ApiResource<Geometry> =
+        apiWrapper { api.getUserPolygon(id) }
+
+    suspend fun getTrip(tripId: String): ApiResource<DetailedTripDto> =
+        apiWrapper { api.getTrip(UUID.fromString(tripId)) }
 }

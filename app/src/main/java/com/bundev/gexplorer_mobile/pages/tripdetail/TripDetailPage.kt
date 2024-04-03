@@ -1,10 +1,12 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.tripdetail
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,12 +16,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,13 +37,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.formatDate
+import com.bundev.gexplorer_mobile.formatDuration
+import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Path
+import com.bundev.gexplorer_mobile.navigateTo
+import com.bundev.gexplorer_mobile.pages.isMetric
+import com.bundev.gexplorer_mobile.roundTo
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -61,9 +76,17 @@ import kotlin.time.toDuration
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun TripDetailPage(trip: Trip, onDismissRequest: () -> Unit) {
-    //TODO Fetch points from backend using trip.id
-
+fun TripDetailPage(
+    tripId: String?,
+    navController: NavHostController? = null,
+    goToTrips: () -> Unit
+) {
+    val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
+    val vm = hiltViewModel<TripDetailViewModel>()
+    val state by vm.state.collectAsState()
+    LaunchedEffect(vm) {
+        vm.fetchTrip(tripId)
+    }
     val configuration = LocalConfiguration.current
     val mapViewportState = rememberMapViewportState {
         setCameraOptions {
@@ -73,9 +96,13 @@ fun TripDetailPage(trip: Trip, onDismissRequest: () -> Unit) {
             bearing(0.0)
         }
     }
+    val geoJsonResource = remember {
+        mutableStateOf("")
+    }
+    state.runIfSuccess { geoJsonResource.value = state.data!!.gpsPolygon.toJson() }
     val secondary = colorResource(id = R.color.secondaryTemp)
     val style = style(Style.MAPBOX_STREETS) {
-        +geoJsonSource(id = "Trip") { data("asset://gdansk_4326.geojson") }
+        +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }
         +layerAtPosition(lineLayer("line-layer", "Trip") {
             lineColor(secondary.hashCode())
             lineWidth(3.0)
@@ -84,36 +111,56 @@ fun TripDetailPage(trip: Trip, onDismissRequest: () -> Unit) {
         +layerAtPosition(fillLayer("fill-layer", "Trip") {
             fillOpacity(0.4)
             fillColor(Color.GRAY)
-        }, at = 100) //at = 100
+        }, at = 100)
     }
+    val trip = Trip(
+        id = state.data?.id,
+        timeEnded = Clock.System.now(),
+        timeBegun = Clock.System.now() - 1.023.hours,
+        distance = state.data?.length ?: 0.0
+    )
 
     if (configuration.orientation == ORIENTATION_PORTRAIT)
-        Card(modifier = Modifier.fillMaxSize()) {
-            TripTopBar(trip = trip) { onDismissRequest() }
+        Column(modifier = Modifier.fillMaxSize()) {
+            TripTopBar(trip = trip) {
+                navigateTo(
+                    navController,
+                    Screen.Trips.route
+                ) { goToTrips() }
+            }
             TripMap(
-                modifier = Modifier.height((configuration.screenHeightDp / 2).dp),
+                modifier = Modifier.weight(1f),
                 mapViewportState = mapViewportState,
                 style = style
             )
-            TripContent(modifier = Modifier.padding(top = 10.dp), trip = trip)
-        } else
-        Card(modifier = Modifier.fillMaxSize()) {
-            Row {
-                TripMap(
-                    modifier = Modifier.width((configuration.screenWidthDp / 2).dp),
-                    mapViewportState = mapViewportState,
-                    style = style
-                )
-                Column {
-                    TripTopBar(trip = trip) { onDismissRequest() }
-                    TripContent(trip = trip)
+            TripContent(
+                modifier = Modifier
+                    .height(IntrinsicSize.Min), trip = trip
+            )
+        }
+    else
+        Row(modifier = Modifier.fillMaxSize()) {
+            TripMap(
+                modifier = Modifier.weight(1f),
+                mapViewportState = mapViewportState,
+                style = style
+            )
+            Column(
+                modifier = Modifier.width(IntrinsicSize.Max)
+            ) {
+                TripTopBar(trip = trip) {
+                    navigateTo(
+                        navController,
+                        Screen.Trips.route
+                    ) { goToTrips() }
                 }
+                TripContent(trip = trip)
             }
         }
 }
 
 @Composable
-fun TripTopBar(trip: Trip, onDismissRequest: () -> Unit) {
+fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(15.dp)
@@ -134,14 +181,14 @@ fun TripTopBar(trip: Trip, onDismissRequest: () -> Unit) {
                 fontSize = 16.sp
             )
         }
-        CloseButton { onDismissRequest() }
+        CloseButton { onCloseRequest() }
     }
 }
 
 @Composable
-fun CloseButton(onDismissRequest: () -> Unit) {
+fun CloseButton(onCloseRequest: () -> Unit) {
     SmallFloatingActionButton(
-        onClick = { onDismissRequest() },
+        onClick = { onCloseRequest() },
         modifier = Modifier
             .width(40.dp)
             .height(40.dp)
@@ -157,7 +204,7 @@ fun CloseButton(onDismissRequest: () -> Unit) {
 @OptIn(MapboxExperimental::class)
 @Composable
 fun TripMap(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     mapViewportState: MapViewportState,
     style: StyleContract.StyleExtension
 ) {
@@ -165,8 +212,9 @@ fun TripMap(
         modifier = modifier,
         mapViewportState = mapViewportState
     ) {
-        MapEffect { mapView ->
+        MapEffect(key1 = style) { mapView ->
             run {
+                Log.wtf("mapboxeffect", "loading style")
                 mapView.mapboxMap.loadStyle(style)
                 mapView.mapboxMap.style?.styleLayers
                 mapView.mapboxMap.style?.localizeLabels(
@@ -183,10 +231,10 @@ fun TripMap(
 fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
     val distance = trip.distance
     val duration = (trip.timeEnded - trip.timeBegun)
+    //TODO convert units correctly. FROM METERS
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = 20.dp),
+            .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -194,11 +242,11 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
             imageVector = GexplorerIcons.Simple.Path,
             title = stringResource(id = R.string.distance)
         ) {
-            if (distance > 0.5)
+            if (distance > 1)
                 if (isMetric) {
-                    "${distance.roundTo(3)} km"
+                    "$distance km"
                 } else {
-                    "${(distance * 0.621371).roundTo(3)} mi"
+                    "${distance * 0.621371} mi"
                 }
             else
                 if (isMetric) {
@@ -221,7 +269,7 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
                 val avgSpeed = distance / (duration.inWholeSeconds / 3600.0)
                 if (avgSpeed > 0.5)
                     if (isMetric) {
-                        "${avgSpeed.roundTo(3)} km/h"
+                        "$avgSpeed km/h"
                     } else {
                         "${(avgSpeed * 0.621371).roundTo(3)} mi/h"
                     }

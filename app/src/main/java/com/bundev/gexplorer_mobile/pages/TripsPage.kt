@@ -1,6 +1,5 @@
 package com.bundev.gexplorer_mobile.pages
 
-import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,32 +14,29 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.formatDate
+import com.bundev.gexplorer_mobile.formatDuration
+import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.simple.Walk
+import com.bundev.gexplorer_mobile.roundTo
+import com.bundev.gexplorer_mobile.selectedTabSave
 import com.bundev.gexplorer_mobile.systemOfUnits
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
-import java.text.DateFormat
-import kotlin.math.pow
-import kotlin.math.round
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
 var isMetric = false
@@ -124,7 +120,7 @@ val tempTrips = listOf(
 )
 
 @Composable
-fun TripsPage() {
+fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Unit) {
     val items = tempTrips
     if (items.isEmpty()) {
         EmptyTripsPage()
@@ -141,11 +137,18 @@ fun TripsPage() {
             groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },
             title = { formatDate(it) },
         ) { trip ->
-            val openTripDialog = remember { mutableStateOf(false) }
-            TripItem(trip) { openTripDialog.value = true }
-            when {
-                openTripDialog.value -> {
-                    TripDialog(trip) { openTripDialog.value = false }
+            TripItem(trip) {
+                val routeScreen = Screen.TripDetail.route
+                if (selectedTabSave != routeScreen) {
+                    selectedTabSave = routeScreen
+                    goToTripDetail()
+                    navController?.navigate(routeScreen) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = false
+                        restoreState = true
+                    }
                 }
             }
         }
@@ -194,16 +197,6 @@ fun TripItem(trip: Trip, onClick: () -> Unit) {
 }
 
 @Composable
-fun TripDialog(trip: Trip, onDismissRequest: () -> Unit) {
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        TripDetailPage(trip, onDismissRequest)
-    }
-}
-
-@Composable
 fun EmptyTripsPage() {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -216,31 +209,9 @@ fun EmptyTripsPage() {
     }
 }
 
-fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
-    return DateFormat.getDateInstance(format).format(instant.toEpochMilliseconds())
-}
-
-fun formatDate(date: LocalDate, format: Int = DateFormat.DEFAULT): String {
-    return DateFormat.getDateInstance(format)
-        .format(date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
-}
-
-
-fun formatTime(instant: Instant, format: Int = DateFormat.DEFAULT): String {
-    return DateFormat.getTimeInstance(format).format(instant.toEpochMilliseconds())
-}
-
-fun formatDuration(duration: Duration): String {
-    return DateUtils.formatElapsedTime(duration.inWholeSeconds)
-}
-
-fun Double.roundTo(n: Int): Double {
-    return round(this * 10f.pow(n)) / 10f.pow(n)
-}
-
 @Preview(showBackground = true, locale = "en")
 @Composable
 fun TripsPagePreview() {
     DEBUG = true
-    TripsPage()
+    TripsPage {}
 }

@@ -73,13 +73,14 @@ import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
+import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 
 @HiltAndroidApp
-class GexplorerApplication : Application() {}
+class GexplorerApplication : Application()
 
 sealed class Screen(
     val route: String,
@@ -124,6 +125,13 @@ sealed class Screen(
             R.string.settings,
             Icons.Filled.Settings,
             Icons.Outlined.Settings
+        )
+
+    data object TripDetail :
+        Screen(
+            "trip/{tripId}",
+            R.string.trip,
+            GexplorerIcons.Simple.Walk
         )
 }
 
@@ -193,12 +201,20 @@ fun GexplorerNavigation() {
                 exitTransition = { ExitTransition.None }
             ) {
                 composable(Screen.Map.route) { MapPage() }
-                composable(Screen.Trips.route) { TripsPage() }
+                composable(Screen.Trips.route) {
+                    TripsPage(navController) { selectedTab = selectedTabSave }
+                }
                 composable(Screen.Achievements.route) { AchievementsPage() }
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Settings.route) { SettingsPage() }
+                composable(Screen.TripDetail.route) { backStackEntry ->
+                    TripDetailPage(
+                        tripId = backStackEntry.arguments?.getString("tripId"),
+                        navController = navController
+                    ) { selectedTab = selectedTabSave }
+                }
             }
         }
     }
