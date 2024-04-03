@@ -158,7 +158,7 @@ fun SettingsPage() {
 }
 
 @Composable
-fun DialogButton(
+private fun DialogButton(
     label: String,
     subLabel: String = "",
     onClick: () -> Unit
@@ -188,7 +188,7 @@ fun DialogButton(
 }
 
 @Composable
-fun AboutUsDialog(onDismissRequest: () -> Unit) {
+private fun AboutUsDialog(onDismissRequest: () -> Unit) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card {
             Column(
@@ -254,7 +254,7 @@ fun AboutUsDialog(onDismissRequest: () -> Unit) {
 }
 
 @Composable
-fun FuniButton(
+private fun FuniButton(
     fontSize: TextUnit,
     fontSizeSecond: TextUnit,
     name: String,
@@ -289,7 +289,7 @@ fun FuniButton(
 }
 
 @Composable
-fun RadioDialog(
+private fun RadioDialog(
     onDismissRequest: () -> Unit,
     options: List<Int>,
     selectedOption: Int,
@@ -353,7 +353,7 @@ fun RadioDialog(
     }
 }
 
-fun changeLanguage(
+private fun changeLanguage(
     context: Context,
     languageStringResource: Int
 ) {
@@ -366,6 +366,6 @@ fun changeLanguage(
 
 @Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
-fun SettingsPagePreview() {
+private fun SettingsPagePreview() {
     SettingsPage()
 }

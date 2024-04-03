@@ -39,8 +39,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.hours
 
-var DEBUG = true
-val tempTrips = listOf(
+private var DEBUG = true
+private val tempTrips = listOf(
     Trip(
         distance = 1000.0,
         timeBegun = Clock.System.now() - 2.hours,
@@ -154,7 +154,7 @@ fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Un
 }
 
 @Composable
-fun TripItem(trip: Trip, onClick: () -> Unit) {
+private fun TripItem(trip: Trip, onClick: () -> Unit) {
     val duration = (trip.timeEnded - trip.timeBegun)
     val timeBegun = trip.timeBegun
     val distance = trip.distance
@@ -194,7 +194,7 @@ fun TripItem(trip: Trip, onClick: () -> Unit) {
 }
 
 @Composable
-fun EmptyTripsPage() {
+private fun EmptyTripsPage() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -208,7 +208,7 @@ fun EmptyTripsPage() {
 
 @Preview(showBackground = true, locale = "en")
 @Composable
-fun TripsPagePreview() {
+private fun TripsPagePreview() {
     DEBUG = true
     TripsPage {}
 }

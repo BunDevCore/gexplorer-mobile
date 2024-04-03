@@ -159,7 +159,7 @@ fun TripDetailPage(
 }
 
 @Composable
-fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
+private fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(15.dp)
@@ -185,7 +185,7 @@ fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
 }
 
 @Composable
-fun CloseButton(onCloseRequest: () -> Unit) {
+private fun CloseButton(onCloseRequest: () -> Unit) {
     SmallFloatingActionButton(
         onClick = { onCloseRequest() },
         modifier = Modifier
@@ -202,7 +202,7 @@ fun CloseButton(onCloseRequest: () -> Unit) {
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun TripMap(
+private fun TripMap(
     modifier: Modifier = Modifier,
     mapViewportState: MapViewportState,
     style: StyleContract.StyleExtension
@@ -227,7 +227,7 @@ fun TripMap(
 }
 
 @Composable
-fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
+private fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
     val distance = trip.distance
     val duration = (trip.timeEnded - trip.timeBegun)
     //TODO convert units correctly. FROM METERS
@@ -281,7 +281,7 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
 }
 
 @Composable
-fun ValueElement(
+private fun ValueElement(
     modifier: Modifier = Modifier,
     imageVector: ImageVector? = null,
     contentDescription: String? = null,
@@ -327,7 +327,7 @@ fun ValueElement(
 
 @Preview(locale = "pl")
 @Composable
-fun TripContentPreview() {
+private fun TripContentPreview() {
     TripContent(
         trip =
         Trip(

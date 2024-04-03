@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun GexplorerNavigation() {
+private fun GexplorerNavigation() {
     // Enables checking the current configuration of the phone
     val configuration = LocalConfiguration.current
     // Everything for the navigation to work while in portrait and landscape orientation

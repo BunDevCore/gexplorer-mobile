@@ -1,21 +1,22 @@
 package com.bundev.gexplorer_mobile.pages.account
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,10 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
+import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.navigateTo
 
 @Composable
@@ -39,6 +42,9 @@ fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Un
     LaunchedEffect(vm) {
         vm.fetchUser(username)
     }
+    val user = remember {
+        mutableStateOf("")
+    }
 
     Column(
         modifier = Modifier
@@ -46,24 +52,36 @@ fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Un
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (user.value.isNotEmpty()) {
+            Text(text = "Witaj ${user.value}")
+            AccountButton(
+                label = stringResource(id = R.string.log_out),
+                imageVector = Icons.Filled.Person,
+            ) {
+                user.value = ""
+            }
+            AccountButton(
+                label = stringResource(id = R.string.achievements),
+                imageVector = GexplorerIcons.Outlined.Trophy
+            ) {
+
+            }
+        } else {
+            AccountButton(
+                label = stringResource(id = R.string.log_in),
+                imageVector = Icons.Outlined.Person,
+            ) {
+                user.value = "UŻYTKOWNIK"
+            }
+        }
         AccountButton(
             label = stringResource(id = R.string.settings),
             imageVector = Screen.Settings.iconOutline,
         ) {
             navigateTo(navController, Screen.Settings.route) { goToSettings() }
         }
-        Text(text = "Witaj w:", fontSize = 30.sp)
-        Spacer(modifier = Modifier.height(15.dp))
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            shadowElevation = 5.dp,
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Text(text = "Gexplorer", fontSize = 50.sp, modifier = Modifier.padding(10.dp))
-        }
-        Text(text = "ta strona będzie dla użytkownika, ale to później")
-        Text(text = "achievements")
-        Text(text = "(połączenie z API)")
+
+        Text(text = "połączenie z API")
         if (state is ApiResource.Loading) {
             Text("loading.....")
         }
