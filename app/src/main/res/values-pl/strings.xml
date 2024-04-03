@@ -26,4 +26,6 @@
     <string name="avg_speed">Średnia prędkość</string>
     <string name="avg_pace">Średnie tempo</string>
     <string name="no_trips">Tu pojawią się twoje podróże</string>
+    <string name="log_in">Zaloguj się</string>
+    <string name="log_out">Wyloguj się</string>
 </resources>

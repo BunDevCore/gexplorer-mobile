@@ -26,4 +26,6 @@
     <string name="avg_speed">-avg_speed</string>
     <string name="avg_pace">-avg_pace</string>
     <string name="no_trips">-no_trips</string>
+    <string name="log_in">-log_in</string>
+    <string name="log_out">-log_out</string>
 </resources>

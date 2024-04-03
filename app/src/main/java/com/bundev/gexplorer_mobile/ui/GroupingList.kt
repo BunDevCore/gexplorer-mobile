@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 fun <T, K : Comparable<K>> GroupingList(
     items: List<T>,
     groupBy: (T) -> K,
-    title: (K) -> String,
+    title: @Composable (K) -> String,
     childFactory: @Composable (T) -> Unit
 ) {
     val grouped = items.sortedByDescending(groupBy).groupBy(groupBy)

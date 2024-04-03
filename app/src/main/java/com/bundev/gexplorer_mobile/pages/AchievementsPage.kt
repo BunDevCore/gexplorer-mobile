@@ -1,8 +1,11 @@
 package com.bundev.gexplorer_mobile.pages
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +21,9 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,14 +33,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
@@ -49,7 +62,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.text.DateFormat
 
-val achievements = listOf(
+private val achievementsGot = listOf(
     Achievement(
         name = "Moje pierwsze osiągnięcie",
         description = "I jego opis",
@@ -65,7 +78,9 @@ val achievements = listOf(
         name = "Bardzo długa nazwa nie wiem po co, ale się domyślam",
         description = "I jego opis, który też zajmie co najmniej 2 linijki, a może nawet i 3 to będzie zajmować",
         imageVector = GexplorerIcons.Filled.Map
-    ),
+    )
+)
+private val lockedAchievements = listOf(
     Achievement(name = "Nowe osiągnięcie, którego nikt jeszcze nie ma!!!"),
     Achievement(name = "Ta? to pa"),
     Achievement(name = "nice ok"),
@@ -90,27 +105,40 @@ fun AchievementsPage() {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        AchievementProgressBar(achievementsGot.size, achievementsGot.size + lockedAchievements.size)
         GroupingList(
-            items = achievements,
+            items = achievementsGot,
             groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
             title = { formatDate(it) }) { achievement ->
-            val openAchievementDialog = remember { mutableStateOf(false) }
-            when {
-                openAchievementDialog.value -> {
-                    AchievementDialog(achievement = achievement) {
-                        openAchievementDialog.value = false
-                    }
-                }
-            }
-            AchievementItem(achievement = achievement) {
-                if (achievement.description is String) openAchievementDialog.value = true
-            }
+            OpenAchievementDialog(achievement = achievement)
+        }
+        GroupingList(
+            items = lockedAchievements,
+            groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+            title = { stringResource(id = R.string.locked_achievements) }
+        ) { achievement ->
+            OpenAchievementDialog(achievement = achievement)
         }
     }
 }
 
 @Composable
-fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
+private fun OpenAchievementDialog(achievement: Achievement) {
+    val openAchievementDialog = remember { mutableStateOf(false) }
+    when {
+        openAchievementDialog.value -> {
+            AchievementDialog(achievement = achievement) {
+                openAchievementDialog.value = false
+            }
+        }
+    }
+    AchievementItem(achievement = achievement) {
+        if (achievement.description is String) openAchievementDialog.value = true
+    }
+}
+
+@Composable
+private fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
     val imageVector =
         if (achievement.imageVector is ImageVector) achievement.imageVector
         else GexplorerIcons.Filled.Trophy
@@ -157,7 +185,7 @@ fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
 }
 
 @Composable
-fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> Unit) {
+private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -184,8 +212,64 @@ fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> Unit) {
     }
 }
 
-@Preview(locale = "pl")
 @Composable
-fun AchievementsPagePreview() {
+private fun AchievementProgressBar(got: Int, outOf: Int) {
+    if (got == 0) return
+    val configuration = LocalConfiguration.current
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp)
+    ) {
+        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Column(modifier = Modifier.padding(10.dp)) {
+                AchievementProgressIndicator(got = got, outOf = outOf)
+            }
+        } else {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                AchievementProgressIndicator(got = got, outOf = outOf)
+            }
+        }
+    }
+}
+
+@Composable
+private fun AchievementProgressIndicator(got: Int, outOf: Int) {
+    Text(
+        achievementsDoneAnnotatedString(got, outOf),
+        modifier = Modifier.width(IntrinsicSize.Max)
+    )
+    LinearProgressIndicator(
+        progress = { (got / outOf.toFloat()) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 5.dp)
+            .height(10.dp),
+        color = LocalContentColor.current,
+        trackColor = ListItemDefaults.containerColor,
+        strokeCap = StrokeCap.Round
+    )
+}
+
+@Composable
+private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedString {
+    val stringSections = stringResource(id = R.string.achievements_got_out_of).split("[]")
+    return buildAnnotatedString {
+        append(stringSections[0])
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append("$got")
+        }
+        append(stringSections[1])
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append("$outOf")
+        }
+        append(stringSections[2])
+    }
+}
+
+@Preview(locale = "pl", showBackground = true)
+@Composable
+private fun AchievementsPagePreview() {
     AchievementsPage()
 }

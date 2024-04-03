@@ -26,4 +26,6 @@
     <string name="avg_speed">Average speed</string>
     <string name="avg_pace">Average pace</string>
     <string name="no_trips">Your trips will show up here</string>
+    <string name="log_in">Log in</string>
+    <string name="log_out">Log out</string>
 </resources>
