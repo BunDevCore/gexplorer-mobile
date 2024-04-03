@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_kilometer_per_hour">-kph</string>
+    <string name="unit_mile_per_hour">-kph</string>
+</resources>

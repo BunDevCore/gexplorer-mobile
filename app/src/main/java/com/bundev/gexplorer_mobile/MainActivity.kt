@@ -2,6 +2,7 @@ package com.bundev.gexplorer_mobile
 
 import android.app.Application
 import android.content.res.Configuration
+import android.icu.util.MeasureUnit
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -143,7 +144,7 @@ val items = listOf(
 )
 
 val funi = Funi()
-var systemOfUnits = "metric"
+var measureUnit: MeasureUnit = MeasureUnit.METER
 var selectedTabSave = ""
 
 @AndroidEntryPoint

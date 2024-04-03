@@ -27,88 +27,87 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.formatDate
+import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.simple.Walk
-import com.bundev.gexplorer_mobile.roundTo
+import com.bundev.gexplorer_mobile.measureUnit
 import com.bundev.gexplorer_mobile.selectedTabSave
-import com.bundev.gexplorer_mobile.systemOfUnits
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.hours
 
-var isMetric = false
 var DEBUG = true
 val tempTrips = listOf(
     Trip(
-        distance = 1.0,
+        distance = 1000.0,
         timeBegun = Clock.System.now() - 2.hours,
         timeEnded = Clock.System.now() - 1.hours
     ),
     Trip(
-        distance = 0.3,
+        distance = 100.3,
         timeBegun = Clock.System.now() - 3.hours,
         timeEnded = Clock.System.now() - 2.9.hours
     ),
     Trip(
-        distance = 0.5,
+        distance = 500.3,
         timeBegun = Clock.System.now() - 7.hours,
         timeEnded = Clock.System.now() - 5.hours
     ),
     Trip(
-        distance = 0.3,
+        distance = 123455.0,
         timeBegun = Clock.System.now() - 7.hours,
         timeEnded = Clock.System.now() - 5.hours
     ),
     Trip(
-        distance = 0.1,
+        distance = 100.0,
         timeBegun = Clock.System.now() - 7.hours,
         timeEnded = Clock.System.now() - 5.hours
     ),
     Trip(
-        distance = 0.499,
+        distance = 499.0,
         timeBegun = Clock.System.now() - 7.hours,
         timeEnded = Clock.System.now() - 5.hours
     ),
     Trip(
-        distance = 34.5,
+        distance = 34500.0,
         timeBegun = Clock.System.now() - 25.6.hours,
         timeEnded = Clock.System.now() - 24.9.hours
     ),
     Trip(
-        distance = 99.999,
+        distance = 99999.0,
         timeBegun = Clock.System.now() - 27.hours,
         timeEnded = Clock.System.now() - 26.1.hours
     ),
     Trip(
-        distance = 0.45,
+        distance = 450.0,
         timeBegun = Clock.System.now() - 48.hours,
         timeEnded = Clock.System.now() - 47.7.hours
     ),
     Trip(
-        distance = 6.7,
+        distance = 6700.0,
         timeBegun = Clock.System.now() - 56.hours,
         timeEnded = Clock.System.now() - 55.hours
     ),
     Trip(
-        distance = 42.0,
+        distance = 42000.0,
         timeBegun = Clock.System.now() - 57.hours,
         timeEnded = Clock.System.now() - 56.8.hours
     ),
     Trip(
-        distance = 20.2,
+        distance = 20200.0,
         timeBegun = Clock.System.now() - 59.hours,
         timeEnded = Clock.System.now() - 58.4.hours
     ),
     Trip(
-        distance = 0.987,
+        distance = 987.0,
         timeBegun = Clock.System.now() - 61.hours,
         timeEnded = Clock.System.now() - 60.6.hours
     ),
     Trip(
-        distance = 0.987,
+        distance = 987.0,
         timeBegun = Clock.System.now() - 112.hours,
         timeEnded = Clock.System.now() - 111.02.hours
     ),
@@ -126,7 +125,6 @@ fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Un
         EmptyTripsPage()
         return
     }
-    isMetric = systemOfUnits == "metric"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -173,11 +171,10 @@ fun TripItem(trip: Trip, onClick: () -> Unit) {
             overlineContent = { Text(stringResource(id = R.string.trip)) },
             headlineContent = {
                 Text(
-                    if (isMetric) {
-                        "${distance.roundTo(3)} km"
-                    } else {
-                        "${(distance * 0.621371).roundTo(3)} mi"
-                    }
+                    text = formatDistance(
+                        distanceInMeters = distance,
+                        measureUnit = measureUnit
+                    )
                 )
             },
             leadingContent = {

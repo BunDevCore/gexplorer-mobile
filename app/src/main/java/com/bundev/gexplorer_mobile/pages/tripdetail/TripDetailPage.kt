@@ -44,15 +44,17 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.formatDate
+import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
+import com.bundev.gexplorer_mobile.formatPace
+import com.bundev.gexplorer_mobile.formatSpeed
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Path
+import com.bundev.gexplorer_mobile.measureUnit
 import com.bundev.gexplorer_mobile.navigateTo
-import com.bundev.gexplorer_mobile.pages.isMetric
-import com.bundev.gexplorer_mobile.roundTo
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -69,10 +71,7 @@ import com.mapbox.maps.extension.style.style
 import kotlinx.datetime.Clock
 import java.text.DateFormat
 import java.util.Locale
-import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.hours
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @OptIn(MapboxExperimental::class)
 @Composable
@@ -241,57 +240,31 @@ fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
         ValueElement(
             imageVector = GexplorerIcons.Simple.Path,
             title = stringResource(id = R.string.distance)
-        ) {
-            if (distance > 1)
-                if (isMetric) {
-                    "$distance km"
-                } else {
-                    "${distance * 0.621371} mi"
-                }
-            else
-                if (isMetric) {
-                    "${(distance * 1000).roundToInt()} m"
-                } else {
-                    "${(distance * 0.621371 * 5280).roundToInt()} ft"
-                }
-        }
+        ) { formatDistance(distanceInMeters = distance, measureUnit = measureUnit) }
         ValueElement(
             imageVector = GexplorerIcons.Outlined.Timer,
             title = stringResource(id = R.string.total_time)
-        ) {
-            formatDuration(duration)
-        }
+        ) { formatDuration(duration) }
         if (duration.inWholeSeconds > 0 && distance > 0.0) {
             ValueElement(
                 imageVector = GexplorerIcons.Outlined.Speed,
                 title = stringResource(id = R.string.avg_speed)
             ) {
-                val avgSpeed = distance / (duration.inWholeSeconds / 3600.0)
-                if (avgSpeed > 0.5)
-                    if (isMetric) {
-                        "$avgSpeed km/h"
-                    } else {
-                        "${(avgSpeed * 0.621371).roundTo(3)} mi/h"
-                    }
-                else
-                    if (isMetric) {
-                        "${(avgSpeed * 1000).roundTo(3)} m/h"
-                    } else {
-                        "${(avgSpeed * 0.621371 * 5280).roundTo(3)} mi/h"
-                    }
+                formatSpeed(
+                    distanceInMeters = distance,
+                    duration = duration,
+                    measureUnit = measureUnit
+                )
             }
             ValueElement(
                 imageVector = GexplorerIcons.Simple.AvgPace,
                 title = stringResource(id = R.string.avg_pace)
             ) {
-                val avgPace = if (isMetric) {
-                    ((duration.inWholeSeconds / 60) / distance)
-                        .toDuration(DurationUnit.MINUTES)
-                } else {
-                    ((duration.inWholeSeconds / 60) / (distance * 0.621371))
-                        .toDuration(DurationUnit.MINUTES)
-                }
-                "${formatDuration(avgPace)}/${if (isMetric) "km" else "mi"}"
+                formatPace(
+                    duration = duration,
+                    distanceInMeters = distance,
+                    measureUnit = measureUnit
+                )
             }
         } else {
             ValueElement(
@@ -313,7 +286,7 @@ fun ValueElement(
     imageVector: ImageVector? = null,
     contentDescription: String? = null,
     title: String,
-    value: () -> String
+    value: @Composable () -> String
 ) {
     ElevatedCard(
         modifier = modifier
@@ -355,7 +328,6 @@ fun ValueElement(
 @Preview(locale = "pl")
 @Composable
 fun TripContentPreview() {
-    isMetric = true
     TripContent(
         trip =
         Trip(

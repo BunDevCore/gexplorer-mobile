@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.content.Context
+import android.icu.util.MeasureUnit
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +38,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.funi
-import com.bundev.gexplorer_mobile.systemOfUnits
+import com.bundev.gexplorer_mobile.measureUnit
 
 @Composable
 fun SettingsPage() {
@@ -107,10 +108,10 @@ fun SettingsPage() {
 
         //Change measuring system
         val systemOfUnitsOptions = listOf(R.string.metric, R.string.imperial)
-        val systemOfUnitsMap = mapOf("metric" to R.string.metric, "imperial" to R.string.imperial)
+        val systemOfUnitsMap = mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
         val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
             mutableIntStateOf(
-                systemOfUnitsMap[systemOfUnits]
+                systemOfUnitsMap[measureUnit]
                     ?: R.string.metric
             )
         }
@@ -125,7 +126,7 @@ fun SettingsPage() {
                     selectedOption = selectedSystemOfUnits,
                     onOptionSelected = onSystemOfUnitsSelected
                 )
-                systemOfUnits = context.resources.getResourceEntryName(selectedSystemOfUnits)
+                measureUnit = systemOfUnitsMap.filterValues { it == selectedSystemOfUnits }.keys.first()
             }
         }
         DialogButton(
