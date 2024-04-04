@@ -2,7 +2,7 @@
 <resources>
     <string name="achievements">achievements</string>
     <string name="locked_achievements">locked_achievements</string>
-    <string name="achievements_got_out_of">unlocked[]out_of[]achievements</string>
+    <string name="achievements_got_out_of">unlocked[]out_of[] ([]) achievements</string>
     <string name="achievement_zsl">zsl</string>
     <string name="achievement_a">a</string>
     <string name="achievement_b">b</string>

@@ -49,5 +49,5 @@
     <string name="achievement_media_markt">-media_markt</string>
     <string name="achievement_west_bank">-west_bank</string>
     <string name="achievement_islam">-islam</string>
-    <string name="achievements_got_out_of">Unlocked [] out of [] achievements</string>
+    <string name="achievements_got_out_of">Unlocked [] out of [] ([]) achievements</string>
 </resources>

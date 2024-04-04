@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -53,7 +52,6 @@ import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Map
-import com.bundev.gexplorer_mobile.icons.filled.Trophy
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
@@ -61,6 +59,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.text.DateFormat
+import kotlin.math.roundToInt
 
 private val achievementsGot = listOf(
     Achievement(
@@ -139,9 +138,7 @@ private fun OpenAchievementDialog(achievement: Achievement) {
 
 @Composable
 private fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
-    val imageVector =
-        if (achievement.imageVector is ImageVector) achievement.imageVector
-        else GexplorerIcons.Filled.Trophy
+    val imageVector = achievement.imageVector
     val contentDescription: String? = null
     val label = achievement.name
     val description = achievement.description
@@ -265,6 +262,8 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
             append("$outOf")
         }
         append(stringSections[2])
+        append("${((got / outOf.toFloat()) * 100).roundToInt()}%")
+        append(stringSections[3])
     }
 }
 
