@@ -46,6 +46,10 @@ class Funi {
         return max(timeDifference, 0)
     }
 
+    fun remove(){
+        this.timeOut = 0
+    }
+
     fun addTime(addSeconds: Long) {
         this.timeOut += addSeconds.seconds.toLong(DurationUnit.MILLISECONDS)
     }

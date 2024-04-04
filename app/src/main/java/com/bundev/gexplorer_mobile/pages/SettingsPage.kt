@@ -14,8 +14,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -31,11 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
+import com.bundev.gexplorer_mobile.CenteredTextButton
+import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.measureUnit
@@ -77,10 +76,10 @@ fun SettingsPage() {
                 changeLanguage(context, selectedLanguage)
             }
         }
-        DialogButton(
+        IconAndTextButton(
             label = stringResource(id = R.string.language),
-            subLabel = stringResource(id = R.string.language_chosen),
-            onClick = { openLanguageDialog.value = true })
+            subLabel = stringResource(id = R.string.language_chosen)
+        ) { openLanguageDialog.value = true }
 
         //Change theme dialog
         val themeOptions =
@@ -101,14 +100,16 @@ fun SettingsPage() {
                 )
             }
         }
-        DialogButton(
+        IconAndTextButton(
             label = stringResource(id = R.string.theme),
-            subLabel = stringResource(id = selectedTheme),
-            onClick = { openThemeDialog.value = true })
+            subLabel = stringResource(id = selectedTheme)
+        )
+        { openThemeDialog.value = true }
 
         //Change measuring system
         val systemOfUnitsOptions = listOf(R.string.metric, R.string.imperial)
-        val systemOfUnitsMap = mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
+        val systemOfUnitsMap =
+            mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
         val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
             mutableIntStateOf(
                 systemOfUnitsMap[measureUnit]
@@ -126,13 +127,14 @@ fun SettingsPage() {
                     selectedOption = selectedSystemOfUnits,
                     onOptionSelected = onSystemOfUnitsSelected
                 )
-                measureUnit = systemOfUnitsMap.filterValues { it == selectedSystemOfUnits }.keys.first()
+                measureUnit =
+                    systemOfUnitsMap.filterValues { it == selectedSystemOfUnits }.keys.first()
             }
         }
-        DialogButton(
-            label = stringResource(id = R.string.system_of_units),
-            subLabel = stringResource(id = selectedSystemOfUnits),
-            onClick = { openSystemOfUnitsDialog.value = true })
+        IconAndTextButton(
+            label = stringResource(id = R.string.distance_units),
+            subLabel = stringResource(id = selectedSystemOfUnits)
+        ) { openSystemOfUnitsDialog.value = true }
 
         HorizontalDivider(thickness = 1.dp)
         //Open About us dialog
@@ -144,45 +146,15 @@ fun SettingsPage() {
                 AboutUsDialog { openAboutUsDialog.value = false }
             }
         }
-        DialogButton(
-            label = stringResource(id = R.string.about_us),
-            onClick = { openAboutUsDialog.value = true })
+        IconAndTextButton(
+            label = stringResource(id = R.string.about_us)
+        ) { openAboutUsDialog.value = true }
         if (funi.getValue() != 0L) {
             Text(
                 text = "val:${
-                    funi.getValue().toString()
+                    funi.getValue()
                 } time left:${funi.getTimeRemaining()}"
             )
-        }
-    }
-}
-
-@Composable
-private fun DialogButton(
-    label: String,
-    subLabel: String = "",
-    onClick: () -> Unit
-) {
-    TextButton(
-        shape = RoundedCornerShape(0.dp),
-        onClick = { onClick() }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                fontSize = 18.sp,
-                text = label
-            )
-            if (subLabel.isNotEmpty()) {
-                Text(
-                    fontSize = 12.sp,
-                    text = subLabel
-                )
-            }
         }
     }
 }
@@ -195,95 +167,39 @@ private fun AboutUsDialog(onDismissRequest: () -> Unit) {
                 modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
+                CenteredTextButton(
+                    label = stringResource(id = R.string.bundev),
                     modifier = Modifier.padding(bottom = 10.dp),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    text = stringResource(id = R.string.bundev)
-                )
-                val fontSize = 20.sp
-                val fontSizeSecond = 14.sp
+                    fontSizeLabel = 26.sp,
+                    fontWeightLabel = FontWeight.Bold
+                ) {
+                    funi.remove()
+                }
                 val topPadding = 10.dp
-
                 val timeOut = 10L
-                FuniButton(
-                    fontSize = fontSize,
-                    fontSizeSecond = fontSizeSecond,
-                    name = "wiKapo",
-                    responsibleFor = R.string.mobile_app,
+                CenteredTextButton(
+                    label = "wiKapo",
+                    subLabel = stringResource(R.string.mobile_app),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = topPadding),
-                    onClick = { funi.append(value = 20, timeOutInSeconds = timeOut) }
-                )
-                FuniButton(
-                    fontSize = fontSize,
-                    fontSizeSecond = fontSizeSecond,
-                    name = "Lempek",
-                    responsibleFor = R.string.web_app,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { funi.append(value = 1, timeOutInSeconds = timeOut) }
-                )
-                FuniButton(
-                    fontSize = fontSize,
-                    fontSizeSecond = fontSizeSecond,
-                    name = "Fen",
-                    responsibleFor = R.string.backend,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { funi.append(value = 3, timeOutInSeconds = timeOut) }
-                )
-                FuniButton(
-                    fontSize = fontSize,
-                    fontSizeSecond = fontSizeSecond,
-                    name = "random",
-                    responsibleFor = R.string.creative_department,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { funi.append(value = 4, timeOutInSeconds = timeOut) }
-                )
-                FuniButton(
-                    fontSize = fontSize,
-                    fontSizeSecond = fontSizeSecond,
-                    name = "SR",
-                    responsibleFor = R.string.creative_department,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { funi.append(value = 5, timeOutInSeconds = timeOut) }
-                )
+                        .padding(top = topPadding)
+                ) { funi.append(value = 20, timeOutInSeconds = timeOut) }
+                CenteredTextButton(
+                    label = "Lempek",
+                    subLabel = stringResource(R.string.web_app),
+                ) { funi.append(value = 1, timeOutInSeconds = timeOut) }
+                CenteredTextButton(
+                    label = "Fen",
+                    subLabel = stringResource(R.string.backend)
+                ) { funi.append(value = 3, timeOutInSeconds = timeOut) }
+                CenteredTextButton(
+                    label = "random",
+                    subLabel = stringResource(R.string.creative_department)
+                ) { funi.append(value = 4, timeOutInSeconds = timeOut) }
+                CenteredTextButton(
+                    label = "SR",
+                    subLabel = stringResource(R.string.creative_department)
+                ) { funi.append(value = 5, timeOutInSeconds = timeOut) }
             }
-        }
-    }
-}
-
-@Composable
-private fun FuniButton(
-    fontSize: TextUnit,
-    fontSizeSecond: TextUnit,
-    name: String,
-    responsibleFor: Int,
-    modifier: Modifier,
-    onClick: () -> Unit
-) {
-    val textColor = LocalContentColor.current
-    val textStyle = LocalTextStyle.current
-    TextButton(
-        modifier = modifier,
-        onClick = { onClick() }//,
-//        colors = ButtonDefaults.textButtonColors(Color.Unspecified)
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                fontSize = fontSize,
-                fontStyle = textStyle.fontStyle,
-                fontWeight = textStyle.fontWeight,
-                color = textColor,
-                text = name
-            )
-            Text(
-                fontSize = fontSizeSecond,
-                fontStyle = textStyle.fontStyle,
-                fontWeight = textStyle.fontWeight,
-                color = textColor,
-                text = stringResource(id = responsibleFor)//"aplikacja mobilna"
-            )
         }
     }
 }
@@ -301,9 +217,8 @@ private fun RadioDialog(
                 .fillMaxWidth()
                 .height((56 * (options.size) + 68 * 2).dp)
                 .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-
-            ) {
+            shape = RoundedCornerShape(16.dp)
+        ) {
             Text(
                 text = stringResource(id = R.string.language),
                 fontSize = 24.sp,

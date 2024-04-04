@@ -2,15 +2,11 @@ package com.bundev.gexplorer_mobile.pages.account
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,14 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -54,33 +49,24 @@ fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Un
     ) {
         if (user.value.isNotEmpty()) {
             Text(text = "Witaj ${user.value}")
-            AccountButton(
+            IconAndTextButton(
                 label = stringResource(id = R.string.log_out),
                 imageVector = Icons.Filled.Person,
-            ) {
-                user.value = ""
-            }
-            AccountButton(
-                label = stringResource(id = R.string.achievements),
-                imageVector = GexplorerIcons.Outlined.Trophy
-            ) {
-
-            }
+            ) { user.value = "" }
         } else {
-            AccountButton(
+            IconAndTextButton(
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
-            ) {
-                user.value = "UŻYTKOWNIK"
-            }
+            ) { user.value = "UŻYTKOWNIK" }
         }
-        AccountButton(
+        IconAndTextButton(
             label = stringResource(id = R.string.settings),
             imageVector = Screen.Settings.iconOutline,
-        ) {
-            navigateTo(navController, Screen.Settings.route) { goToSettings() }
-        }
-
+        ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
+        IconAndTextButton(
+            label = stringResource(id = R.string.achievements),
+            imageVector = GexplorerIcons.Outlined.Trophy
+        ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
         Text(text = "połączenie z API")
         if (state is ApiResource.Loading) {
             Text("loading.....")
@@ -94,46 +80,6 @@ fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Un
                     funi.getValue()
                 } time left:${funi.getTimeRemaining()}"
             )
-        }
-    }
-}
-
-@Composable
-fun AccountButton(
-    label: String,
-    subLabel: String = "",
-    imageVector: ImageVector? = null,
-    imageDescription: String = "",
-    onClick: () -> Unit
-) {
-    TextButton(
-        shape = RoundedCornerShape(0.dp),
-        onClick = { onClick() }
-    ) {
-        if (imageVector is ImageVector)
-            Icon(
-                modifier = Modifier
-                    .padding(end = 5.dp)
-                    .padding(vertical = 5.dp),
-                imageVector = imageVector,
-                contentDescription = imageDescription
-            )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                fontSize = 18.sp,
-                text = label
-            )
-            if (subLabel.isNotEmpty()) {
-                Text(
-                    fontSize = 12.sp,
-                    text = subLabel
-                )
-            }
         }
     }
 }
