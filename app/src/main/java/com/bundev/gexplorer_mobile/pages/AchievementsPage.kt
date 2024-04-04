@@ -211,7 +211,7 @@ private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> 
 
 @Composable
 private fun AchievementProgressBar(got: Int, outOf: Int) {
-    if (got == 0) return
+    if (got == 0) return //TODO when user is logged in show progress bar at 0%
     val configuration = LocalConfiguration.current
     Card(
         modifier = Modifier
@@ -220,11 +220,20 @@ private fun AchievementProgressBar(got: Int, outOf: Int) {
             .padding(top = 10.dp)
     ) {
         if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .padding(bottom = 10.dp)
+                    .padding(top = 7.5.dp)
+            ) {
                 AchievementProgressIndicator(got = got, outOf = outOf)
             }
         } else {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .padding(vertical = 5.dp)
+            ) {
                 AchievementProgressIndicator(got = got, outOf = outOf)
             }
         }
@@ -237,6 +246,7 @@ private fun AchievementProgressIndicator(got: Int, outOf: Int) {
         achievementsDoneAnnotatedString(got, outOf),
         modifier = Modifier.width(IntrinsicSize.Max)
     )
+    Spacer(modifier = Modifier.width(10.dp))
     LinearProgressIndicator(
         progress = { (got / outOf.toFloat()) },
         modifier = Modifier
