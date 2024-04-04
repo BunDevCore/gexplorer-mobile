@@ -68,9 +68,11 @@ import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.MapPage
+import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
@@ -87,7 +89,7 @@ sealed class Screen(
     val route: String,
     @StringRes val resourceId: Int,
     val iconFilled: ImageVector,
-    val iconOutline: ImageVector = iconFilled
+    val iconOutline: ImageVector = iconFilled,
 ) {
     data object Map :
         Screen(
@@ -134,12 +136,19 @@ sealed class Screen(
             R.string.trip,
             GexplorerIcons.Simple.Walk
         )
+
+    data object Places :
+        Screen(
+            "places",
+            R.string.places,
+            GexplorerIcons.Simple.ExploreNearby
+        )
 }
 
 val items = listOf(
     Screen.Map,
     Screen.Trips,
-    Screen.Achievements,
+    Screen.Places,
     Screen.Account
 )
 
@@ -206,6 +215,7 @@ private fun GexplorerNavigation() {
                     TripsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Achievements.route) { AchievementsPage() }
+                composable(Screen.Places.route) { PlacesPage() }
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }
                 }

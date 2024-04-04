@@ -28,5 +28,6 @@
     <string name="no_trips">Tu pojawią się twoje podróże</string>
     <string name="log_in">Zaloguj się</string>
     <string name="log_out">Wyloguj się</string>
+    <string name="places">Miejsca</string>
     <string name="saved_trips">Zapisane podróże</string>
 </resources>

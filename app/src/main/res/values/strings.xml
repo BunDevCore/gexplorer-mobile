@@ -34,5 +34,6 @@
     <string name="no_trips">no_trips</string>
     <string name="log_in">log_in</string>
     <string name="log_out">log_out</string>
+    <string name="places">places</string>
     <string name="saved_trips">saved_trips</string>
 </resources>

@@ -28,5 +28,6 @@
     <string name="no_trips">Your trips will show up here</string>
     <string name="log_in">Log in</string>
     <string name="log_out">Log out</string>
+    <string name="places">Places</string>
     <string name="saved_trips">Saved trips</string>
 </resources>
