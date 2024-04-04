@@ -42,7 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.Screen
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
@@ -81,7 +81,7 @@ import kotlin.time.Duration.Companion.hours
 fun TripDetailPage(
     tripId: String?,
     navController: NavHostController? = null,
-    changePage: () -> Unit
+    changePage: () -> Unit,
 ) {
     val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
     val vm = hiltViewModel<TripDetailViewModel>()
@@ -135,10 +135,7 @@ fun TripDetailPage(
                 mapViewportState = mapViewportState,
                 style = style
             )
-            TripContent(
-                modifier = Modifier
-                    .height(IntrinsicSize.Min), trip = trip
-            )
+            TripContent(trip = trip)
         }
     else
         Row(modifier = Modifier.fillMaxSize()) {
@@ -199,7 +196,7 @@ private fun TripTopBar(trip: Trip, onCloseClick: () -> Unit) {
 private fun SaveTripButton(
     imageVectorTrue: ImageVector,
     imageVectorFalse: ImageVector,
-    trip: Trip
+    trip: Trip,
 ) {
     val isTripSaved = remember {
         mutableStateOf(trip.saved)
@@ -249,7 +246,7 @@ private fun ActionButton(imageVector: ImageVector, onClick: () -> Unit) {
 private fun TripMap(
     modifier: Modifier = Modifier,
     mapViewportState: MapViewportState,
-    style: StyleContract.StyleExtension
+    style: StyleContract.StyleExtension,
 ) {
     MapboxMap(
         modifier = modifier,
@@ -271,12 +268,10 @@ private fun TripMap(
 }
 
 @Composable
-private fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
+private fun TripContent(trip: Trip) {
     val distance = trip.distance
     val duration = (trip.timeEnded - trip.timeBegun)
     Column(
-        modifier = modifier
-            .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -329,7 +324,7 @@ private fun ValueElement(
     imageVector: ImageVector? = null,
     contentDescription: String? = null,
     title: String,
-    value: @Composable () -> String
+    value: @Composable () -> String,
 ) {
     ElevatedCard(
         modifier = modifier

@@ -23,9 +23,10 @@ import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.Screen
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
+import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.navigateTo
@@ -41,7 +42,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
     val user = remember {
         mutableStateOf("")
     }
-    if (funi.getValue() == 2024L){
+    if (funi.getValue() == 2024L) {
         //TODO give achievement "The first icon"
     }
 
@@ -71,6 +72,12 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             label = stringResource(id = R.string.achievements),
             imageVector = if (funi.getValue() != 2024L) GexplorerIcons.Outlined.Trophy else GexplorerIcons.Outlined.SocialLeaderboard
         ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
+        IconAndTextButton(
+            label = stringResource(id = R.string.statistics),
+            imageVector = GexplorerIcons.Outlined.Analytics
+        ) {
+            navigateTo(navController, Screen.Statistics.route) { changePage() }
+        }
         Text(text = "połączenie z API")
         if (state is ApiResource.Loading) {
             Text("loading.....")

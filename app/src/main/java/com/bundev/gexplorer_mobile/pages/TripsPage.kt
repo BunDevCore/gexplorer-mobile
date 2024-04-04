@@ -25,7 +25,7 @@ import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.Screen
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance

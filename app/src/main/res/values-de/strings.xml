@@ -30,4 +30,5 @@
     <string name="log_out">-log_out</string>
     <string name="places">-places</string>
     <string name="saved_trips">-saved_trips</string>
+    <string name="statistics">-statistics</string>
 </resources>

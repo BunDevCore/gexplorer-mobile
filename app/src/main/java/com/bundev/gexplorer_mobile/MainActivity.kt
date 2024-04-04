@@ -9,7 +9,6 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.EnterTransition
@@ -23,11 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -49,7 +43,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -64,16 +57,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bundev.gexplorer_mobile.classes.Funi
-import com.bundev.gexplorer_mobile.icons.filled.Map
-import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
-import com.bundev.gexplorer_mobile.icons.outlined.Map
-import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
-import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
-import com.bundev.gexplorer_mobile.icons.simple.Walk
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
+import com.bundev.gexplorer_mobile.pages.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.TripsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
@@ -84,66 +73,6 @@ import java.util.Locale
 
 @HiltAndroidApp
 class GexplorerApplication : Application()
-
-sealed class Screen(
-    val route: String,
-    @StringRes val resourceId: Int,
-    val iconFilled: ImageVector,
-    val iconOutline: ImageVector = iconFilled,
-) {
-    data object Map :
-        Screen(
-            "map",
-            R.string.map,
-            GexplorerIcons.Filled.Map,
-            GexplorerIcons.Outlined.Map
-        )
-
-    data object Trips :
-        Screen(
-            "trips",
-            R.string.trips,
-            GexplorerIcons.Simple.Walk
-        )
-
-    data object Achievements :
-        Screen(
-            "achievements",
-            R.string.achievements,
-            GexplorerIcons.Filled.SocialLeaderboard,
-            GexplorerIcons.Outlined.SocialLeaderboard
-        )
-
-    data object Account :
-        Screen(
-            "account",
-            R.string.account,
-            Icons.Filled.Person,
-            Icons.Outlined.Person
-        )
-
-    data object Settings :
-        Screen(
-            "settings",
-            R.string.settings,
-            Icons.Filled.Settings,
-            Icons.Outlined.Settings
-        )
-
-    data object TripDetail :
-        Screen(
-            "trip/{tripId}",
-            R.string.trip,
-            GexplorerIcons.Simple.Walk
-        )
-
-    data object Places :
-        Screen(
-            "places",
-            R.string.places,
-            GexplorerIcons.Simple.ExploreNearby
-        )
-}
 
 val items = listOf(
     Screen.Map,
@@ -226,6 +155,7 @@ private fun GexplorerNavigation() {
                         navController = navController
                     ) { selectedTab = selectedTabSave }
                 }
+                composable(Screen.Statistics.route) { StatisticsPage() }
             }
         }
     }

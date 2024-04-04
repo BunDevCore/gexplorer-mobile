@@ -30,4 +30,5 @@
     <string name="log_out">Wyloguj się</string>
     <string name="places">Miejsca</string>
     <string name="saved_trips">Zapisane podróże</string>
+    <string name="statistics">Statystyki</string>
 </resources>

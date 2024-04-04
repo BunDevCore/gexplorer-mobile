@@ -1,11 +1,13 @@
 package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bundev.gexplorer_mobile.icons.filled.Analytics
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.filled.Trophy
+import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
@@ -50,7 +52,8 @@ object GexplorerIcons {
                     Filled.Map,
                     Filled.Location,
                     Filled.Trophy,
-                    Filled.Bookmark
+                    Filled.Bookmark,
+                    Filled.Analytics
                 )
                 return _filled!!
             }
@@ -68,7 +71,8 @@ object GexplorerIcons {
                     Outlined.Map,
                     Outlined.Location,
                     Outlined.Trophy,
-                    Outlined.Bookmark
+                    Outlined.Bookmark,
+                    Outlined.Analytics
                 )
                 return _outlined!!
             }
