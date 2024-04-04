@@ -18,7 +18,7 @@ val GexplorerIcons.Outlined.Speed: ImageVector
         if (speed != null) {
             return speed!!
         }
-        speed = Builder(name = "Speed-24px", defaultWidth = 24.0.dp, defaultHeight =
+        speed = Builder(name = "SpeedOutlined", defaultWidth = 24.0.dp, defaultHeight =
                 24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,

@@ -18,7 +18,7 @@ val GexplorerIcons.Outlined.Timer: ImageVector
         if (timer != null) {
             return timer!!
         }
-        timer = Builder(name = "Timer-24px", defaultWidth = 24.0.dp, defaultHeight =
+        timer = Builder(name = "TimerOutlined", defaultWidth = 24.0.dp, defaultHeight =
                 24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
