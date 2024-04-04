@@ -26,6 +26,7 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
+import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.navigateTo
 
@@ -39,6 +40,9 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
     }
     val user = remember {
         mutableStateOf("")
+    }
+    if (funi.getValue() == 2024L){
+        //TODO give achievement "The first icon"
     }
 
     Column(
@@ -65,7 +69,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
         ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
         IconAndTextButton(
             label = stringResource(id = R.string.achievements),
-            imageVector = GexplorerIcons.Outlined.Trophy
+            imageVector = if (funi.getValue() != 2024L) GexplorerIcons.Outlined.Trophy else GexplorerIcons.Outlined.SocialLeaderboard
         ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
         Text(text = "połączenie z API")
         if (state is ApiResource.Loading) {

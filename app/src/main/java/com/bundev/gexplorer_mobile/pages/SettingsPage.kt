@@ -182,7 +182,7 @@ private fun AboutUsDialog(onDismissRequest: () -> Unit) {
                     subLabel = stringResource(R.string.mobile_app),
                     modifier = Modifier
                         .padding(top = topPadding)
-                ) { funi.append(value = 20, timeOutInSeconds = timeOut) }
+                ) { funi.append(value = 0, timeOutInSeconds = timeOut) }
                 CenteredTextButton(
                     label = "Lempek",
                     subLabel = stringResource(R.string.web_app),
@@ -190,15 +190,15 @@ private fun AboutUsDialog(onDismissRequest: () -> Unit) {
                 CenteredTextButton(
                     label = "Fen",
                     subLabel = stringResource(R.string.backend)
-                ) { funi.append(value = 3, timeOutInSeconds = timeOut) }
+                ) { funi.append(value = 2, timeOutInSeconds = timeOut) }
                 CenteredTextButton(
                     label = "random",
                     subLabel = stringResource(R.string.creative_department)
-                ) { funi.append(value = 4, timeOutInSeconds = timeOut) }
+                ) { funi.append(value = 3, timeOutInSeconds = timeOut) }
                 CenteredTextButton(
                     label = "SR",
                     subLabel = stringResource(R.string.creative_department)
-                ) { funi.append(value = 5, timeOutInSeconds = timeOut) }
+                ) { funi.append(value = 4, timeOutInSeconds = timeOut) }
             }
         }
     }
