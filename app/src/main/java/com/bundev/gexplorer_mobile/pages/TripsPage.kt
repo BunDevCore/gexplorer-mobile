@@ -119,7 +119,7 @@ private val tempTrips = listOf(
 )
 
 @Composable
-fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Unit) {
+fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     val items = tempTrips
     if (items.isEmpty()) {
         EmptyTripsPage()
@@ -131,7 +131,7 @@ fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Un
             .verticalScroll(rememberScrollState())
     ) {
         GroupingList(
-            items,
+            items = items,
             groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },
             title = { formatDate(it) },
         ) { trip ->
@@ -139,7 +139,7 @@ fun TripsPage(navController: NavHostController? = null, goToTripDetail: () -> Un
                 val routeScreen = Screen.TripDetail.route
                 if (selectedTabSave != routeScreen) {
                     selectedTabSave = routeScreen
-                    goToTripDetail()
+                    changePage()
                     navController?.navigate(routeScreen) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -201,7 +201,7 @@ private fun EmptyTripsPage() {
         verticalArrangement = Arrangement.Center
     ) {
         Card {
-            Text(text = "Tu pojawią się twoje podróże", Modifier.padding(10.dp))
+            Text(text = stringResource(id = R.string.no_trips), Modifier.padding(10.dp))
         }
     }
 }

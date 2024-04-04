@@ -30,7 +30,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.navigateTo
 
 @Composable
-fun AccountPage(navController: NavHostController? = null, goToSettings: () -> Unit) {
+fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit) {
     val username = "fen."
     val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()

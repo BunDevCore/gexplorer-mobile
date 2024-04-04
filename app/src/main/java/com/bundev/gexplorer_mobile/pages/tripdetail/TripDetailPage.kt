@@ -78,7 +78,7 @@ import kotlin.time.Duration.Companion.hours
 fun TripDetailPage(
     tripId: String?,
     navController: NavHostController? = null,
-    goToTrips: () -> Unit
+    changePage: () -> Unit
 ) {
     val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
     val vm = hiltViewModel<TripDetailViewModel>()
@@ -125,7 +125,7 @@ fun TripDetailPage(
                 navigateTo(
                     navController,
                     Screen.Trips.route
-                ) { goToTrips() }
+                ) { changePage() }
             }
             TripMap(
                 modifier = Modifier.weight(1f),
@@ -151,7 +151,7 @@ fun TripDetailPage(
                     navigateTo(
                         navController,
                         Screen.Trips.route
-                    ) { goToTrips() }
+                    ) { changePage() }
                 }
                 TripContent(trip = trip)
             }
@@ -230,7 +230,6 @@ private fun TripMap(
 private fun TripContent(modifier: Modifier = Modifier, trip: Trip) {
     val distance = trip.distance
     val duration = (trip.timeEnded - trip.timeBegun)
-    //TODO convert units correctly. FROM METERS
     Column(
         modifier = modifier
             .padding(bottom = 10.dp),
