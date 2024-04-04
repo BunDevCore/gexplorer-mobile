@@ -15,7 +15,7 @@
     <string name="about_us">Über uns</string>
     <string name="metric">-metric</string>
     <string name="imperial">-imperial</string>
-    <string name="system_of_units">-system_of_units</string>
+    <string name="distance_units">-distance_units</string>
     <string name="mobile_app">-mobile_app</string>
     <string name="web_app">-web_app</string>
     <string name="creative_department">-creative_department</string>

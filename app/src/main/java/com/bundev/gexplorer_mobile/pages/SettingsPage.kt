@@ -107,34 +107,34 @@ fun SettingsPage() {
         { openThemeDialog.value = true }
 
         //Change measuring system
-        val systemOfUnitsOptions = listOf(R.string.metric, R.string.imperial)
-        val systemOfUnitsMap =
+        val distanceUnitsOptions = listOf(R.string.metric, R.string.imperial)
+        val distanceUnitsMap =
             mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
-        val (selectedSystemOfUnits, onSystemOfUnitsSelected) = remember {
+        val (selectedDistanceUnits, onDistanceUnitsSelected) = remember {
             mutableIntStateOf(
-                systemOfUnitsMap[measureUnit]
+                distanceUnitsMap[measureUnit]
                     ?: R.string.metric
             )
         }
-        val openSystemOfUnitsDialog = remember {
+        val openDistanceUnitsDialog = remember {
             mutableStateOf(false)
         }
         when {
-            openSystemOfUnitsDialog.value -> {
+            openDistanceUnitsDialog.value -> {
                 RadioDialog(
-                    onDismissRequest = { openSystemOfUnitsDialog.value = false },
-                    options = systemOfUnitsOptions,
-                    selectedOption = selectedSystemOfUnits,
-                    onOptionSelected = onSystemOfUnitsSelected
+                    onDismissRequest = { openDistanceUnitsDialog.value = false },
+                    options = distanceUnitsOptions,
+                    selectedOption = selectedDistanceUnits,
+                    onOptionSelected = onDistanceUnitsSelected
                 )
                 measureUnit =
-                    systemOfUnitsMap.filterValues { it == selectedSystemOfUnits }.keys.first()
+                    distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
             }
         }
         IconAndTextButton(
             label = stringResource(id = R.string.distance_units),
-            subLabel = stringResource(id = selectedSystemOfUnits)
-        ) { openSystemOfUnitsDialog.value = true }
+            subLabel = stringResource(id = selectedDistanceUnits)
+        ) { openDistanceUnitsDialog.value = true }
 
         HorizontalDivider(thickness = 1.dp)
         //Open About us dialog
