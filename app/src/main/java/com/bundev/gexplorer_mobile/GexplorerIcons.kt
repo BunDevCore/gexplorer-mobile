@@ -1,16 +1,19 @@
 package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.filled.Trophy
+import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Explore
+import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import kotlin.collections.List as __KtList
@@ -28,11 +31,13 @@ object GexplorerIcons {
                     Simple.Walk,
                     Simple.Explore,
                     Simple.AvgPace,
-                    Simple.Path
+                    Simple.Path,
+                    Simple.ExploreNearby
                 )
                 return _simple!!
             }
     }
+
     object Filled {
         private var _filled: __KtList<ImageVector>? = null
         val filled: __KtList<ImageVector>
@@ -44,11 +49,13 @@ object GexplorerIcons {
                     Filled.SocialLeaderboard,
                     Filled.Map,
                     Filled.Location,
-                    Filled.Trophy
+                    Filled.Trophy,
+                    Filled.Bookmark
                 )
                 return _filled!!
             }
     }
+
     object Outlined {
         private var _outlined: __KtList<ImageVector>? = null
         val outlined: __KtList<ImageVector>
@@ -60,7 +67,8 @@ object GexplorerIcons {
                     Outlined.SocialLeaderboard,
                     Outlined.Map,
                     Outlined.Location,
-                    Outlined.Trophy
+                    Outlined.Trophy,
+                    Outlined.Bookmark
                 )
                 return _outlined!!
             }

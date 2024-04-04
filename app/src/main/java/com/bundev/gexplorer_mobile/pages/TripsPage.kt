@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
@@ -30,6 +31,7 @@ import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
 import com.bundev.gexplorer_mobile.formatTime
+import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.measureUnit
 import com.bundev.gexplorer_mobile.selectedTabSave
@@ -130,6 +132,12 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        IconAndTextButton(
+            imageVector = GexplorerIcons.Filled.Bookmark,
+            label = stringResource(id = R.string.saved_trips)
+        ) {
+            //TODO show saved trips
+        }
         GroupingList(
             items = items,
             groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },

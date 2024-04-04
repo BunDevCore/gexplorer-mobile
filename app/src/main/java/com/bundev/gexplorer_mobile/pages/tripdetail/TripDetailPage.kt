@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -49,6 +50,8 @@ import com.bundev.gexplorer_mobile.formatDuration
 import com.bundev.gexplorer_mobile.formatPace
 import com.bundev.gexplorer_mobile.formatSpeed
 import com.bundev.gexplorer_mobile.formatTime
+import com.bundev.gexplorer_mobile.icons.filled.Bookmark
+import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
@@ -159,7 +162,7 @@ fun TripDetailPage(
 }
 
 @Composable
-private fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
+private fun TripTopBar(trip: Trip, onCloseClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(15.dp)
@@ -180,21 +183,62 @@ private fun TripTopBar(trip: Trip, onCloseRequest: () -> Unit) {
                 fontSize = 16.sp
             )
         }
-        CloseButton { onCloseRequest() }
+        Row {
+            SaveTripButton(
+                GexplorerIcons.Filled.Bookmark,
+                GexplorerIcons.Outlined.Bookmark,
+                trip
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            ActionButton(Icons.Default.Close) { onCloseClick() }
+        }
     }
 }
 
 @Composable
-private fun CloseButton(onCloseRequest: () -> Unit) {
+private fun SaveTripButton(
+    imageVectorTrue: ImageVector,
+    imageVectorFalse: ImageVector,
+    trip: Trip
+) {
+    val isTripSaved = remember {
+        mutableStateOf(trip.saved)
+    }
     SmallFloatingActionButton(
-        onClick = { onCloseRequest() },
+        onClick = {
+            isTripSaved.value = !isTripSaved.value
+            trip.saved = isTripSaved.value
+        },
+        modifier = Modifier
+            .width(40.dp)
+            .height(40.dp)
+    ) {
+        if (isTripSaved.value)
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = imageVectorTrue,
+                contentDescription = null
+            )
+        else
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = imageVectorFalse,
+                contentDescription = null
+            )
+    }
+}
+
+@Composable
+private fun ActionButton(imageVector: ImageVector, onClick: () -> Unit) {
+    SmallFloatingActionButton(
+        onClick = { onClick() },
         modifier = Modifier
             .width(40.dp)
             .height(40.dp)
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = Icons.Default.Close,
+            imageVector = imageVector,
             contentDescription = null
         )
     }

@@ -7,5 +7,6 @@ class Trip(
     val id: UUID? = null,
     val timeBegun: Instant,
     val timeEnded: Instant,
-    val distance: Double
+    val distance: Double,
+    var saved: Boolean = false
 )
