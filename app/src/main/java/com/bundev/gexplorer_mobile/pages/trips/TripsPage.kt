@@ -1,5 +1,6 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.trips
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,12 +15,16 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
@@ -27,6 +32,7 @@ import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
@@ -39,6 +45,7 @@ import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import me.thefen.gexplorerapi.dtos.TripDto
 import kotlin.time.Duration.Companion.hours
 
 private var DEBUG = true
@@ -122,11 +129,38 @@ private val tempTrips = listOf(
 
 @Composable
 fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) {
-    val items = tempTrips
-    if (items.isEmpty()) {
-        EmptyTripsPage()
-        return
+//    val items = tempTrips
+//    
+//    if (items.isEmpty()) {
+//        EmptyTripsPage()
+//        return
+//    }
+    
+
+    val vm = hiltViewModel<TripsViewModel>()
+    val state by vm.state.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.checkLogin()
+        Log.d("trips", "launch effect")
     }
+
+    Log.d("trips", "recomposed..., loggedIn=${state.loggedIn}")
+    
+    when (state.loggedIn) {
+        false -> return Text("please log in ffs") 
+        true -> {
+            Log.d("trips", "got auth success, fetchtrips")
+            if (state.trips.data == null)
+                vm.fetchTrips()
+        }
+        null -> return Text("loading...")
+    }
+    
+    if (state.trips.data == null) {
+        Log.d("trips", "state trips data is null (${state.trips.kind})")
+        return Text("loading...2")
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -139,21 +173,23 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
             //TODO show saved trips
         }
         GroupingList(
-            items = items,
-            groupBy = { it.timeBegun.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+            items = state.trips.data!!,
+            groupBy = { it.startTime.toLocalDateTime(TimeZone.currentSystemDefault()).date },
             title = { formatDate(it) },
         ) { trip ->
             TripItem(trip) {
-                val routeScreen = Screen.TripDetail.route
+//                val routeScreen = Screen.TripDetail.route + "/${trip.id}"
+                val routeScreen = "trip/${trip.id}"
+                Log.d("tripdetailentry", "entering $routeScreen")
                 if (selectedTabSave != routeScreen) {
                     selectedTabSave = routeScreen
                     changePage()
                     navController?.navigate(routeScreen) {
                         popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+//                            saveState = true
                         }
                         launchSingleTop = false
-                        restoreState = true
+//                        restoreState = true
                     }
                 }
             }
@@ -162,10 +198,10 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
 }
 
 @Composable
-private fun TripItem(trip: Trip, onClick: () -> Unit) {
-    val duration = (trip.timeEnded - trip.timeBegun)
-    val timeBegun = trip.timeBegun
-    val distance = trip.distance
+private fun TripItem(trip: TripDto, onClick: () -> Unit) {
+    val duration = (trip.endTime - trip.startTime)
+    val timeBegun = trip.startTime
+    val distance = trip.length
 
     TextButton(
         modifier = Modifier

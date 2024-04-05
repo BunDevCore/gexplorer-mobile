@@ -1,11 +1,7 @@
 package me.thefen.gexplorerapi
 
 import com.mapbox.geojson.Geometry
-import me.thefen.gexplorerapi.dtos.DetailedTripDto
-import me.thefen.gexplorerapi.dtos.DistrictDto
-import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
-import me.thefen.gexplorerapi.dtos.LoginDto
-import me.thefen.gexplorerapi.dtos.UserDto
+import me.thefen.gexplorerapi.dtos.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,7 +16,7 @@ interface GexplorerApi {
     @GET("Auth/check")
     suspend fun checkAuthCall(): Call<Unit>
     @POST("Auth/v2/login")
-    suspend fun login(@Body loginDto: LoginDto): String
+    suspend fun login(@Body loginDto: LoginDto): TokenDto
     
     // todo: register dto & endpoint
     

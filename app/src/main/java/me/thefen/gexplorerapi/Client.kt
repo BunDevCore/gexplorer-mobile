@@ -1,14 +1,20 @@
 package me.thefen.gexplorerapi
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import com.mapbox.geojson.GeometryAdapterFactory
 import com.mapbox.geojson.gson.GeoJsonAdapterFactory
+import com.mapbox.maps.extension.style.expressions.dsl.generated.get
+import kotlinx.datetime.Instant
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
 
 class AuthorizationInterceptor(private val getToken: () -> String? = {null}) : Interceptor {
     
@@ -29,13 +35,21 @@ class AuthorizationInterceptor(private val getToken: () -> String? = {null}) : I
 
 private const val BASE_URL = "http://fendeavour:5107/"
 
-class RetrofitClient(private var _token: String? = null) {
-    fun setToken(token: String?) {
-        _token = token
+class InstantDateDeserializer: JsonDeserializer<Instant> {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): Instant? {
+        return json?.asString?.let {
+            Instant.parse(it)
+        }
     }
+}
+
+class RetrofitClient(getToken: () -> String? ) {
     
-    
-    private val authInterceptor = AuthorizationInterceptor { _token }
+    private val authInterceptor = AuthorizationInterceptor(getToken)
 
     private val httpClient: OkHttpClient by lazy {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -55,6 +69,7 @@ class RetrofitClient(private var _token: String? = null) {
     val gson = GsonBuilder()
         .registerTypeAdapterFactory(GeoJsonAdapterFactory.create())
         .registerTypeAdapterFactory(GeometryAdapterFactory.create())
+        .registerTypeAdapter(Instant::class.java, InstantDateDeserializer())
         .create()
     
     val retrofit: Retrofit by lazy {

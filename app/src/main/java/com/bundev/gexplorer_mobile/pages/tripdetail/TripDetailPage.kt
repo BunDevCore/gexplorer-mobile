@@ -4,29 +4,14 @@ import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,24 +25,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.*
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
-import com.bundev.gexplorer_mobile.formatDate
-import com.bundev.gexplorer_mobile.formatDistance
-import com.bundev.gexplorer_mobile.formatDuration
-import com.bundev.gexplorer_mobile.formatPace
-import com.bundev.gexplorer_mobile.formatSpeed
-import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Path
-import com.bundev.gexplorer_mobile.measureUnit
-import com.bundev.gexplorer_mobile.navigateTo
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -73,7 +50,7 @@ import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
 import com.mapbox.maps.extension.style.style
 import kotlinx.datetime.Clock
 import java.text.DateFormat
-import java.util.Locale
+import java.util.*
 import kotlin.time.Duration.Companion.hours
 
 @OptIn(MapboxExperimental::class)
@@ -83,11 +60,15 @@ fun TripDetailPage(
     navController: NavHostController? = null,
     changePage: () -> Unit,
 ) {
-    val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
+    Log.d("tripdetail", "TRIP ID IN PARAMETER IS $tripId")
+    
+//    val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
     val vm = hiltViewModel<TripDetailViewModel>()
     val state by vm.state.collectAsState()
     LaunchedEffect(vm) {
-        vm.fetchTrip(tripId)
+        Log.d("tripdetail", "tripdetail: getting $tripId")
+        vm.reset()
+        vm.fetchTrip(tripId ?: error("no tripId provided to tripdetail page"))
     }
     val configuration = LocalConfiguration.current
     val mapViewportState = rememberMapViewportState {
@@ -101,7 +82,12 @@ fun TripDetailPage(
     val geoJsonResource = remember {
         mutableStateOf("")
     }
-    state.runIfSuccess { geoJsonResource.value = state.data!!.gpsPolygon.toJson() }
+    state.runIfSuccess {
+        Log.d("tripdetail", "fetched geojson! rawr")
+        Log.d("tripdetail", "geojson trip id: ${state.data!!.id}")
+        geoJsonResource.value = state.data!!.gpsPolygon.toJson()
+    }
+    Log.d("tripdetail", "geojson resource len = ${geoJsonResource.value.length}")
     val secondary = colorResource(id = R.color.secondaryTemp)
     val style = style(Style.MAPBOX_STREETS) {
         +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }

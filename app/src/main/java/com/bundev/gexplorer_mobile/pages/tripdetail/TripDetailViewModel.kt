@@ -22,19 +22,19 @@ class TripDetailViewModel @Inject constructor(
     val state: StateFlow<ApiResource<DetailedTripDto>>
         get() = _state
 
-    init {
-        viewModelScope.launch {
-            repo.login(LoginDto("fen.", "testTEST123"))
-        }
-    }
-
     fun fetchTrip(tripId: String) {
-        Log.d("gexapi", "fetchTrip called")
+        Log.d("tripdetailvm", "fetchTrip called")
 
         fetchAttempted = true
         viewModelScope.launch {
-            Log.d("gexapi", "launching trip fetch...")
+            Log.d("tripdetailvm", "launching trip fetch... $tripId")
             _state.value = repo.getTrip(tripId)
         }
+    }
+
+    fun reset() {
+        Log.d("tripdetailvm", "reset called")
+        fetchAttempted = false
+        _state.value = ApiResource.Loading()
     }
 }

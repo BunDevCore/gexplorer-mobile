@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import com.bundev.gexplorer_mobile.repo.GexplorerRepository
+import me.thefen.gexplorerapi.dtos.LoginDto
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,13 +22,27 @@ class AccountViewModel @Inject constructor(
     val state: StateFlow<ApiResource<UserDto>>
         get() = _state
 
-    fun fetchUser(username: String) {
+    fun fetchSelf() {
         Log.d("gexapi", "fetchUser called")
 
         fetchAttempted = true
         viewModelScope.launch {
-            Log.d("gexapi", "launching user fetch...")
-            _state.value = repo.getUser(username)
+            Log.d("gexapi", "launching self fetch...")
+            _state.value = repo.getSelf()
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repo.logout()
+        }
+    }
+
+    fun login() {
+        Log.d("gexapi", "login called")
+        
+        viewModelScope.launch {
+            repo.login(LoginDto("fen.", "testTEST123"))
         }
     }
 }

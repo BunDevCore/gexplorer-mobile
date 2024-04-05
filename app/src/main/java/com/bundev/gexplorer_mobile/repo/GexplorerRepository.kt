@@ -1,5 +1,6 @@
 package com.bundev.gexplorer_mobile.repo
 
+import android.util.Log
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.mapbox.geojson.Geometry
 import me.thefen.gexplorerapi.GexplorerApi
@@ -11,23 +12,16 @@ import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.UserDto
 import java.util.UUID
 
-class GexplorerRepository(token: String?) {
-    private var gexplorerApiToken: String? = null
-        set(value) {
-            field = value
-            client.setToken(value)
-        }
-
+class GexplorerRepository(private var _token: String? = null) {
     var username: String? = null
     private var id: UUID? = null
+    
 
-    val client = RetrofitClient(gexplorerApiToken)
+    val client = RetrofitClient {
+        Log.d("gexapi", "token getter called, token is $_token")
+        _token}
     val api: GexplorerApi by lazy {
         client.retrofit.create(GexplorerApi::class.java)
-    }
-
-    init {
-        gexplorerApiToken = token
     }
 
     private suspend fun <T> apiWrapper(block: suspend (GexplorerRepository) -> T): ApiResource<T> {
@@ -46,19 +40,28 @@ class GexplorerRepository(token: String?) {
 
 
     suspend fun login(loginDto: LoginDto): ApiResource<Unit> {
-        val result = runCatching { api.login(loginDto) }.mapCatching {
-            val user = api.getUser(loginDto.userName)
-            Pair(it, user.id)
-        }
+        val result = runCatching { api.login(loginDto) }
         return result.fold(
             {
-                gexplorerApiToken = it.first
+                val user = api.getUser(loginDto.userName)
+                
+                _token = it.token
+                Log.d("gexapi","SETTING GODFORSAKEN TOKEN TO $_token")
                 username = loginDto.userName
-                id = it.second
+                id = user.id
                 ApiResource.Success(Unit)
             },
-            { ApiResource.Error(Exception()) }
+            {
+                Log.d("gexapi","login failed?? $it")
+                ApiResource.Error(Exception())
+            }
         )
+    }
+    
+    fun logout() {
+        _token = null
+        username = null
+        id = null
     }
 
     // this will throw an exception if username is null and therefore produce an ApiResource.Error, which is exactly what we want

@@ -1,5 +1,6 @@
 package com.bundev.gexplorer_mobile.pages.account
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,15 +32,13 @@ import com.bundev.gexplorer_mobile.navigateTo
 
 @Composable
 fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit) {
-    val username = "fen."
     val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()
-    LaunchedEffect(vm) {
-        vm.fetchUser(username)
+
+    LaunchedEffect(Unit) {
+        vm.fetchSelf()
     }
-    val user = remember {
-        mutableStateOf("")
-    }
+    
     if (funi.getValue() == 2024L) {
         //TODO give achievement "The first icon"
     }
@@ -52,17 +49,19 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (user.value.isNotEmpty()) {
-            Text(text = "Witaj ${user.value}")
+        if (state is ApiResource.Success) {
+            val user = state.data!!
+            Log.d("user is", "$user")
+            Text(text = "Witaj ${user.username}")
             IconAndTextButton(
                 label = stringResource(id = R.string.log_out),
                 imageVector = Icons.Filled.Person,
-            ) { user.value = "" }
+            ) { vm.logout(); vm.fetchSelf() }
         } else {
             IconAndTextButton(
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
-            ) { user.value = "UŻYTKOWNIK" }
+            ) { vm.login(); vm.fetchSelf() }
         }
         IconAndTextButton(
             label = stringResource(id = R.string.settings),
