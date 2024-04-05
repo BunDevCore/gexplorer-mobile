@@ -186,10 +186,10 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
                     changePage()
                     navController?.navigate(routeScreen) {
                         popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
+//                            saveState = true     // the navigation WILL use stale data if it's uncommented
                         }
                         launchSingleTop = false
-//                        restoreState = true
+//                        restoreState = true      // the navigation WILL use stale data if it's uncommented
                     }
                 }
             }
