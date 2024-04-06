@@ -136,6 +136,9 @@ private fun GexplorerNavigation() {
                     ) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Statistics.route) { StatisticsPage() }
+                composable(Screen.LogIn.route) {
+                    LogInPage(navController) { selectedTab = selectedTabSave }
+                }
             }
         }
     }

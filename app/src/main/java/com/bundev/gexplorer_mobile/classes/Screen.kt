@@ -11,10 +11,10 @@ import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.icons.filled.Analytics
 import com.bundev.gexplorer_mobile.icons.filled.Map
-import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.filled.Trophy
 import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.Map
-import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
+import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 
@@ -43,8 +43,8 @@ sealed class Screen(
         Screen(
             "achievements",
             R.string.achievements,
-            GexplorerIcons.Filled.SocialLeaderboard,
-            GexplorerIcons.Outlined.SocialLeaderboard
+            GexplorerIcons.Filled.Trophy,
+            GexplorerIcons.Outlined.Trophy
         )
 
     data object Account :
@@ -83,5 +83,13 @@ sealed class Screen(
             R.string.statistics,
             GexplorerIcons.Filled.Analytics,
             GexplorerIcons.Outlined.Analytics
+        )
+
+    data object LogIn :
+        Screen(
+            "login",
+            R.string.log_in,
+            Icons.Filled.Person,
+            Icons.Outlined.Person
         )
 }

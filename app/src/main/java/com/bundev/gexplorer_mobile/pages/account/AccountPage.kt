@@ -38,7 +38,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
     LaunchedEffect(Unit) {
         vm.fetchSelf()
     }
-    
+
     if (funi.getValue() == 2024L) {
         //TODO give achievement "The first icon"
     }
@@ -49,6 +49,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        //Log in/out button
         if (state is ApiResource.Success) {
             val user = state.data!!
             Log.d("user is", "$user")
@@ -61,16 +62,26 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             IconAndTextButton(
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
-            ) { vm.login(); vm.fetchSelf() }
+            ) {
+                vm.login()
+                vm.fetchSelf()
+                navigateTo(navController, Screen.LogIn.route) { changePage() }
+            }
         }
+
+        //Settings button
         IconAndTextButton(
             label = stringResource(id = R.string.settings),
             imageVector = Screen.Settings.iconOutline,
         ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
+
+        //Achievements button
         IconAndTextButton(
             label = stringResource(id = R.string.achievements),
             imageVector = if (funi.getValue() != 2024L) GexplorerIcons.Outlined.Trophy else GexplorerIcons.Outlined.SocialLeaderboard
         ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
+
+        //Statistics button
         IconAndTextButton(
             label = stringResource(id = R.string.statistics),
             imageVector = GexplorerIcons.Outlined.Analytics
