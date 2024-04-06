@@ -3,14 +3,26 @@ package com.bundev.gexplorer_mobile
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import android.text.format.DateUtils
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.bundev.gexplorer_mobile.classes.Screen
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -161,6 +174,74 @@ fun navigateTo(
             restoreState = true
         }
     }
+}
+
+@Composable
+fun MiddleCard(display: @Composable () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card {
+            Column(modifier = Modifier.padding(10.dp)) {
+                display()
+            }
+        }
+    }
+}
+
+@Composable
+fun ActionButton(imageVector: ImageVector, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    SmallFloatingActionButton(
+        onClick = { onClick() },
+        modifier = modifier
+            .width(40.dp)
+            .height(40.dp)
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = imageVector,
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+fun TitleBar(
+    text: String,
+    navController: NavHostController?,
+    goToScreen: Screen,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ActionButton(imageVector = Icons.AutoMirrored.Default.ArrowBack) {
+            navigateTo(navController, goToScreen.route) { onClick() }
+        }
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TitleText(text = text)
+            Spacer(modifier = Modifier.width(56.dp))
+        }
+    }
+}
+
+@Composable
+fun TitleText(text: String) {
+    Text(
+        text = text,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.Bold
+    )
 }
 
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {

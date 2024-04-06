@@ -1,6 +1,6 @@
 package com.bundev.gexplorer_mobile.pages
 
-import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,15 +41,19 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.classes.Achievement
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Map
@@ -98,46 +103,36 @@ private val lockedAchievements = listOf(
 )
 
 @Composable
-fun AchievementsPage() {
+fun AchievementsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        TitleBar(stringResource(id = R.string.achievements), navController, Screen.Account) {
+            changePage()
+        }
         AchievementProgressBar(achievementsGot.size, achievementsGot.size + lockedAchievements.size)
         GroupingList(
             items = achievementsGot,
             groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
-            title = { formatDate(it) }) { achievement ->
-            OpenAchievementDialog(achievement = achievement)
+            title = { formatDate(it) }
+        ) { achievement ->
+            AchievementItem(achievement = achievement)
         }
         GroupingList(
             items = lockedAchievements,
             groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
             title = { stringResource(id = R.string.locked_achievements) }
         ) { achievement ->
-            OpenAchievementDialog(achievement = achievement)
+            AchievementItem(achievement = achievement)
         }
     }
 }
 
 @Composable
-private fun OpenAchievementDialog(achievement: Achievement) {
-    val openAchievementDialog = remember { mutableStateOf(false) }
-    when {
-        openAchievementDialog.value -> {
-            AchievementDialog(achievement = achievement) {
-                openAchievementDialog.value = false
-            }
-        }
-    }
-    AchievementItem(achievement = achievement) {
-        if (achievement.description is String) openAchievementDialog.value = true
-    }
-}
-
-@Composable
-private fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
+private fun AchievementItem(achievement: Achievement) {
+    //values from achievement
     val imageVector = achievement.imageVector
     val contentDescription: String? = null
     val label = achievement.name
@@ -146,22 +141,40 @@ private fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
         if (achievement.timeAchieved == Instant.DISTANT_PAST) null
         else achievement.timeAchieved
 
+    //check the orientation of the device
+    val orientation = LocalConfiguration.current.orientation
+
+    //open the achievement dialog
+    val openAchievementDialog = remember { mutableStateOf(false) }
+    val onClick = { openAchievementDialog.value = true }
+    when {
+        openAchievementDialog.value -> {
+            AchievementDialog(achievement = achievement) {
+                openAchievementDialog.value = false
+            }
+        }
+    }
     TextButton(
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .padding(bottom = 7.5.dp),
         onClick = { onClick() },
         shape = RoundedCornerShape(20.dp),
-        contentPadding = PaddingValues(0.dp),
-        enabled = achievement.description is String
+        contentPadding = PaddingValues(0.dp)
     ) {
         ListItem(
             headlineContent = {
-                Text(text = label, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = label,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = if (orientation == ORIENTATION_PORTRAIT) 2 else 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             supportingContent = {
-                if (description is String)
-                    Text(text = description)
+                if (description.isNotEmpty())
+                    Text(text = description, maxLines = 1, overflow = TextOverflow.Ellipsis)
             },
             leadingContent = {
                 Icon(
@@ -183,6 +196,9 @@ private fun AchievementItem(achievement: Achievement, onClick: () -> Unit) {
 
 @Composable
 private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> Unit) {
+    val timeAchieved =
+        if (achievement.timeAchieved == Instant.DISTANT_PAST) null
+        else achievement.timeAchieved
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -197,13 +213,29 @@ private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> 
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = achievement.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(30.dp),
+                        imageVector = achievement.imageVector,
+                        contentDescription = null,
+                        tint = if (timeAchieved != null) LocalContentColor.current else Color.Gray
+                    )
+                    Text(
+                        text = achievement.name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                }
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = achievement.description!!)
+                if (achievement.description.isNotEmpty())
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = achievement.description)
+                    }
             }
         }
     }
@@ -212,14 +244,14 @@ private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> 
 @Composable
 private fun AchievementProgressBar(got: Int, outOf: Int) {
     if (got == 0) return //TODO when user is logged in show progress bar at 0%
-    val configuration = LocalConfiguration.current
+    val orientation = LocalConfiguration.current.orientation
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .padding(top = 10.dp)
     ) {
-        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (orientation == ORIENTATION_PORTRAIT) {
             Column(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
@@ -280,5 +312,5 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
 @Preview(locale = "pl", showBackground = true)
 @Composable
 private fun AchievementsPagePreview() {
-    AchievementsPage()
+    AchievementsPage {}
 }

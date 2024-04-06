@@ -120,7 +120,9 @@ private fun GexplorerNavigation() {
                 composable(Screen.Trips.route) {
                     TripsPage(navController) { selectedTab = selectedTabSave }
                 }
-                composable(Screen.Achievements.route) { AchievementsPage() }
+                composable(Screen.Achievements.route) {
+                    AchievementsPage(navController) { selectedTab = selectedTabSave }
+                }
                 composable(Screen.Places.route) { PlacesPage() }
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }

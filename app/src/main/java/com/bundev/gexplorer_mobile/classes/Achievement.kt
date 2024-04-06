@@ -12,7 +12,7 @@ class Achievement(
     val imageVector: ImageVector = GexplorerIcons.Filled.Trophy,
     val color: Color? = null,
     val name: String,
-    val description: String? = null,
+    val description: String = "",
     val timeAchieved: Instant = Instant.DISTANT_PAST,
     val achievedOnTripId: UUID? = null
 )
