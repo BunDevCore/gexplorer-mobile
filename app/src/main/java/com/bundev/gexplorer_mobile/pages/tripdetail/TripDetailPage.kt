@@ -211,22 +211,6 @@ private fun SaveTripButton(
     }
 }
 
-@Composable
-private fun ActionButton(imageVector: ImageVector, onClick: () -> Unit) {
-    SmallFloatingActionButton(
-        onClick = { onClick() },
-        modifier = Modifier
-            .width(40.dp)
-            .height(40.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = imageVector,
-            contentDescription = null
-        )
-    }
-}
-
 @OptIn(MapboxExperimental::class)
 @Composable
 private fun TripMap(
@@ -347,6 +331,19 @@ private fun ValueElement(
             }
         }
     }
+}
+
+@Preview(locale = "pl")
+@Composable
+private fun TripTopBarPreview() {
+    TripTopBar(
+        trip =
+        Trip(
+            distance = 0.987,
+            timeBegun = Clock.System.now() - 112.hours,
+            timeEnded = Clock.System.now() - 111.02.hours
+        )
+    ) {}
 }
 
 @Preview(locale = "pl")

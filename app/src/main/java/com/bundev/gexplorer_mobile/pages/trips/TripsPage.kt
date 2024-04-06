@@ -29,10 +29,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
+import com.bundev.gexplorer_mobile.MiddleCard
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
-import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
@@ -135,7 +134,6 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
 //        EmptyTripsPage()
 //        return
 //    }
-    
 
     val vm = hiltViewModel<TripsViewModel>()
     val state by vm.state.collectAsState()
@@ -145,22 +143,23 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
     }
 
     Log.d("trips", "recomposed..., loggedIn=${state.loggedIn}")
-    
+
     when (state.loggedIn) {
-        false -> return Text("please log in ffs") 
+        false -> return MiddleCard { Text("please log in ffs") }
         true -> {
             Log.d("trips", "got auth success, fetchtrips")
             if (state.trips.data == null)
                 vm.fetchTrips()
         }
-        null -> return Text("loading...")
+
+        null -> return MiddleCard { Text("loading...") }
     }
-    
+
     if (state.trips.data == null) {
         Log.d("trips", "state trips data is null (${state.trips.kind})")
-        return Text("loading...2")
+        return MiddleCard { Text("loading...2") }
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
