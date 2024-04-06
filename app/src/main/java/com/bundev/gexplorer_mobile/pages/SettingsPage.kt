@@ -33,24 +33,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
+import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.CenteredTextButton
 import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.TitleBar
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.measureUnit
 
 @Composable
-fun SettingsPage() {
+fun SettingsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(id = R.string.settings),
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(all = 10.dp)
-        )
+        TitleBar(stringResource(id = R.string.settings), navController, Screen.Account) {
+            changePage()
+        }
         val context = LocalContext.current
 
         // Change language dialog
@@ -282,5 +282,5 @@ private fun changeLanguage(
 @Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
 private fun SettingsPagePreview() {
-    SettingsPage()
+    SettingsPage {}
 }

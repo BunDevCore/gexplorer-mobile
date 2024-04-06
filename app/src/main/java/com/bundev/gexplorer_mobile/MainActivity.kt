@@ -127,8 +127,11 @@ private fun GexplorerNavigation() {
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }
                 }
-                composable(Screen.Settings.route) { SettingsPage() }
-                composable(Screen.TripDetail.route, 
+                composable(Screen.Settings.route) {
+                    SettingsPage(navController) { selectedTab = selectedTabSave }
+                }
+                composable(
+                    Screen.TripDetail.route,
                     arguments = listOf(navArgument("tripId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     Log.d("tripdetailnavigation", "the godforsaken argument is ${backStackEntry.arguments?.getString("tripId")}")
@@ -137,7 +140,9 @@ private fun GexplorerNavigation() {
                         navController = navController
                     ) { selectedTab = selectedTabSave }
                 }
-                composable(Screen.Statistics.route) { StatisticsPage() }
+                composable(Screen.Statistics.route) {
+                    StatisticsPage(navController) { selectedTab = selectedTabSave }
+                }
                 composable(Screen.LogIn.route) {
                     LogInPage(navController) { selectedTab = selectedTabSave }
                 }
