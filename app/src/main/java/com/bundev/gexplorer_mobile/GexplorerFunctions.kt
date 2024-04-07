@@ -53,12 +53,32 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 @Composable
+fun StackedTextButton(
+    label: String,
+    modifier: Modifier = Modifier,
+    subLabel: String = "",
+    fontSizeLabel: TextUnit = 18.sp,
+    fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
+    onClick: () -> Unit
+) {
+    ButtonGenerator(
+        label = label,
+        subLabel = subLabel,
+        modifier = modifier,
+        fontSizeLabel = fontSizeLabel,
+        fontSizeSubLabel = fontSizeSubLabel
+    ) {
+        onClick()
+    }
+}
+
+@Composable
 fun IconAndTextButton(
     label: String,
     modifier: Modifier = Modifier,
     subLabel: String = "",
-    imageVector: ImageVector? = null,
-    imageDescription: String? = null,
+    imageVector: ImageVector,
+    imageDescription: String = "",
     fontSizeLabel: TextUnit = 18.sp,
     fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
     onClick: () -> Unit,

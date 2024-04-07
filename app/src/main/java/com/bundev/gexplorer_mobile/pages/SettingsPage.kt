@@ -35,8 +35,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.CenteredTextButton
-import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.StackedTextButton
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.funi
@@ -76,7 +76,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                 changeLanguage(context, selectedLanguage)
             }
         }
-        IconAndTextButton(
+        StackedTextButton(
             label = stringResource(id = R.string.language),
             subLabel = stringResource(id = R.string.language_chosen)
         ) { openLanguageDialog.value = true }
@@ -100,7 +100,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                 )
             }
         }
-        IconAndTextButton(
+        StackedTextButton(
             label = stringResource(id = R.string.theme),
             subLabel = stringResource(id = selectedTheme)
         )
@@ -131,7 +131,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                     distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
             }
         }
-        IconAndTextButton(
+        StackedTextButton(
             label = stringResource(id = R.string.distance_units),
             subLabel = stringResource(id = selectedDistanceUnits)
         ) { openDistanceUnitsDialog.value = true }
@@ -146,7 +146,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                 AboutUsDialog { openAboutUsDialog.value = false }
             }
         }
-        IconAndTextButton(
+        StackedTextButton(
             label = stringResource(id = R.string.about_us)
         ) { openAboutUsDialog.value = true }
         if (funi.getValue() != 0L) {
