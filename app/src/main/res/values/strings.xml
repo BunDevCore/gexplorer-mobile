@@ -13,9 +13,9 @@
     <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiaW5maW5pZmVuIiwiYSI6ImNsZ21uc3d1YjA3b2QzZW1tcWQ4ZWhuZ3kifQ.ide6_yWZQVDRD546IXsfDw</string>
     <string name="location_needed">location_needed</string>
     <string name="cancel">-cancel</string>
-    <string name="light_theme">light</string>
-    <string name="dark_theme">dark</string>
-    <string name="black_amoled_theme">black (AMOLED)</string>
+    <string name="theme_light">light</string>
+    <string name="theme_dark">dark</string>
+    <string name="theme_black_amoled">black (AMOLED)</string>
     <string name="about_us">about_us</string>
     <string name="metric">metric</string>
     <string name="imperial">imperial</string>

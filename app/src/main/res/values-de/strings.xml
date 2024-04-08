@@ -9,9 +9,9 @@
     <string name="theme">Thema</string>
     <string name="location_needed">Zugang zu Ihre Lokalization ist notwendig. Danke</string>
     <string name="cancel">Abbrechen</string>
-    <string name="light_theme">Licht</string>
-    <string name="dark_theme">Dunkel</string>
-    <string name="black_amoled_theme">Schwarz (AMOLED)</string>
+    <string name="theme_light">Licht</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_black_amoled">Schwarz (AMOLED)</string>
     <string name="about_us">Über uns</string>
     <string name="metric">-metric</string>
     <string name="imperial">-imperial</string>

@@ -77,7 +77,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
 
         //Change theme dialog
         val themeOptions =
-            listOf(R.string.light_theme, R.string.dark_theme, R.string.black_amoled_theme)
+            listOf(R.string.theme_light, R.string.theme_dark, R.string.theme_black_amoled)
         val (selectedTheme, onThemeSelected) = remember {
             mutableIntStateOf(themeOptions[1]) //TODO: On first load set phones defaults
         }
