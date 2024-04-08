@@ -87,7 +87,7 @@ val items = listOf(
 )
 
 val funi = Funi()
-var measureUnit: MeasureUnit = MeasureUnit.METER
+var distanceUnit: MeasureUnit = MeasureUnit.METER
 var selectedTabSave = ""
 
 @AndroidEntryPoint

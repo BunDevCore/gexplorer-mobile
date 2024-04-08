@@ -248,7 +248,7 @@ private fun TripContent(trip: Trip) {
         ValueElement(
             imageVector = GexplorerIcons.Simple.Path,
             title = stringResource(id = R.string.distance)
-        ) { formatDistance(distanceInMeters = distance, measureUnit = measureUnit) }
+        ) { formatDistance(distanceInMeters = distance, measureUnit = distanceUnit) }
         ValueElement(
             imageVector = GexplorerIcons.Outlined.Timer,
             title = stringResource(id = R.string.total_time)
@@ -261,7 +261,7 @@ private fun TripContent(trip: Trip) {
                 formatSpeed(
                     distanceInMeters = distance,
                     duration = duration,
-                    measureUnit = measureUnit
+                    measureUnit = distanceUnit
                 )
             }
             ValueElement(
@@ -271,7 +271,7 @@ private fun TripContent(trip: Trip) {
                 formatPace(
                     duration = duration,
                     distanceInMeters = distance,
-                    measureUnit = measureUnit
+                    measureUnit = distanceUnit
                 )
             }
         } else {

@@ -38,7 +38,7 @@ import com.bundev.gexplorer_mobile.formatDuration
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.simple.Walk
-import com.bundev.gexplorer_mobile.measureUnit
+import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.selectedTabSave
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
@@ -216,7 +216,7 @@ private fun TripItem(trip: TripDto, onClick: () -> Unit) {
                 Text(
                     text = formatDistance(
                         distanceInMeters = distance,
-                        measureUnit = measureUnit
+                        measureUnit = distanceUnit
                     )
                 )
             },

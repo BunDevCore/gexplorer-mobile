@@ -1,8 +1,10 @@
 package com.bundev.gexplorer_mobile
 
+import android.content.Context
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import android.text.format.DateUtils
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,6 +26,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,11 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.classes.Screen
@@ -59,7 +67,7 @@ fun StackedTextButton(
     subLabel: String = "",
     fontSizeLabel: TextUnit = 18.sp,
     fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     ButtonGenerator(
         label = label,
@@ -232,7 +240,7 @@ fun TitleBar(
     text: String,
     navController: NavHostController?,
     goToScreen: Screen,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -359,6 +367,53 @@ fun getShortUnitName(unit: MeasureUnit): Int {
         MeasureUnit.KILOMETER_PER_HOUR -> R.string.unit_kilometer_per_hour
         MeasureUnit.MILE_PER_HOUR -> R.string.unit_mile_per_hour
         else -> R.string.unit_not_found
+    }
+}
+
+fun changeLanguage(
+    context: Context,
+    languageStringResource: Int,
+) {
+    AppCompatDelegate.setApplicationLocales(
+        LocaleListCompat.forLanguageTags(
+            context.resources.getResourceEntryName(languageStringResource)
+        )
+    )
+}
+
+@Composable
+fun RadioList(
+    options: List<Int>,
+    selectedOption: Int,
+    onOptionSelected: (Int) -> Unit,
+) {
+    Column(modifier = Modifier.selectableGroup()) {
+        options.forEach { option ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .selectable(
+                        selected = (option == selectedOption),
+                        onClick = {
+                            onOptionSelected(option)
+                        },
+                        role = Role.RadioButton
+                    )
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = (option == selectedOption),
+                    onClick = null
+                )
+                Text(
+                    text = stringResource(id = option),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+        }
     }
 }
 
