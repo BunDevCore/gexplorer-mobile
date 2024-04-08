@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboard_welcome">Welcome to</string>
+    <string name="onboard_description">On next screens you can set your settings and asked to give needed permissions</string>
+    <string name="onboard_language">Select your preffered language</string>
+    <string name="onboard_theme">Select theme</string>
+    <string name="onboard_distance_unit">Select a unit of distance</string>
+    <string name="onboard_permissions">Permissions</string>
+    <string name="onboard_permissions_button">Give permissions</string>
+    <string name="onboard_app_description">App that helps you discover the city of Gdańsk</string>
+</resources>

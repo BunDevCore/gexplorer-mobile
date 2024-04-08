@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboard_welcome">Witaj w</string>
+    <string name="onboard_description">Na następnych stronach wybierzesz własne ustawienia oraz zostaniesz poproszony o podanie wymaganych uprawnień</string>
+    <string name="onboard_language">Wybierz język</string>
+    <string name="onboard_theme">Wybierz motyw</string>
+    <string name="onboard_distance_unit">Wybierz jednostkę długości</string>
+    <string name="onboard_permissions">Uprawnienia</string>
+    <string name="onboard_permissions_button">Daj uprawnienia</string>
+    <string name="onboard_app_description">Aplikacja wspomagająca eksplorację miasta</string>
+</resources>

@@ -31,4 +31,6 @@
     <string name="places">Miejsca</string>
     <string name="saved_trips">Zapisane podróże</string>
     <string name="statistics">Statystyki</string>
+    <string name="next">Dalej</string>
+    <string name="get_started">Rozpocznij</string>
 </resources>

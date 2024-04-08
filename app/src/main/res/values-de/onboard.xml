@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboard_welcome">Willkommen in</string>
+    <string name="onboard_description">-settings_and_permissions</string>
+    <string name="onboard_language">-select_language</string>
+    <string name="onboard_theme">-select_theme</string>
+    <string name="onboard_distance_unit">-select_distance_unit</string>
+    <string name="onboard_permissions">-permissions</string>
+    <string name="onboard_permissions_button">-give_permissions</string>
+    <string name="onboard_app_description">-app_description</string>
+</resources>

@@ -31,4 +31,6 @@
     <string name="places">-places</string>
     <string name="saved_trips">-saved_trips</string>
     <string name="statistics">-statistics</string>
+    <string name="next">-next</string>
+    <string name="get_started">-get_started</string>
 </resources>

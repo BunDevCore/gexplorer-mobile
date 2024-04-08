@@ -31,4 +31,6 @@
     <string name="places">Places</string>
     <string name="saved_trips">Saved trips</string>
     <string name="statistics">Statistics</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get started</string>
 </resources>
