@@ -219,34 +219,11 @@ private fun RadioDialog(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(all = 20.dp)
             )
-            Column(modifier = Modifier.selectableGroup()) {
-                options.forEach { option ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .selectable(
-                                selected = (option == selectedOption),
-                                onClick = {
-                                    onOptionSelected(option)
-                                },
-                                role = Role.RadioButton
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = (option == selectedOption),
-                            onClick = null
-                        )
-                        Text(
-                            text = stringResource(id = option),
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-            }
+            RadioList(
+                options = options,
+                selectedOption = selectedOption,
+                onOptionSelected = onOptionSelected
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -260,17 +237,6 @@ private fun RadioDialog(
             }
         }
     }
-}
-
-private fun changeLanguage(
-    context: Context,
-    languageStringResource: Int
-) {
-    AppCompatDelegate.setApplicationLocales(
-        LocaleListCompat.forLanguageTags(
-            context.resources.getResourceEntryName(languageStringResource)
-        )
-    )
 }
 
 @Preview(showBackground = true, locale = "pl", name = "pl")
