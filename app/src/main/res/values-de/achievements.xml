@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+o<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="achievements">-achievements</string>
-    <string name="locked_achievements">-locked_achievements</string>
-    <string name="achievement_zsl">-zsl</string>
-    <string name="achievement_a">-a</string>
-    <string name="achievement_b">-b</string>
-    <string name="achievement_ztm1">-ztm1</string>
-    <string name="achievement_ztm2">-ztm2</string>
-    <string name="achievement_ztm3">-ztm3</string>
-    <string name="achievement_lot">-lot</string>
-    <string name="achievement_lechia">-lechia</string>
-    <string name="achievement_manhattan">-manhattan</string>
-    <string name="achievement_madison">-madison</string>
-    <string name="achievement_odpady">-odpady</string>
-    <string name="achievement_lotos">-lotos</string>
-    <string name="achievement_zsl_forum">-zsl_forum</string>
-    <string name="achievement_window">-window</string>
-    <string name="achievement_poland_b">-poland_b</string>
-    <string name="achievement_rossija">-rossija</string>
-    <string name="achievement_prawo_jazdy">-prawo_jazdy</string>
+    <string name="achievements">Erfolge</string>
+    <string name="locked_achievements">Blockierte Erfolge</string>
+    <string name="achievement_zsl">Fernmeldetechnische Gesamtschule</string>
+    <string name="achievement_a">Mit dem Bahn nach Zoppot</string>
+    <string name="achievement_b">BookLink</string>
+    <string name="achievement_ztm1">Stadtverkehrsanlage Enthusiast</string>
+    <string name="achievement_ztm2">Stadtverkehrsanlage Enthusiast 2</string>
+    <string name="achievement_ztm3">Stadtverkehrsanlage Enthusiast Spezial</string>
+    <string name="achievement_lot">Landing On Tempelhof</string>
+    <string name="achievement_lechia">Baltischer Sportverein</string>
+    <string name="achievement_manhattan">Willkomen zu New York</string>
+    <string name="achievement_madison">Madison Sqaure Garden</string>
+    <string name="achievement_odpady">Müll</string>
+    <string name="achievement_lotos">Lotos Blume</string>
+    <string name="achievement_zsl_forum">Beste Schule in Danzig + "Forum" Einkaufszentrum</string>
+    <string name="achievement_window">Ulanen kamen am Fenster an</string>
+    <string name="achievement_poland_b">Ostflanke</string>
+    <string name="achievement_rossija">Moskau! Moskau! Komm, wir tanzen auf dem Tisch, Bis der Tisch zusammenbricht, Ha, ha, ha, ha, ha, hey</string>
+    <string name="achievement_prawo_jazdy">Fahrschein</string>
     <string name="achievement_obr_wybrzeza">-obr_wybrzeza</string>
     <string name="achievement_praktiker">-praktiker</string>
     <string name="achievement_alfa">-alfa</string>
