@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="unit_kilometer_per_hour">-km/h</string>
-    <string name="unit_mile_per_hour">-mi/h</string>
+    <string name="unit_kilometer_per_hour">km/h</string>
+    <string name="unit_mile_per_hour">mi/h</string>
 </resources>
