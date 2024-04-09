@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Configuration
 import android.icu.util.MeasureUnit
 import android.os.Build
@@ -36,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,12 +47,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -74,6 +82,8 @@ import com.bundev.gexplorer_mobile.pages.trips.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 @HiltAndroidApp
@@ -89,13 +99,28 @@ val items = listOf(
 val funi = Funi()
 var distanceUnit: MeasureUnit = MeasureUnit.METER
 var selectedTabSave = ""
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
+
+val FIRST_TIME = intPreferencesKey("first_time")
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val firstTime = rememberSaveable { mutableStateOf(true) } //TODO make sure the value stays false after first opening of the app
+            val context = LocalContext.current
+            val firstTime = rememberSaveable { mutableStateOf<Boolean?>(null) }
+            val firstTimeFlow: Flow<Int> =
+                context.dataStore.data.map { preferences ->
+                    preferences[FIRST_TIME] ?: 0
+                }
+            LaunchedEffect(Unit) {
+                firstTimeFlow.collect {
+                    Log.d("preferences-read", it.toString())
+                    firstTime.value = it == 0
+                }
+            }
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(Locale.getDefault().language))
             GexplorerTheme {
                 // A surface container using the 'background' color from the theme
@@ -103,9 +128,20 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    if (firstTime.value){
-                        OnboardScreen{firstTime.value = false}
+                    if (firstTime.value == null) {
+                        Text("kongo")
+                        return@Surface
+                    }
+
+                    if (firstTime.value!!) {
+                        OnboardScreen { firstTime.value = false }
                     } else {
+                        LaunchedEffect(Unit) {
+                            context.dataStore.edit { settings ->
+                                settings[FIRST_TIME] = 1
+                            }
+                            Log.d("save data", "nice")
+                        }
                         GexplorerNavigation()
                     }
                 }
@@ -121,7 +157,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.insetsController?.apply {
                 hide(WindowInsets.Type.statusBars())
-                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
     }
