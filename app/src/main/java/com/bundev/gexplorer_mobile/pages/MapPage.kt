@@ -22,6 +22,7 @@ import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.simple.Explore
+import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -135,7 +136,7 @@ fun MapPage() {
         Text("Stop")
     }*/
     FloatingActionButton(
-        onClick = {
+        onClick = {//TODO if no permission show dialog which sends user to settings where they can give needed permissions
             if (followingUser.value) {
                 exploreMode.value = !exploreMode.value
             }
@@ -196,6 +197,12 @@ fun MapPage() {
                 imageVector = GexplorerIcons.Outlined.Location,
                 contentDescription = null
             )
+            if (true) //TODO write here check for location permission
+                Icon(
+                    modifier = Modifier.size(12.dp),
+                    imageVector = GexplorerIcons.Simple.QuestionMark,
+                    contentDescription = null
+                )
         }
     }
 }
