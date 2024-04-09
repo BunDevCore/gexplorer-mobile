@@ -5,7 +5,9 @@ import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -37,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
@@ -215,6 +219,27 @@ fun MiddleCard(display: @Composable () -> Unit) {
             Column(modifier = Modifier.padding(10.dp)) {
                 display()
             }
+        }
+    }
+}
+
+@Composable
+fun LoadingCard(text: String) {
+    MiddleCard {
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp).padding(top = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(modifier = Modifier.size(120.dp))
+                Image(
+                    modifier = Modifier.size(100.dp),
+                    painter = painterResource(id = R.drawable.gexplorer_logo),
+                    contentDescription = null
+                )
+            }
+            Text(modifier = Modifier.padding(vertical = 5.dp), text = text)
         }
     }
 }

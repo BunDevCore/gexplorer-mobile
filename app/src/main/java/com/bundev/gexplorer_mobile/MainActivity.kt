@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     if (firstTime.value == null) {
-                        Text("kongo")
+                        LoadingCard(text = stringResource(id = R.string.loading))
                         return@Surface
                     }
 
