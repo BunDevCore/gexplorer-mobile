@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboard_welcome">Willkommen in</string>
-    <string name="onboard_description">-settings_and_permissions</string>
-    <string name="onboard_language">-select_language</string>
-    <string name="onboard_theme">-select_theme</string>
-    <string name="onboard_distance_unit">-select_distance_unit</string>
-    <string name="onboard_permissions">-permissions</string>
-    <string name="onboard_permissions_button">-give_permissions</string>
-    <string name="onboard_app_description">-app_description</string>
+    <string name="onboard_welcome">Willkommen zu</string>
+    <string name="onboard_description">An nächsten Seiten können Sie anfängliche Konfiguration finden. Geben Sie bitte auch notwendige Rechts, z.B. für Standort</string>
+    <string name="onboard_language">Wählen Sie bitte Sprache</string>
+    <string name="onboard_theme">Wählen Sie bitte Thema</string>
+    <string name="onboard_distance_unit">Wählen Sie bitte Einheit der Entfernung</string>
+    <string name="onboard_permissions">Rechts</string>
+    <string name="onboard_permissions_button">Geb Rechts</string>
+    <string name="onboard_app_description">Eine App, die hilft beim Entdeckung der Stadt</string>
 </resources>
