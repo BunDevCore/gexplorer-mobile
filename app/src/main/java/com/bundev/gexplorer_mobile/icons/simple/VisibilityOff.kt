@@ -19,7 +19,7 @@ val GexplorerIcons.Simple.VisibilityOff: ImageVector
             return visibilityoff!!
         }
         visibilityoff = Builder(
-            name = "Visibilityoff", defaultWidth = 24.0.dp, defaultHeight =
+            name = "VisibilityOff", defaultWidth = 24.0.dp, defaultHeight =
             24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f
         ).apply {
             path(
