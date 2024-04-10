@@ -46,7 +46,7 @@ import com.bundev.gexplorer_mobile.icons.simple.Visibility
 import com.bundev.gexplorer_mobile.icons.simple.VisibilityOff
 
 @Composable
-fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) {
+fun LoginPage(navController: NavHostController? = null) {
     val vm = hiltViewModel<LoginViewModel>()
     val state by vm.state.collectAsState()
     var register by rememberSaveable { mutableStateOf(false) }
@@ -219,14 +219,14 @@ fun ErrorHandlingTextField(
                         Icon(imageVector = icon, contentDescription = null)
                     }
                 },
-                supportingText = { SuppotingText(loginTried, value) { errorResource() } }
+                supportingText = { SuppotingText(loginTried) { errorResource() } }
             )
         else OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             label = { Text(stringResource(id = labelResource)) },
             singleLine = true,
-            supportingText = { SuppotingText(loginTried, value) { errorResource() } }
+            supportingText = { SuppotingText(loginTried) { errorResource() } }
         )
         if (loginTried && errorResource() != -1)
             Icon(
@@ -241,7 +241,7 @@ fun ErrorHandlingTextField(
 }
 
 @Composable
-fun SuppotingText(loginTried: Boolean, value: String, errorResource: () -> Int) {
+fun SuppotingText(loginTried: Boolean, errorResource: () -> Int) {
     if (loginTried && errorResource() != -1)
         Text(
             stringResource(id = errorResource()),

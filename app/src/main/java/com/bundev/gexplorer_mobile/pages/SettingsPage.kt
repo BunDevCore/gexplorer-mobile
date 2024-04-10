@@ -36,7 +36,7 @@ import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.funi
 
 @Composable
-fun SettingsPage(navController: NavHostController? = null, changePage: () -> Unit) {
+fun SettingsPage(navController: NavHostController? = null) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -239,5 +239,5 @@ private fun RadioDialog(
 @Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
 private fun SettingsPagePreview() {
-    SettingsPage {}
+    SettingsPage()
 }

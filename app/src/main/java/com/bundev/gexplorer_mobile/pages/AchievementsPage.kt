@@ -102,7 +102,7 @@ private val lockedAchievements = listOf(
 )
 
 @Composable
-fun AchievementsPage(navController: NavHostController? = null, changePage: () -> Unit) {
+fun AchievementsPage(navController: NavHostController? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -309,5 +309,5 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
 @Preview(locale = "pl", showBackground = true)
 @Composable
 private fun AchievementsPagePreview() {
-    AchievementsPage {}
+    AchievementsPage()
 }
