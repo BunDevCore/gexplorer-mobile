@@ -32,7 +32,6 @@ import com.bundev.gexplorer_mobile.RadioList
 import com.bundev.gexplorer_mobile.StackedTextButton
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.changeLanguage
-import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.funi
 
@@ -42,9 +41,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TitleBar(stringResource(id = R.string.settings), navController, Screen.Account) {
-            changePage()
-        }
+        TitleBar(stringResource(id = R.string.settings), navController)
         val context = LocalContext.current
 
         // Change language dialog

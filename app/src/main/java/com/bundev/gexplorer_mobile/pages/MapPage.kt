@@ -31,8 +31,6 @@ import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
-import com.mapbox.maps.extension.compose.annotation.generated.PolygonAnnotation
-import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 import com.mapbox.maps.extension.localization.localizeLabels
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
@@ -67,31 +65,36 @@ fun MapPage() {
                     )
                 )
             }
-            val points = listOf(
-                listOf(
-                    Point.fromLngLat(18.615274605637016, 54.40211158342004),
-                    Point.fromLngLat(18.730974363868317, 54.37152378253998),
-                    Point.fromLngLat(18.6650564007217, 54.29906183330589),
-                    Point.fromLngLat(18.6547192660595, 54.355547811237834),
-                    Point.fromLngLat(18.615274605637016, 54.40211158342004)
-                )
-            )
-            PolygonAnnotation(
-                points = points,
-                fillColorString = "#FFEE4E8B",
-                fillOpacity = 0.4
-            )
+//            val points = listOf(
+//                listOf(
+//                    Point.fromLngLat(18.615274605637016, 54.40211158342004),
+//                    Point.fromLngLat(18.730974363868317, 54.37152378253998),
+//                    Point.fromLngLat(18.6650564007217, 54.29906183330589),
+//                    Point.fromLngLat(18.6547192660595, 54.355547811237834),
+//                    Point.fromLngLat(18.615274605637016, 54.40211158342004)
+//                )
+//            )
+//            PolygonAnnotation(
+//                points = points,
+//                fillColorString = "#FFEE4E8B",
+//                fillOpacity = 0.4
+//            )
             // I want to find a way to outline a polygon and delete the Polyline
-            points.forEach { point ->
-                PolylineAnnotation(
-                    points = point,
-                    lineColorString = "#FFBB0B",
-                    lineOpacity = 1.0,
-                    lineWidth = 5.0
-                )
-            }
+//            points.forEach { point ->
+//                PolylineAnnotation(
+//                    points = point,
+//                    lineColorString = "#FFBB0B",
+//                    lineOpacity = 1.0,
+//                    lineWidth = 5.0
+//                )
+//            }
             if (funi.getValue() == 20L) CircleAnnotation(
                 point = Point.fromLngLat(18.6650564007217, 54.29906183330589),
+                circleOpacity = 0.5,
+                circleColorInt = R.color.green
+            )
+            CircleAnnotation(
+                point = Point.fromLngLat(18.6545101, 54.3542491),
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green
             )

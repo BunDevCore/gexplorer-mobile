@@ -53,7 +53,6 @@ import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.classes.Achievement
-import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Map
@@ -109,9 +108,7 @@ fun AchievementsPage(navController: NavHostController? = null, changePage: () ->
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        TitleBar(stringResource(id = R.string.achievements), navController, Screen.Account) {
-            changePage()
-        }
+        TitleBar(stringResource(id = R.string.achievements), navController)
         AchievementProgressBar(achievementsGot.size, achievementsGot.size + lockedAchievements.size)
         GroupingList(
             items = achievementsGot,

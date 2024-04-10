@@ -10,27 +10,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import me.thefen.gexplorerapi.dtos.LoginDto
-import me.thefen.gexplorerapi.dtos.UserDto
+import me.thefen.gexplorerapi.dtos.RegisterDto
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repo: GexplorerRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<ApiResource<UserDto>>(ApiResource.Loading())
-    private var fetchAttempted: Boolean = false
-    val state: StateFlow<ApiResource<UserDto>>
+    private val _state = MutableStateFlow<ApiResource<Unit>>(ApiResource.Loading())
+    val state: StateFlow<ApiResource<Unit>>
         get() = _state
-
-    fun fetchSelf() {
-        Log.d("gexapi", "fetchUser called")
-
-        fetchAttempted = true
-        viewModelScope.launch {
-            Log.d("gexapi", "launching self fetch...")
-            _state.value = repo.getSelf()
-        }
-    }
 
     fun login(userName: String, password: String) {
         Log.d("gexapi", "login called")
@@ -40,11 +29,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun register(userName: String, password: String) {
+    fun register(userName: String, email: String, password: String) {
         Log.d("gexapi", "register called")
 
-//        viewModelScope.launch {
-//            repo.
-//        }
+        viewModelScope.launch {
+            repo.register(RegisterDto(userName, email, password))
+        }
     }
 }

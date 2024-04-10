@@ -55,11 +55,8 @@ fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) 
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(
             stringResource(id = if (register) R.string.register else R.string.log_in),
-            navController,
-            Screen.Account
-        ) {
-            changePage()
-        }
+            navController
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()

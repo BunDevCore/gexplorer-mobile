@@ -9,14 +9,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.TitleBar
-import com.bundev.gexplorer_mobile.classes.Screen
 
 @Composable
 fun StatisticsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TitleBar(stringResource(id = R.string.statistics), navController, Screen.Account) {
-            changePage()
-        }
+        TitleBar(stringResource(id = R.string.statistics), navController)
         Text(text = "You have walked for some time")
         Text(text = "Get some rest")
         Text(text = "You earned it")

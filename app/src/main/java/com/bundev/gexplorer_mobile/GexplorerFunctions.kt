@@ -49,9 +49,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.classes.Screen
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -198,13 +196,7 @@ fun navigateTo(
     if (selectedTabSave != route) {
         selectedTabSave = route
         goToTripDetail()
-        navController?.navigate(route) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = false
-            restoreState = true
-        }
+        navController?.navigate(route)
     }
 }
 
@@ -227,7 +219,9 @@ fun MiddleCard(display: @Composable () -> Unit) {
 fun LoadingCard(text: String) {
     MiddleCard {
         Column(
-            modifier = Modifier.padding(horizontal = 10.dp).padding(top = 10.dp),
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -263,9 +257,7 @@ fun ActionButton(imageVector: ImageVector, modifier: Modifier = Modifier, onClic
 @Composable
 fun TitleBar(
     text: String,
-    navController: NavHostController?,
-    goToScreen: Screen,
-    onClick: () -> Unit,
+    navController: NavHostController?
 ) {
     Row(
         modifier = Modifier
@@ -275,7 +267,7 @@ fun TitleBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ActionButton(imageVector = Icons.AutoMirrored.Default.ArrowBack) {
-            navigateTo(navController, goToScreen.route) { onClick() }
+            navController?.popBackStack()
         }
         Row(
             modifier = Modifier.fillMaxSize(),
