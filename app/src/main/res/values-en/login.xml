@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_name">Name</string>
+    <string name="login_name_wrong">Wrong name</string>
+    <string name="login_name_empty">Enter a name</string>
+    <string name="login_pass">Password</string>
+    <string name="login_pass_wrong">Wrong password</string>
+    <string name="login_pass_empty">Enter a password</string>
+    <string name="register">Register</string>
+    <string name="register_confirm">Confirm</string>
+    <string name="register_pass_no_match">Those passwords didn’t match. Try again.</string>
+    <string name="register_pass_confirm">Confirm password</string>
+</resources>

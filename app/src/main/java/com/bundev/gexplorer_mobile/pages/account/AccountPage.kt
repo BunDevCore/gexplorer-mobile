@@ -63,8 +63,6 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
             ) {
-                vm.login()
-                vm.fetchSelf()
                 navigateTo(navController, Screen.LogIn.route) { changePage() }
             }
         }

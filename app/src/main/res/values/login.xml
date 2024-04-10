@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_name">name</string>
+    <string name="login_name_wrong">name_wrong</string>
+    <string name="login_name_empty">name_empty</string>
+    <string name="login_pass">password</string>
+    <string name="login_pass_wrong">pass_wrong</string>
+    <string name="login_pass_empty">password_empty</string>
+    <string name="register">register</string>
+    <string name="register_confirm">register_confirm</string>
+    <string name="register_pass_confirm">register_confirm</string>
+    <string name="register_pass_no_match">register_pass_no_match</string>
+</resources>

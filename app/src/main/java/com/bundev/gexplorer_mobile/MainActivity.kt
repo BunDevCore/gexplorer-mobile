@@ -70,13 +70,13 @@ import androidx.navigation.navArgument
 import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
-import com.bundev.gexplorer_mobile.pages.LogInPage
 import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
+import com.bundev.gexplorer_mobile.pages.login.LoginPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
@@ -217,7 +217,7 @@ private fun GexplorerNavigation() {
                     StatisticsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.LogIn.route) {
-                    LogInPage(navController) { selectedTab = selectedTabSave }
+                    LoginPage(navController) { selectedTab = selectedTabSave }
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.bundev.gexplorer_mobile
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.bundev.gexplorer_mobile.icons.filled.Analytics
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
+import com.bundev.gexplorer_mobile.icons.filled.Error
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.Palette
@@ -11,6 +12,7 @@ import com.bundev.gexplorer_mobile.icons.filled.Straighten
 import com.bundev.gexplorer_mobile.icons.filled.Trophy
 import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
+import com.bundev.gexplorer_mobile.icons.outlined.Error
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.Palette
@@ -23,6 +25,8 @@ import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Language
 import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
+import com.bundev.gexplorer_mobile.icons.simple.Visibility
+import com.bundev.gexplorer_mobile.icons.simple.VisibilityOff
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import kotlin.collections.List as __KtList
 
@@ -42,7 +46,9 @@ object GexplorerIcons {
                     Simple.Path,
                     Simple.ExploreNearby,
                     Simple.QuestionMark,
-                    Simple.Language
+                    Simple.Language,
+                    Simple.Visibility,
+                    Simple.VisibilityOff
                 )
                 return _simple!!
             }
@@ -63,7 +69,8 @@ object GexplorerIcons {
                     Filled.Bookmark,
                     Filled.Analytics,
                     Filled.Palette,
-                    Filled.Straighten
+                    Filled.Straighten,
+                    Filled.Error
                 )
                 return _filled!!
             }
@@ -84,7 +91,8 @@ object GexplorerIcons {
                     Outlined.Bookmark,
                     Outlined.Analytics,
                     Outlined.Palette,
-                    Outlined.Straighten
+                    Outlined.Straighten,
+                    Outlined.Error
                 )
                 return _outlined!!
             }
