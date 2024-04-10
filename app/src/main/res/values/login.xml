@@ -10,4 +10,6 @@
     <string name="register_confirm">register_confirm</string>
     <string name="register_pass_confirm">register_confirm</string>
     <string name="register_pass_no_match">register_pass_no_match</string>
+    <string name="register_email">email</string>
+    <string name="register_email_empty">email_empty</string>
 </resources>

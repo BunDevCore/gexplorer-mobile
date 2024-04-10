@@ -10,4 +10,6 @@
     <string name="register_confirm">Confirm</string>
     <string name="register_pass_no_match">Those passwords didn’t match. Try again.</string>
     <string name="register_pass_confirm">Confirm password</string>
+    <string name="register_email">Email</string>
+    <string name="register_email_empty">Enter an email</string>
 </resources>

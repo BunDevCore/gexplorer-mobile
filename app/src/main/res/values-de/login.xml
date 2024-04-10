@@ -10,4 +10,6 @@
     <string name="register_confirm">Bestätigen</string>
     <string name="register_pass_no_match">Diese Passwörter stimmen nicht überein. Versuchen Sie es noch einmal.</string>
     <string name="register_pass_confirm">Passwort bestätigen</string>
+    <string name="register_email">E-Mail-Adresse</string>
+    <string name="register_email_empty">E-Mail-Adresse eingeben</string>
 </resources>

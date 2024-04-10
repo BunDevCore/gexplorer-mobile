@@ -19,6 +19,8 @@ interface GexplorerApi {
     suspend fun login(@Body loginDto: LoginDto): TokenDto
     
     // todo: register dto & endpoint
+    @POST("Auth/register")
+    suspend fun register(@Body registerDto: RegisterDto): TokenDto
     
     @GET("District")
     suspend fun getDistricts(): List<DistrictDto>

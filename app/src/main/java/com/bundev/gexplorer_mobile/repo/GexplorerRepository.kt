@@ -9,6 +9,7 @@ import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
+import me.thefen.gexplorerapi.dtos.RegisterDto
 import me.thefen.gexplorerapi.dtos.UserDto
 import java.util.UUID
 
@@ -56,6 +57,23 @@ class GexplorerRepository(private var _token: String? = null) {
                 ApiResource.Error(Exception())
             }
         )
+    }
+
+    suspend fun register(registerDto: RegisterDto): ApiResource<Unit> {
+        val result = runCatching { api.register(registerDto) }
+        return result.fold({
+            val user = api.getUser(registerDto.userName)
+
+            _token = it.token
+            Log.d("gexapi","SETTING GODFORSAKEN TOKEN TO $_token")
+            username = registerDto.userName
+            id = user.id
+            ApiResource.Success(Unit)
+        },
+            {
+                Log.d("gexapi","register failed?? $it")
+                ApiResource.Error(Exception())
+            })
     }
     
     fun logout() {

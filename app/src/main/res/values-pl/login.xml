@@ -10,4 +10,6 @@
     <string name="register_confirm">Potwierdź</string>
     <string name="register_pass_no_match">Hasła nie są takie same. Spróbuj ponownie.</string>
     <string name="register_pass_confirm">Potwierdź hasło</string>
+    <string name="register_email">Adres e-mail</string>
+    <string name="register_email_empty">Wpisz adres e-mail</string>
 </resources>
