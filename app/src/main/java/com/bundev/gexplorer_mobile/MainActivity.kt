@@ -76,9 +76,9 @@ import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
-import com.bundev.gexplorer_mobile.pages.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage
+import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
