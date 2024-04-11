@@ -195,14 +195,14 @@ private fun GexplorerNavigation() {
                     TripsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Achievements.route) {
-                    AchievementsPage(navController)
+                    AchievementsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Places.route) { PlacesPage() }
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Settings.route) {
-                    SettingsPage(navController)
+                    SettingsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(
                     Screen.TripDetail.route,
@@ -218,10 +218,10 @@ private fun GexplorerNavigation() {
                     ) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.Statistics.route) {
-                    StatisticsPage(navController)
+                    StatisticsPage(navController) { selectedTab = selectedTabSave }
                 }
                 composable(Screen.LogIn.route) {
-                    LoginPage(navController)
+                    LoginPage(navController) { selectedTab = selectedTabSave }
                 }
             }
         }

@@ -46,7 +46,7 @@ import com.bundev.gexplorer_mobile.icons.simple.Visibility
 import com.bundev.gexplorer_mobile.icons.simple.VisibilityOff
 
 @Composable
-fun LoginPage(navController: NavHostController? = null) {
+fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) {
     val vm = hiltViewModel<LoginViewModel>()
     val state by vm.state.collectAsState()
     var register by rememberSaveable { mutableStateOf(false) }
@@ -55,7 +55,7 @@ Log.i("STATE HERE" , state.kind)
         TitleBar(
             stringResource(id = if (register) R.string.register else R.string.log_in),
             navController
-        )
+        ) { changePage() }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -79,7 +79,7 @@ fun LoginCard(
 ) {
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-    var loginTried by rememberSaveable { mutableStateOf(false) }
+    var loginAttempted by rememberSaveable { mutableStateOf(false) }
 
     if (state is ApiResource.Success)
         navController?.popBackStack()
@@ -91,13 +91,12 @@ fun LoginCard(
                 .width(IntrinsicSize.Max),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-//TODO when phone is vertical keyboard shows up with black box above it and covers part of the content
             ErrorHandlingTextField(
                 value = userName,
                 onValueChange = { userName = it },
                 labelResource = R.string.login_name,
                 errorResource = { if (userName.isEmpty()) R.string.login_name_empty else -1 },
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             ErrorHandlingTextField(
                 value = password,
@@ -105,19 +104,19 @@ fun LoginCard(
                 labelResource = R.string.login_pass,
                 errorResource = { if (password.isEmpty()) R.string.login_pass_empty else -1 },
                 hideText = true,
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             BottomLoginButtons(
                 leftButtonLabelResource = R.string.register,
                 rightButtonLabelResource = R.string.log_in,
                 changeCard = {
-                    loginTried = false
+                    loginAttempted = false
                     userName = ""
                     password = ""
                     changeCard()
                 }
             ) {
-                loginTried = true
+                loginAttempted = true
                 if (userName == "" || password == "") return@BottomLoginButtons
                 vm?.login(userName, password)
             }
@@ -134,7 +133,7 @@ fun RegisterCard(
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirm by rememberSaveable { mutableStateOf("") }
-    var loginTried by rememberSaveable { mutableStateOf(false) }
+    var loginAttempted by rememberSaveable { mutableStateOf(false) }
     Card {
         Column(
             modifier = Modifier
@@ -147,14 +146,14 @@ fun RegisterCard(
                 onValueChange = { userName = it },
                 labelResource = R.string.login_name,
                 errorResource = { if (userName.isEmpty()) R.string.login_name_empty else -1 },
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             ErrorHandlingTextField(
                 value = email,
                 onValueChange = { email = it },
                 labelResource = R.string.register_email,
                 errorResource = { if (email.isEmpty()) R.string.register_email_empty else -1 },
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             ErrorHandlingTextField(
                 value = password,
@@ -162,7 +161,7 @@ fun RegisterCard(
                 labelResource = R.string.login_pass,
                 errorResource = { if (password.isEmpty()) R.string.login_pass_empty else -1 },
                 hideText = true,
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             ErrorHandlingTextField(
                 value = confirm,
@@ -170,13 +169,13 @@ fun RegisterCard(
                 labelResource = R.string.register_confirm,
                 errorResource = { if (confirm.isEmpty()) R.string.register_pass_confirm else if (confirm != password) R.string.register_pass_no_match else -1 },
                 hideText = true,
-                loginTried = loginTried
+                loginAttempted = loginAttempted
             )
             BottomLoginButtons(
                 leftButtonLabelResource = R.string.log_in,
                 rightButtonLabelResource = R.string.register,
                 changeCard = {
-                    loginTried = false
+                    loginAttempted = false
                     userName = ""
                     email = ""
                     password = ""
@@ -184,7 +183,7 @@ fun RegisterCard(
                     changeCard()
                 }
             ) {
-                loginTried = true
+                loginAttempted = true
                 if (userName == "" || email == "" || password == "" || password != confirm) return@BottomLoginButtons
                 vm?.register(userName, email, password)
             }
@@ -198,7 +197,7 @@ fun ErrorHandlingTextField(
     onValueChange: (String) -> Unit,
     labelResource: Int,
     errorResource: () -> Int,
-    loginTried: Boolean,
+    loginAttempted: Boolean,
     hideText: Boolean = false,
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
@@ -219,16 +218,16 @@ fun ErrorHandlingTextField(
                         Icon(imageVector = icon, contentDescription = null)
                     }
                 },
-                supportingText = { SuppotingText(loginTried) { errorResource() } }
+                supportingText = { SuppotingText(loginAttempted) { errorResource() } }
             )
         else OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             label = { Text(stringResource(id = labelResource)) },
             singleLine = true,
-            supportingText = { SuppotingText(loginTried) { errorResource() } }
+            supportingText = { SuppotingText(loginAttempted) { errorResource() } }
         )
-        if (loginTried && errorResource() != -1)
+        if (loginAttempted && errorResource() != -1)
             Icon(
                 modifier = Modifier
                     .padding(top = 68.dp)

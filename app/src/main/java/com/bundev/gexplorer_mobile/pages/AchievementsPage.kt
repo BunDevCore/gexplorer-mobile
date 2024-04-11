@@ -102,13 +102,13 @@ private val lockedAchievements = listOf(
 )
 
 @Composable
-fun AchievementsPage(navController: NavHostController? = null) {
+fun AchievementsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        TitleBar(stringResource(id = R.string.achievements), navController)
+        TitleBar(stringResource(id = R.string.achievements), navController) { changePage() }
         AchievementProgressBar(achievementsGot.size, achievementsGot.size + lockedAchievements.size)
         GroupingList(
             items = achievementsGot,
@@ -309,5 +309,5 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
 @Preview(locale = "pl", showBackground = true)
 @Composable
 private fun AchievementsPagePreview() {
-    AchievementsPage()
+    AchievementsPage{}
 }

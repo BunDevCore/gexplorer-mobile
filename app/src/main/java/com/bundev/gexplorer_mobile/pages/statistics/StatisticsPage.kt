@@ -12,11 +12,11 @@ import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.TitleBar
 
 @Composable
-fun StatisticsPage(navController: NavHostController? = null) {
+fun StatisticsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     val vm = hiltViewModel<StatisticsViewModel>()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TitleBar(stringResource(id = R.string.statistics), navController)
+        TitleBar(stringResource(id = R.string.statistics), navController) { changePage() }
         Text(text = "You have walked for some time")
         Text(text = "Get some rest")
         Text(text = "You earned it")

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -191,12 +192,23 @@ private fun ButtonGenerator(
 fun navigateTo(
     navController: NavHostController? = null,
     route: String,
-    goToTripDetail: () -> Unit,
+    resetBackStack: Boolean = false,
+    changePage: () -> Unit,
 ) {
     if (selectedTabSave != route) {
         selectedTabSave = route
-        goToTripDetail()
-        navController?.navigate(route)
+        changePage()
+        if (!resetBackStack)
+            navController?.navigate(route)
+        else {
+            navController?.navigate(route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = false
+                restoreState = true
+            }
+        }
     }
 }
 
@@ -254,10 +266,17 @@ fun ActionButton(imageVector: ImageVector, modifier: Modifier = Modifier, onClic
     }
 }
 
+fun GoToPreviousPage(navController: NavHostController?, changePage: () -> Unit) {
+    selectedTabSave = navController?.previousBackStackEntry?.destination?.route.toString()
+    changePage()
+    navController?.popBackStack()
+}
+
 @Composable
 fun TitleBar(
     text: String,
-    navController: NavHostController?
+    navController: NavHostController?,
+    changePage: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -267,7 +286,7 @@ fun TitleBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ActionButton(imageVector = Icons.AutoMirrored.Default.ArrowBack) {
-            navController?.popBackStack()
+            GoToPreviousPage(navController) { changePage() }
         }
         Row(
             modifier = Modifier.fillMaxSize(),

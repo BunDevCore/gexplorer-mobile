@@ -36,12 +36,12 @@ import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.funi
 
 @Composable
-fun SettingsPage(navController: NavHostController? = null) {
+fun SettingsPage(navController: NavHostController? = null, changePage: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TitleBar(stringResource(id = R.string.settings), navController)
+        TitleBar(stringResource(id = R.string.settings), navController) { changePage() }
         val context = LocalContext.current
 
         // Change language dialog
@@ -239,5 +239,5 @@ private fun RadioDialog(
 @Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
 private fun SettingsPagePreview() {
-    SettingsPage()
+    SettingsPage{}
 }
