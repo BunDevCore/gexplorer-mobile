@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.GoToPreviousPage
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -47,10 +48,12 @@ import com.bundev.gexplorer_mobile.icons.simple.VisibilityOff
 
 @Composable
 fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) {
+    //TODO find out why it drops you on mapPage after logging in
+    Log.d("NAV CONTROLLER", "curr: ${navController?.currentBackStackEntry?.destination?.route.toString()}")
+    Log.d("NAV CONTROLLER", "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}")
     val vm = hiltViewModel<LoginViewModel>()
     val state by vm.state.collectAsState()
     var register by rememberSaveable { mutableStateOf(false) }
-Log.i("STATE HERE" , state.kind)
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(
             stringResource(id = if (register) R.string.register else R.string.log_in),
@@ -65,7 +68,7 @@ Log.i("STATE HERE" , state.kind)
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (register) RegisterCard(vm) { register = false }
-            else LoginCard(vm, state, navController) { register = true }
+            else LoginCard(vm, state, navController, changePage) { register = true }
         }
     }
 }
@@ -75,14 +78,15 @@ fun LoginCard(
     vm: LoginViewModel? = null,
     state: ApiResource<Unit>? = null,
     navController: NavHostController? = null,
-    changeCard: () -> Unit,
+    changePage: () -> Unit,
+    changeCard: () -> Unit
 ) {
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var loginAttempted by rememberSaveable { mutableStateOf(false) }
 
     if (state is ApiResource.Success)
-        navController?.popBackStack()
+        GoToPreviousPage(navController) { changePage() }
 
     Card {
         Column(
@@ -201,6 +205,8 @@ fun ErrorHandlingTextField(
     hideText: Boolean = false,
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    //TODO https://blog.canopas.com/keyboard-handling-in-jetpack-compose-all-you-need-to-know-3e6fddd30d9a
+//    val bringIntoViewRequester = rememberSaveable { BringIntoViewRequester() }
 
     Box {
         if (hideText)
@@ -272,7 +278,7 @@ fun BottomLoginButtons(
 @Preview
 @Composable
 fun LoginCardPreview() {
-    LoginCard {}
+    LoginCard(changePage = {}) {}
 }
 
 @Preview

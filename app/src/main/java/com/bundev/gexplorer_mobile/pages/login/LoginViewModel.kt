@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor(
         Log.d("gexapi", "login called")
 
         viewModelScope.launch {
-            repo.login(LoginDto(userName, password))
+            _state.value = repo.login(LoginDto(userName, password))
         }
     }
 
@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
         Log.d("gexapi", "register called")
 
         viewModelScope.launch {
-            repo.register(RegisterDto(userName, email, password))
+            _state.value = repo.register(RegisterDto(userName, email, password))
         }
     }
 }

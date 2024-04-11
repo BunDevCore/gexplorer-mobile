@@ -35,9 +35,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
     val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        vm.fetchSelf()
-    }
+    LaunchedEffect(Unit) { vm.fetchSelf() }
 
     if (funi.getValue() == 2024L) {
         //TODO give achievement "The first icon"
