@@ -271,6 +271,10 @@ private fun GexplorerNavigation() {
                                 selected = currentDestination?.hierarchy?.any
                                 { navDest -> navDest.route == screen.route } == true,
                                 onClick = {
+                                    Log.w("CLICKED TAB", screen.route)
+                                    //TODO Backstack does not clear after going from child page to parent page example (tripDetail -> trip) or (settings -> account)
+                                    //TODO on back press does not allow to go back to the same page
+                                    Log.w("NAV BACKSTACK", navBackStackEntry?.destination?.route.toString())
                                     selectedTab = screen.route
                                     navController.navigate(screen.route) {
                                         // Pop up to the start destination of the graph to
