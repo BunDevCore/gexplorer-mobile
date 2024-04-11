@@ -27,6 +27,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +69,7 @@ fun StackedTextButton(
     label: String,
     modifier: Modifier = Modifier,
     subLabel: String = "",
+    enabled: Boolean = true,
     fontSizeLabel: TextUnit = 18.sp,
     fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
     onClick: () -> Unit,
@@ -76,6 +78,7 @@ fun StackedTextButton(
         label = label,
         subLabel = subLabel,
         modifier = modifier,
+        enabled = enabled,
         fontSizeLabel = fontSizeLabel,
         fontSizeSubLabel = fontSizeSubLabel
     ) {
@@ -142,6 +145,7 @@ private fun ButtonGenerator(
     modifier: Modifier,
     fontSizeLabel: TextUnit,
     fontSizeSubLabel: TextUnit,
+    enabled: Boolean = true,
     imageVector: ImageVector? = null,
     imageDescription: String? = null,
     textStyle: TextStyle? = null,
@@ -154,6 +158,7 @@ private fun ButtonGenerator(
     TextButton(
         modifier = modifier,
         shape = shape,
+        enabled = enabled,
         onClick = { onClick() }
     ) {
         if (imageVector is ImageVector)
@@ -248,6 +253,16 @@ fun LoadingCard(text: String) {
             Text(modifier = Modifier.padding(vertical = 5.dp), text = text)
         }
     }
+}
+
+@Composable
+fun LoadingBar(text: String) {
+    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+    StackedTextButton(
+        label = text,
+        enabled = false
+    ) {}
+
 }
 
 @Composable

@@ -76,7 +76,7 @@ fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) 
 @Composable
 fun LoginCard(
     vm: LoginViewModel? = null,
-    state: ApiResource<Unit>? = null,
+    state: ApiResource<String>? = null,
     navController: NavHostController? = null,
     changePage: () -> Unit,
     changeCard: () -> Unit

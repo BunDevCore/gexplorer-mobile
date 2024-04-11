@@ -21,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
+import com.bundev.gexplorer_mobile.LoadingBar
+import com.bundev.gexplorer_mobile.MiddleCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -32,6 +34,15 @@ import com.bundev.gexplorer_mobile.navigateTo
 
 @Composable
 fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit) {
+    //TODO check why login throws back to mapPage
+    Log.d(
+        "NAV CONTROLLER",
+        "curr: ${navController?.currentBackStackEntry?.destination?.route.toString()}"
+    )
+    Log.d(
+        "NAV CONTROLLER",
+        "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}"
+    )
     val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()
 
@@ -48,29 +59,26 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //Log in/out button
-        if (state is ApiResource.Success) {
-            val user = state.data!!
-            Log.d("user is", "$user")
-            Text(text = "Witaj ${user.username}")
-            IconAndTextButton(
-                label = stringResource(id = R.string.log_out),
-                imageVector = Icons.Filled.Person,
-            ) { vm.logout(); vm.fetchSelf() }
-        } else {
-            IconAndTextButton(
+        when (state) {
+            is ApiResource.Success -> {
+                val user = state.data!!
+                Log.d("user is", "$user")
+                Text(text = "Witaj ${user.username}")
+                IconAndTextButton(
+                    label = stringResource(id = R.string.log_out),
+                    imageVector = Icons.Filled.Person,
+                ) { vm.logout(); vm.fetchSelf() }
+            }
+
+            is ApiResource.Loading -> LoadingBar(text = stringResource(id = R.string.loading) + " api")
+            else -> IconAndTextButton(
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
             ) {
                 navigateTo(navController, Screen.LogIn.route) { changePage() }
             }
         }
-
-        //Settings button
-        IconAndTextButton(
-            label = stringResource(id = R.string.settings),
-            imageVector = Screen.Settings.iconOutline,
-        ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
-
+//TODO show icon when intenet is off or there is no connection to database
         //Achievements button
         IconAndTextButton(
             label = stringResource(id = R.string.achievements),
@@ -84,19 +92,28 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
         ) {
             navigateTo(navController, Screen.Statistics.route) { changePage() }
         }
-        Text(text = "połączenie z API")
+
+        //Settings button
+        IconAndTextButton(
+            label = stringResource(id = R.string.settings),
+            imageVector = Screen.Settings.iconOutline,
+        ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
+
+        MiddleCard { Text(text = "połączenie z API") }
         if (state is ApiResource.Loading) {
-            Text("loading.....")
+            MiddleCard { Text("loading.....") }
         }
         if (state is ApiResource.Success) {
-            Text(state.data?.overallAreaAmount.toString())
+            MiddleCard { Text(state.data?.overallAreaAmount.toString()) }
         }
         if (funi.getValue() != 0L) {
-            Text(
-                text = "val:${
-                    funi.getValue()
-                } time left:${funi.getTimeRemaining()}"
-            )
+            MiddleCard {
+                Text(
+                    text = "val:${
+                        funi.getValue()
+                    } time left:${funi.getTimeRemaining()}"
+                )
+            }
         }
     }
 }

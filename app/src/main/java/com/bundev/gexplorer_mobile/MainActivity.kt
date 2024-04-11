@@ -1,9 +1,7 @@
 package com.bundev.gexplorer_mobile
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
-import android.icu.util.MeasureUnit
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -56,11 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -69,7 +63,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.bundev.gexplorer_mobile.classes.Funi
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.MapPage
@@ -92,20 +85,12 @@ import androidx.compose.foundation.layout.WindowInsets as composeWindowInsets
 @HiltAndroidApp
 class GexplorerApplication : Application()
 
-val items = listOf(
+private val items = listOf(
     Screen.Map,
     Screen.Trips,
     Screen.Places,
     Screen.Account
 )
-
-val funi = Funi()
-var distanceUnit: MeasureUnit = MeasureUnit.METER
-var selectedTabSave = ""
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
-
-val FIRST_TIME = intPreferencesKey("first_time")
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -114,14 +99,14 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val context = LocalContext.current
             val firstTime = rememberSaveable { mutableStateOf<Boolean?>(null) }
-            val firstTimeFlow: Flow<Int> =
+            val firstTimeFlow: Flow<Boolean> =
                 context.dataStore.data.map { preferences ->
-                    preferences[FIRST_TIME] ?: 0
+                    preferences[FIRST_TIME] ?: true
                 }
             LaunchedEffect(Unit) {
                 firstTimeFlow.collect {
-                    Log.d("preferences-read", it.toString())
-                    firstTime.value = it == 0
+                    Log.d("DataStore READ", it.toString())
+                    firstTime.value = it == true
                 }
             }
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(Locale.getDefault().language))
@@ -141,9 +126,9 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         LaunchedEffect(Unit) {
                             context.dataStore.edit { settings ->
-                                settings[FIRST_TIME] = 1
+                                settings[FIRST_TIME] = false
                             }
-                            Log.d("save data", "nice")
+                            Log.d("StoreData", "FirstTime is set to false")
                         }
                         GexplorerNavigation()
                     }

@@ -51,14 +51,19 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                 }
 
                 is ApiResource.Success -> {
-                    Card { Text(text = state.data!!.user.overallAreaAmount.toString()) }
+                    Card { Text(text = "${state.data!!.user.overallAreaAmount}") }
                     Card { Text(text = state.data!!.user.tripAmount.toString()) }
                     Card { Text(text = state.data!!.user.totalTripLength.toString()) }
 
                     Card {
                         state.data!!.districtEntries.forEach { entry ->
-                            ElevatedCard(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp).padding(top = 5.dp)) {
-                                Row(modifier = Modifier.fillMaxWidth().padding(5.dp),
+                            ElevatedCard(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 5.dp)
+                                .padding(top = 5.dp)) {
+                                Row(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text(modifier = Modifier.fillMaxWidth(0.5f),
                                         text = entry.name)

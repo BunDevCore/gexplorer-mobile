@@ -13,13 +13,14 @@ import me.thefen.gexplorerapi.dtos.RegisterDto
 import me.thefen.gexplorerapi.dtos.UserDto
 import java.util.UUID
 
-class GexplorerRepository(private var _token: String? = null) {
-    var username: String? = null
-    private var id: UUID? = null
+class GexplorerRepository(
+    private var _token: String? = null,
+    var username: String? = null,
+    var id: UUID? = null,
+) {
     var districts: Map<UUID, DistrictDto> = mapOf()
 
     val client = RetrofitClient {
-        Log.d("gexapi", "token getter called, token is $_token")
         _token
     }
     val api: GexplorerApi by lazy {
@@ -30,7 +31,7 @@ class GexplorerRepository(private var _token: String? = null) {
         if (districts.isNotEmpty())
             return
         val result = getDistricts()
-        result.runIfSuccess { districts = result.data!!.map { it.id to it }.toMap() }
+        result.runIfSuccess { districts = result.data!!.associateBy { it.id } }
     }
 
     private suspend fun <T> apiWrapper(block: suspend (GexplorerRepository) -> T): ApiResource<T> {
@@ -49,7 +50,7 @@ class GexplorerRepository(private var _token: String? = null) {
         }
 
 
-    suspend fun login(loginDto: LoginDto): ApiResource<Unit> {
+    suspend fun login(loginDto: LoginDto): ApiResource<String> {
         val result = runCatching { api.login(loginDto) }
         return result.fold(
             {
@@ -59,7 +60,7 @@ class GexplorerRepository(private var _token: String? = null) {
                 Log.d("gexapi", "SETTING GODFORSAKEN TOKEN TO $_token")
                 username = loginDto.userName
                 id = user.id
-                ApiResource.Success(Unit)
+                ApiResource.Success(it.token)
             },
             {
                 Log.d("gexapi", "login failed?? $it")
@@ -68,7 +69,7 @@ class GexplorerRepository(private var _token: String? = null) {
         )
     }
 
-    suspend fun register(registerDto: RegisterDto): ApiResource<Unit> {
+    suspend fun register(registerDto: RegisterDto): ApiResource<String> {
         val result = runCatching { api.register(registerDto) }
         return result.fold({
             val user = api.getUser(registerDto.userName)
@@ -77,7 +78,7 @@ class GexplorerRepository(private var _token: String? = null) {
             Log.d("gexapi", "SETTING GODFORSAKEN TOKEN TO $_token")
             username = registerDto.userName
             id = user.id
-            ApiResource.Success(Unit)
+            ApiResource.Success(it.token)
         },
             {
                 Log.d("gexapi", "register failed?? $it")
