@@ -1,0 +1,74 @@
+@file:Suppress("UnusedReceiverParameter")
+
+package com.bundev.gexplorer_mobile.icons.simple
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap.Companion.Butt
+import androidx.compose.ui.graphics.StrokeJoin.Companion.Miter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.ImageVector.Builder
+import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.unit.dp
+import com.bundev.gexplorer_mobile.GexplorerIcons
+
+val GexplorerIcons.Simple.Account: ImageVector
+    get() {
+        if (account != null) {
+            return account!!
+        }
+        account = Builder(name = "Account", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
+                viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
+            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                    pathFillType = NonZero) {
+                moveTo(234.0f, 684.0f)
+                quadTo(285.0f, 645.0f, 348.0f, 622.5f)
+                quadTo(411.0f, 600.0f, 480.0f, 600.0f)
+                quadTo(549.0f, 600.0f, 612.0f, 622.5f)
+                quadTo(675.0f, 645.0f, 726.0f, 684.0f)
+                quadTo(761.0f, 643.0f, 780.5f, 591.0f)
+                quadTo(800.0f, 539.0f, 800.0f, 480.0f)
+                quadTo(800.0f, 347.0f, 706.5f, 253.5f)
+                quadTo(613.0f, 160.0f, 480.0f, 160.0f)
+                quadTo(347.0f, 160.0f, 253.5f, 253.5f)
+                quadTo(160.0f, 347.0f, 160.0f, 480.0f)
+                quadTo(160.0f, 539.0f, 179.5f, 591.0f)
+                quadTo(199.0f, 643.0f, 234.0f, 684.0f)
+                close()
+                moveTo(480.0f, 520.0f)
+                quadTo(421.0f, 520.0f, 380.5f, 479.5f)
+                quadTo(340.0f, 439.0f, 340.0f, 380.0f)
+                quadTo(340.0f, 321.0f, 380.5f, 280.5f)
+                quadTo(421.0f, 240.0f, 480.0f, 240.0f)
+                quadTo(539.0f, 240.0f, 579.5f, 280.5f)
+                quadTo(620.0f, 321.0f, 620.0f, 380.0f)
+                quadTo(620.0f, 439.0f, 579.5f, 479.5f)
+                quadTo(539.0f, 520.0f, 480.0f, 520.0f)
+                close()
+                moveTo(480.0f, 880.0f)
+                quadTo(397.0f, 880.0f, 324.0f, 848.5f)
+                quadTo(251.0f, 817.0f, 197.0f, 763.0f)
+                quadTo(143.0f, 709.0f, 111.5f, 636.0f)
+                quadTo(80.0f, 563.0f, 80.0f, 480.0f)
+                quadTo(80.0f, 397.0f, 111.5f, 324.0f)
+                quadTo(143.0f, 251.0f, 197.0f, 197.0f)
+                quadTo(251.0f, 143.0f, 324.0f, 111.5f)
+                quadTo(397.0f, 80.0f, 480.0f, 80.0f)
+                quadTo(563.0f, 80.0f, 636.0f, 111.5f)
+                quadTo(709.0f, 143.0f, 763.0f, 197.0f)
+                quadTo(817.0f, 251.0f, 848.5f, 324.0f)
+                quadTo(880.0f, 397.0f, 880.0f, 480.0f)
+                quadTo(880.0f, 563.0f, 848.5f, 636.0f)
+                quadTo(817.0f, 709.0f, 763.0f, 763.0f)
+                quadTo(709.0f, 817.0f, 636.0f, 848.5f)
+                quadTo(563.0f, 880.0f, 480.0f, 880.0f)
+                close()
+            }
+        }
+        .build()
+        return account!!
+    }
+
+private var account: ImageVector? = null

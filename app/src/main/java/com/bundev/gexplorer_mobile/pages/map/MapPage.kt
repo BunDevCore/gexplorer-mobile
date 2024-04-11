@@ -1,4 +1,4 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.map
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,19 +10,30 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.classes.Screen
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
+import com.bundev.gexplorer_mobile.icons.simple.Account
 import com.bundev.gexplorer_mobile.icons.simple.Explore
+import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
+import com.bundev.gexplorer_mobile.navigateTo
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -33,12 +44,13 @@ import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportS
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
 import com.mapbox.maps.extension.localization.localizeLabels
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
 import java.util.Locale
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun MapPage() {
+fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     val configuration = LocalConfiguration.current
     val mapViewportState = rememberMapViewportState {
         setCameraOptions {
@@ -48,6 +60,10 @@ fun MapPage() {
             bearing(0.0)
         }
     }
+    val vm = hiltViewModel<MapViewModel>()
+    val state by vm.state.collectAsState()
+
+    LaunchedEffect(Unit) { vm.fetchSelf() }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -64,6 +80,7 @@ fun MapPage() {
                         AppCompatDelegate.getApplicationLocales().toLanguageTags()
                     )
                 )
+                mapView.compass.marginTop = 180f
             }
 //            val points = listOf(
 //                listOf(
@@ -138,6 +155,7 @@ fun MapPage() {
     ) {
         Text("Stop")
     }*/
+    // Location button
     FloatingActionButton(
         onClick = {//TODO if no permission show dialog which sends user to settings where they can give needed permissions
             if (followingUser.value) {
@@ -207,5 +225,26 @@ fun MapPage() {
                     contentDescription = null
                 )
         }
+    }
+    // Account button
+    SmallFloatingActionButton(
+        modifier = Modifier.padding(top = 8.dp, start = (configuration.screenWidthDp - 52).dp),
+        onClick = {
+            if (state is ApiResource.Success)
+                navigateTo(navController, Screen.Account.route, true) { changePage() }
+            else navigateTo(navController, Screen.LogIn.route) { changePage() }
+        }) {
+        if (state is ApiResource.Success)
+            Icon(
+                modifier = Modifier,
+                imageVector = GexplorerIcons.Simple.Account,
+                contentDescription = null
+            )
+        else
+            Icon(
+                modifier = Modifier.padding(2.5.dp),
+                imageVector = GexplorerIcons.Simple.NoAccount,
+                contentDescription = null
+            )
     }
 }

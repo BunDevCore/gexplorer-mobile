@@ -19,10 +19,12 @@ import com.bundev.gexplorer_mobile.icons.outlined.Palette
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Straighten
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
+import com.bundev.gexplorer_mobile.icons.simple.Account
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Explore
 import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Language
+import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.icons.simple.Visibility
@@ -48,7 +50,9 @@ object GexplorerIcons {
                     Simple.QuestionMark,
                     Simple.Language,
                     Simple.Visibility,
-                    Simple.VisibilityOff
+                    Simple.VisibilityOff,
+                    Simple.Account,
+                    Simple.NoAccount
                 )
                 return _simple!!
             }

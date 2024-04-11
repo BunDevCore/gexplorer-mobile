@@ -65,12 +65,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
-import com.bundev.gexplorer_mobile.pages.MapPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage
+import com.bundev.gexplorer_mobile.pages.map.MapPage
 import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
@@ -175,7 +175,9 @@ private fun GexplorerNavigation() {
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                composable(Screen.Map.route) { MapPage() }
+                composable(Screen.Map.route) {
+                    MapPage(navController) { selectedTab = selectedTabSave }
+                }
                 composable(Screen.Trips.route) {
                     TripsPage(navController) { selectedTab = selectedTabSave }
                 }
