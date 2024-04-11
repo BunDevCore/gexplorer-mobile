@@ -18,14 +18,12 @@ class StatisticsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state =
         MutableStateFlow<ApiResource<StatisticsViewModelState>>(ApiResource.Loading())
-    private var fetchAttempted: Boolean = false
     val state: StateFlow<ApiResource<StatisticsViewModelState>>
         get() = _state
 
     fun fetchStats() {
         Log.d("gexapi", "fetchUser called")
 
-        fetchAttempted = true
         viewModelScope.launch {
             Log.d("gexapi", "launching self fetch...")
             _state.value = repo.getSelf().mapSuccess { user ->

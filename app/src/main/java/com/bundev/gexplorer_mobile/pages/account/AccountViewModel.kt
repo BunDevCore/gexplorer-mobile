@@ -27,14 +27,12 @@ class AccountViewModel @Inject constructor(
     @ApplicationContext val context: Context
 ) : ViewModel() {
     private val _state = MutableStateFlow<ApiResource<UserDto>>(ApiResource.Loading())
-    private var fetchAttempted: Boolean = false
     val state: StateFlow<ApiResource<UserDto>>
         get() = _state
 
     fun fetchSelf() {
         Log.d("gexapi", "fetchUser called")
 
-        fetchAttempted = true
         viewModelScope.launch {
             Log.d("gexapi", "launching self fetch...")
             _state.value = repo.getSelf()
