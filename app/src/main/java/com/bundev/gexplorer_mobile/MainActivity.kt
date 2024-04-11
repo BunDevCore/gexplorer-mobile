@@ -17,11 +17,13 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -85,6 +87,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Locale
+import androidx.compose.foundation.layout.WindowInsets as composeWindowInsets
 
 @HiltAndroidApp
 class GexplorerApplication : Application()
@@ -164,6 +167,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun GexplorerNavigation() {
     // Enables checking the current configuration of the phone
@@ -264,41 +268,42 @@ private fun GexplorerNavigation() {
                 }
             },
             bottomBar = {
-                NavigationBar {
-                    items.forEach { screen ->
-                        NavigationBarItem(
-                            icon = {
-                                Icon(
-                                    imageVector = if (selectedTab == screen.route) {
-                                        screen.iconFilled
-                                    } else {
-                                        screen.iconOutline
-                                    },
-                                    contentDescription = null
-                                )
-                            },
-                            label = { Text(stringResource(screen.resourceId)) },
-                            selected = currentDestination?.hierarchy?.any
-                            { navDest -> navDest.route == screen.route } == true,
-                            onClick = {
-                                selectedTab = screen.route
-                                navController.navigate(screen.route) {
-                                    // Pop up to the start destination of the graph to
-                                    // avoid building up a large stack of destinations
-                                    // on the back stack as users select items
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                if (!composeWindowInsets.isImeVisible)
+                    NavigationBar {
+                        items.forEach { screen ->
+                            NavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        imageVector = if (selectedTab == screen.route) {
+                                            screen.iconFilled
+                                        } else {
+                                            screen.iconOutline
+                                        },
+                                        contentDescription = null
+                                    )
+                                },
+                                label = { Text(stringResource(screen.resourceId)) },
+                                selected = currentDestination?.hierarchy?.any
+                                { navDest -> navDest.route == screen.route } == true,
+                                onClick = {
+                                    selectedTab = screen.route
+                                    navController.navigate(screen.route) {
+                                        // Pop up to the start destination of the graph to
+                                        // avoid building up a large stack of destinations
+                                        // on the back stack as users select items
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        // Avoid multiple copies of the same destination when
+                                        // reselecting the same item
+                                        launchSingleTop = false
+                                        // Restore state when reselecting a previously selected item
+                                        restoreState = true
                                     }
-                                    // Avoid multiple copies of the same destination when
-                                    // reselecting the same item
-                                    launchSingleTop = false
-                                    // Restore state when reselecting a previously selected item
-                                    restoreState = true
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
-                }
             }
         ) { innerPadding ->
             navHost(innerPadding)
