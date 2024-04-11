@@ -16,16 +16,25 @@ import java.util.UUID
 class GexplorerRepository(private var _token: String? = null) {
     var username: String? = null
     private var id: UUID? = null
-    
+    var districts: Map<UUID, DistrictDto> = mapOf()
 
     val client = RetrofitClient {
         Log.d("gexapi", "token getter called, token is $_token")
-        _token}
+        _token
+    }
     val api: GexplorerApi by lazy {
         client.retrofit.create(GexplorerApi::class.java)
     }
 
+    private suspend fun fetchDistricts() {
+        if (districts.isNotEmpty())
+            return
+        val result = getDistricts()
+        result.runIfSuccess { districts = result.data!!.map { it.id to it }.toMap() }
+    }
+
     private suspend fun <T> apiWrapper(block: suspend (GexplorerRepository) -> T): ApiResource<T> {
+        fetchDistricts()
         return ApiResource.fromResult(runCatching {
             block(this)
         })
@@ -45,15 +54,15 @@ class GexplorerRepository(private var _token: String? = null) {
         return result.fold(
             {
                 val user = api.getUser(loginDto.userName)
-                
+
                 _token = it.token
-                Log.d("gexapi","SETTING GODFORSAKEN TOKEN TO $_token")
+                Log.d("gexapi", "SETTING GODFORSAKEN TOKEN TO $_token")
                 username = loginDto.userName
                 id = user.id
                 ApiResource.Success(Unit)
             },
             {
-                Log.d("gexapi","login failed?? $it")
+                Log.d("gexapi", "login failed?? $it")
                 ApiResource.Error(Exception())
             }
         )
@@ -65,17 +74,17 @@ class GexplorerRepository(private var _token: String? = null) {
             val user = api.getUser(registerDto.userName)
 
             _token = it.token
-            Log.d("gexapi","SETTING GODFORSAKEN TOKEN TO $_token")
+            Log.d("gexapi", "SETTING GODFORSAKEN TOKEN TO $_token")
             username = registerDto.userName
             id = user.id
             ApiResource.Success(Unit)
         },
             {
-                Log.d("gexapi","register failed?? $it")
+                Log.d("gexapi", "register failed?? $it")
                 ApiResource.Error(Exception())
             })
     }
-    
+
     fun logout() {
         _token = null
         username = null
@@ -86,7 +95,8 @@ class GexplorerRepository(private var _token: String? = null) {
     // maybe replace this with a custom error type further down the line
     suspend fun getSelf(): ApiResource<UserDto> = apiWrapper { api.getUser(username!!) }
 
-    suspend fun getDistricts(): ApiResource<List<DistrictDto>> = apiWrapper { api.getDistricts() }
+    suspend fun getDistricts(): ApiResource<List<DistrictDto>> =
+        ApiResource.fromResult(runCatching { api.getDistricts() })
 
     suspend fun getOverallLeaderboard(): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getOverallLeaderboard() }
@@ -99,7 +109,7 @@ class GexplorerRepository(private var _token: String? = null) {
 
     suspend fun getDistrictLeaderboard(
         districtId: UUID,
-        page: Int
+        page: Int,
     ): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getDistrictLeaderboard(districtId, page) }
 
