@@ -69,6 +69,7 @@ import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.SettingsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
+import com.bundev.gexplorer_mobile.pages.leaderboard.LeaderboardPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage
 import com.bundev.gexplorer_mobile.pages.map.MapPage
 import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
@@ -207,8 +208,11 @@ private fun GexplorerNavigation() {
                 composable(Screen.Statistics.route) {
                     StatisticsPage(navController) { selectedTab = selectedTabSave }
                 }
-                composable(Screen.LogIn.route) {
+                composable(Screen.Login.route) {
                     LoginPage(navController) { selectedTab = selectedTabSave }
+                }
+                composable(Screen.Leaderboard.route) {
+                    LeaderboardPage(navController) { selectedTab = selectedTabSave }
                 }
             }
         }

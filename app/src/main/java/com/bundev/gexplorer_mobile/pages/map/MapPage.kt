@@ -247,7 +247,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
 
                 is ApiResource.Error -> navigateTo(
                     navController,
-                    Screen.LogIn.route
+                    Screen.Login.route
                 ) { changePage() }
 
                 else -> {}

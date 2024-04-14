@@ -40,4 +40,5 @@
     <string name="confirm_finish_trip">Czy jesteś pewien, że chcesz zakończyć podróż?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
+    <string name="leaderboard">Tablica wyników</string>
 </resources>

@@ -47,4 +47,5 @@
     <string name="confirm_finish_trip">confirm_finish_trip</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="leaderboard">leaderboard</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -63,11 +64,9 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             is ApiResource.Success -> {
                 val user = state.data!!
                 Log.d("user is", "$user")
-                Text(text = "Witaj ${user.username}")
-                IconAndTextButton(
-                    label = stringResource(id = R.string.log_out),
-                    imageVector = Icons.Filled.Person,
-                ) { vm.logout(); vm.fetchSelf() }
+                Card() {
+                    Text(text = "Witaj ${user.username}")
+                }
             }
 
             is ApiResource.Loading -> LoadingBar(text = stringResource(id = R.string.loading) + " api")
@@ -75,7 +74,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
             ) {
-                navigateTo(navController, Screen.LogIn.route) { changePage() }
+                navigateTo(navController, Screen.Login.route) { changePage() }
             }
         }
 //TODO show icon when intenet is off or there is no connection to database
@@ -84,6 +83,19 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             label = stringResource(id = R.string.achievements),
             imageVector = if (funi.getValue() != 2024L) GexplorerIcons.Outlined.Trophy else GexplorerIcons.Outlined.SocialLeaderboard
         ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
+
+        //Leaderboard button
+        IconAndTextButton(
+            label = stringResource(id = R.string.leaderboard),
+            imageVector = GexplorerIcons.Outlined.SocialLeaderboard
+        ) { navigateTo(navController, Screen.Leaderboard.route) { changePage() } }
+
+        if (state is ApiResource.Success){
+            IconAndTextButton(
+                label = stringResource(id = R.string.log_out),
+                imageVector = Icons.Filled.Person,
+            ) { vm.logout(); vm.fetchSelf() }
+        }
 
         //Statistics button
         IconAndTextButton(
