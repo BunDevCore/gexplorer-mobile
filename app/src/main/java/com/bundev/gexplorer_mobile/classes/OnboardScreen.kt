@@ -9,6 +9,7 @@ data class OnboardScreen(
     val descriptionResource: Int = -1,
     val userInteraction: @Composable (Unit) -> Unit = {},
     val preTitleResource: Int = -1,
+    val doPermissionRequest: Boolean = false,
     val imageResource: Int = -1,
     val imageVector: ImageVector = ImageVector.Builder(
         "NO IMAGE VECTOR", 0.dp, 0.dp, 0f, 0f)

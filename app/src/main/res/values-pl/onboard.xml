@@ -8,4 +8,8 @@
     <string name="onboard_permissions">Uprawnienia</string>
     <string name="onboard_permissions_button">Daj uprawnienia</string>
     <string name="onboard_app_description">Aplikacja wspomagająca eksplorację miasta</string>
+    <string name="onboard_finished">Wszystko gotowe</string>
+    <string name="onboard_finished_description">Przycisk poniżej otworzy aplikację</string>
+    <string name="onboard_open_settings">Otwórz ustawienia</string>
+    <string name="onboard_skip">Pomiń</string>
 </resources>

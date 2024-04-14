@@ -34,4 +34,5 @@
     <string name="next">Dalej</string>
     <string name="get_started">Rozpocznij</string>
     <string name="loading">Ładowanie</string>
+    <string name="location_detailed_needed">Aby korzystać w całości z naszej aplikacji należy zezwolić na dostęp do dokładnej lokalizacji.</string>
 </resources>

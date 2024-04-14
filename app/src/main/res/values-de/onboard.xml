@@ -8,4 +8,8 @@
     <string name="onboard_permissions">Rechts</string>
     <string name="onboard_permissions_button">Geb Rechts</string>
     <string name="onboard_app_description">Eine App, die hilft beim Entdeckung der Stadt</string>
+    <string name="onboard_finished">-finished</string>
+    <string name="onboard_finished_description">-finished_description</string>
+    <string name="onboard_open_settings">-onboard_open_settings</string>
+    <string name="onboard_skip">-skip</string>
 </resources>

@@ -1,9 +1,13 @@
 package com.bundev.gexplorer_mobile
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
 import android.text.format.DateUtils
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -36,11 +40,13 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -49,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -471,3 +478,52 @@ fun RadioList(
 fun Double.roundTo(n: Int): Double {
     return round(this * 10f.pow(n)) / 10f.pow(n)
 }
+
+@Composable
+fun RequestLocationPermission(
+    requestCount: Int = 0,
+    onPermissionDenied: () -> Unit,
+    onPermissionReady: () -> Unit,
+) {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+    ) { permissionsMap ->
+        val granted = permissionsMap.values.all { it }
+        if (granted) {
+            onPermissionReady()
+        } else {
+            onPermissionDenied()
+        }
+    }
+    LaunchedEffect(requestCount) {
+        context.checkAndRequestLocationPermission(
+            locationPermissions,
+            launcher,
+            onPermissionReady
+        )
+    }
+}
+
+private fun Context.checkAndRequestLocationPermission(
+    permissions: Array<String>,
+    launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+    onPermissionReady: () -> Unit,
+) {
+    if (permissions.all {
+            ContextCompat.checkSelfPermission(
+                this,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    ) {
+        onPermissionReady()
+    } else {
+        launcher.launch(permissions)
+    }
+}
+
+private val locationPermissions = arrayOf(
+    android.Manifest.permission.ACCESS_FINE_LOCATION,
+    android.Manifest.permission.ACCESS_COARSE_LOCATION
+)

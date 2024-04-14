@@ -34,4 +34,5 @@
     <string name="next">Next</string>
     <string name="get_started">Get started</string>
     <string name="loading">Loading</string>
+    <string name="location_detailed_needed">To use our app to its fullest you need to give the detailed location permission</string>
 </resources>

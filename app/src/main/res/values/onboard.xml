@@ -8,4 +8,8 @@
     <string name="onboard_distance_unit">select_distance_unit</string>
     <string name="onboard_permissions">permissions</string>
     <string name="onboard_permissions_button">permissions_button</string>
+    <string name="onboard_open_settings">onboard_open_settings</string>
+    <string name="onboard_skip">skip</string>
+    <string name="onboard_finished">finished</string>
+    <string name="onboard_finished_description">finished_description</string>
 </resources>

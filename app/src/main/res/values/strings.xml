@@ -12,6 +12,7 @@
     <string name="theme">theme</string>
     <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiaW5maW5pZmVuIiwiYSI6ImNsZ21uc3d1YjA3b2QzZW1tcWQ4ZWhuZ3kifQ.ide6_yWZQVDRD546IXsfDw</string>
     <string name="location_needed">location_needed</string>
+    <string name="location_detailed_needed">location_detailed_needed</string>
     <string name="cancel">-cancel</string>
     <string name="theme_light">light</string>
     <string name="theme_dark">dark</string>
@@ -40,4 +41,5 @@
     <string name="next">next</string>
     <string name="get_started">get_started</string>
     <string name="loading">loading</string>
+    <string name="ok" translatable="false">OK</string>
 </resources>

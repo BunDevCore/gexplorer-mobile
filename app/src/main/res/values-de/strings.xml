@@ -34,4 +34,5 @@
     <string name="next">Nächste</string>
     <string name="get_started">Leg los!</string>
     <string name="loading">-loading</string>
+    <string name="location_detailed_needed">-location_detailed_needed</string>
 </resources>
