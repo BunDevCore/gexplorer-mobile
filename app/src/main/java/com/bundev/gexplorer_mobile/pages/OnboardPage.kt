@@ -39,6 +39,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
@@ -60,12 +61,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.datastore.preferences.core.edit
+import com.bundev.gexplorer_mobile.DISTANCE_UNIT
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.RadioList
 import com.bundev.gexplorer_mobile.RequestLocationPermission
+import com.bundev.gexplorer_mobile.THEME
 import com.bundev.gexplorer_mobile.changeLanguage
 import com.bundev.gexplorer_mobile.classes.OnboardScreen
+import com.bundev.gexplorer_mobile.dataStore
 import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.icons.filled.Palette
 import com.bundev.gexplorer_mobile.icons.filled.Straighten
@@ -103,13 +108,16 @@ private val onboardScreenPagesLists = listOf(
     OnboardScreen(
         R.string.onboard_theme,
         userInteraction = {
-            //TODO handle theme change
             val themeOptions =
                 listOf(R.string.theme_light, R.string.theme_dark, R.string.theme_black_amoled)
             val (selectedTheme, onThemeSelected) = remember {
                 mutableIntStateOf(themeOptions[1]) //TODO: On first load set phones defaults
             }
             RadioList(themeOptions, selectedTheme, onThemeSelected)
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                context.dataStore.edit { settings -> settings[THEME] = selectedTheme }
+            }
         },
         imageVector = GexplorerIcons.Filled.Palette
     ),
@@ -120,14 +128,19 @@ private val onboardScreenPagesLists = listOf(
             val distanceUnitsMap =
                 mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
             val (selectedDistanceUnits, onDistanceUnitsSelected) = remember {
-                mutableIntStateOf(
-                    distanceUnitsMap[distanceUnit]
-                        ?: R.string.metric
-                )
+                mutableIntStateOf(distanceUnitsMap[distanceUnit] ?: R.string.metric)
             }
             RadioList(distanceUnitsOptions, selectedDistanceUnits, onDistanceUnitsSelected)
-            distanceUnit =
-                distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
+//            distanceUnit =
+//                distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                context.dataStore.edit { settings ->
+                    settings[DISTANCE_UNIT] =
+                        distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
+                            .toString()
+                }
+            }
         },
         imageVector = GexplorerIcons.Filled.Straighten
     ),
@@ -173,7 +186,6 @@ fun OnboardScreen(defaultPage: Int = 0, onCompletion: () -> Unit) {
                     .padding(16.dp),
                 currentPage = onboardPages[currentPage.intValue]
             ) { }
-            Log.d("button clicked?", buttonClicked.value.toString())
             OnboardNavButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)

@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.icu.util.MeasureUnit
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +14,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,24 +28,53 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.datastore.preferences.core.edit
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.CenteredTextButton
+import com.bundev.gexplorer_mobile.DISTANCE_UNIT
+import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.RadioList
 import com.bundev.gexplorer_mobile.StackedTextButton
+import com.bundev.gexplorer_mobile.THEME
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.changeLanguage
-import com.bundev.gexplorer_mobile.distanceUnit
+import com.bundev.gexplorer_mobile.dataStore
 import com.bundev.gexplorer_mobile.funi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun SettingsPage(navController: NavHostController? = null, changePage: () -> Unit) {
+    val context = LocalContext.current
+    val savedTheme = rememberSaveable { mutableIntStateOf(-1) }
+    val savedDistanceUnit = rememberSaveable { mutableStateOf(MeasureUnit.ASTRONOMICAL_UNIT) }
+    val themeFlow: Flow<Int> = context.dataStore.data.map { settings ->
+        settings[THEME] ?: R.string.theme_dark
+    }
+    val distanceUnitFlow: Flow<String> = context.dataStore.data.map { settings ->
+        settings[DISTANCE_UNIT] ?: MeasureUnit.METER.toString()
+    }
+    LaunchedEffect(Unit) {
+        themeFlow.collect { themeResource ->
+            Log.d("DataStore READ", "Theme resource: $themeResource")
+            savedTheme.intValue = themeResource
+        }
+        distanceUnitFlow.collect {
+            Log.d("DataStore READ", "DistanceUnit: $it")
+            savedDistanceUnit.value = MeasureUnit.getAvailable(it).first()
+        }
+    }
+    if (savedTheme.intValue == -1) {
+        LoadingCard(text = stringResource(id = R.string.loading))
+        return
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TitleBar(stringResource(id = R.string.settings), navController) { changePage() }
-        val context = LocalContext.current
 
         // Change language dialog
         val languageOptions = listOf(R.string.en, R.string.pl, R.string.de)
@@ -76,7 +108,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
         val themeOptions =
             listOf(R.string.theme_light, R.string.theme_dark, R.string.theme_black_amoled)
         val (selectedTheme, onThemeSelected) = remember {
-            mutableIntStateOf(themeOptions[1]) //TODO: On first load set phones defaults
+            mutableIntStateOf(savedTheme.value) //TODO: On first load set phones defaults
         }
         val openThemeDialog = remember {
             mutableStateOf(false)
@@ -89,6 +121,10 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                     selectedOption = selectedTheme,
                     onOptionSelected = onThemeSelected
                 )
+                LaunchedEffect(Unit) {
+                    context.dataStore.edit { settings -> settings[THEME] = selectedTheme }
+                    Log.d("DataStore", "Theme is set to $selectedTheme")
+                }
             }
         }
         StackedTextButton(
@@ -103,7 +139,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
             mapOf(MeasureUnit.METER to R.string.metric, MeasureUnit.FOOT to R.string.imperial)
         val (selectedDistanceUnits, onDistanceUnitsSelected) = remember {
             mutableIntStateOf(
-                distanceUnitsMap[distanceUnit]
+                distanceUnitsMap[savedDistanceUnit.value]
                     ?: R.string.metric
             )
         }
@@ -118,8 +154,13 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                     selectedOption = selectedDistanceUnits,
                     onOptionSelected = onDistanceUnitsSelected
                 )
-                distanceUnit =
-                    distanceUnitsMap.filterValues { it == selectedDistanceUnits }.keys.first()
+                LaunchedEffect(Unit) {
+                    context.dataStore.edit { settings ->
+                        settings[DISTANCE_UNIT] =
+                            distanceUnitsMap.filterValues { it == selectedDistanceUnits }
+                                .keys.first().toString()
+                    }
+                }
             }
         }
         StackedTextButton(
@@ -239,5 +280,5 @@ private fun RadioDialog(
 @Preview(showBackground = true, locale = "pl", name = "pl")
 @Composable
 private fun SettingsPagePreview() {
-    SettingsPage{}
+    SettingsPage {}
 }
