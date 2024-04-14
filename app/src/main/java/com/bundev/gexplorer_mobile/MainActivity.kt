@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                             context.dataStore.edit { settings ->
                                 settings[FIRST_TIME] = false
                             }
-                            Log.d("StoreData", "FirstTime is set to false")
+                            Log.d("DataStore", "FirstTime is set to false")
                         }
                         GexplorerNavigation()
                     }

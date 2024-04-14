@@ -43,7 +43,7 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             repo.logout()
             context.dataStore.edit { it.remove(TOKEN); it.remove(USERNAME); it.remove(USER_ID) }
-            Log.d("StoreData", "User token is null")
+            Log.d("DataStore", "User token is null")
         }
     }
 }

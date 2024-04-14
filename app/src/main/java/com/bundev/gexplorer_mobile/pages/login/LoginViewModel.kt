@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(
                     preferences[USERNAME] = repo.username!!
                     preferences[USER_ID] = repo.id!!.toString()
                 }
-                Log.d("StoreData", "User token is set ${_state.value.data.toString()}")
+                Log.d("DataStore", "User token is set ${_state.value.data.toString()}")
             }
         }
     }
