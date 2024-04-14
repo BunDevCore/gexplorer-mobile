@@ -19,11 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.checkLocationPermission
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
@@ -62,6 +64,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     }
     val vm = hiltViewModel<MapViewModel>()
     val state by vm.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
 
@@ -82,29 +85,6 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 )
                 mapView.compass.marginTop = 180f
             }
-//            val points = listOf(
-//                listOf(
-//                    Point.fromLngLat(18.615274605637016, 54.40211158342004),
-//                    Point.fromLngLat(18.730974363868317, 54.37152378253998),
-//                    Point.fromLngLat(18.6650564007217, 54.29906183330589),
-//                    Point.fromLngLat(18.6547192660595, 54.355547811237834),
-//                    Point.fromLngLat(18.615274605637016, 54.40211158342004)
-//                )
-//            )
-//            PolygonAnnotation(
-//                points = points,
-//                fillColorString = "#FFEE4E8B",
-//                fillOpacity = 0.4
-//            )
-            // I want to find a way to outline a polygon and delete the Polyline
-//            points.forEach { point ->
-//                PolylineAnnotation(
-//                    points = point,
-//                    lineColorString = "#FFBB0B",
-//                    lineOpacity = 1.0,
-//                    lineWidth = 5.0
-//                )
-//            }
             if (funi.getValue() == 20L) CircleAnnotation(
                 point = Point.fromLngLat(18.6650564007217, 54.29906183330589),
                 circleOpacity = 0.5,
@@ -218,7 +198,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 imageVector = GexplorerIcons.Outlined.Location,
                 contentDescription = null
             )
-            if (true) //TODO write here check for location permission
+            if (!context.checkLocationPermission())
                 Icon(
                     modifier = Modifier.size(12.dp),
                     imageVector = GexplorerIcons.Simple.QuestionMark,

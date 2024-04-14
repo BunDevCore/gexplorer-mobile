@@ -505,7 +505,7 @@ fun RequestLocationPermission(
     }
 }
 
-private fun Context.checkAndRequestLocationPermission(
+fun Context.checkAndRequestLocationPermission(
     permissions: Array<String>,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
     onPermissionReady: () -> Unit,
@@ -523,7 +523,14 @@ private fun Context.checkAndRequestLocationPermission(
     }
 }
 
-private val locationPermissions = arrayOf(
+fun Context.checkLocationPermission() : Boolean {
+    val permissions = locationPermissions
+    return permissions.all {
+            ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+        }
+}
+
+val locationPermissions = arrayOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,
     android.Manifest.permission.ACCESS_COARSE_LOCATION
 )
