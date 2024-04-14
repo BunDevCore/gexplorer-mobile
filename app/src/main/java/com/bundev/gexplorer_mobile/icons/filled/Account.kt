@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.bundev.gexplorer_mobile.icons.simple
+package com.bundev.gexplorer_mobile.icons.filled
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
@@ -13,12 +13,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.bundev.gexplorer_mobile.GexplorerIcons
 
-val GexplorerIcons.Simple.Account: ImageVector
+val GexplorerIcons.Filled.Account: ImageVector
     get() {
         if (account != null) {
             return account!!
         }
-        account = Builder(name = "Account", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
+        account = Builder(name = "AccountFilled", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
                 viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,

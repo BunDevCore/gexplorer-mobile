@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bundev.gexplorer_mobile.icons.filled.Account
 import com.bundev.gexplorer_mobile.icons.filled.Analytics
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.filled.Error
@@ -10,6 +11,7 @@ import com.bundev.gexplorer_mobile.icons.filled.Palette
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.filled.Straighten
 import com.bundev.gexplorer_mobile.icons.filled.Trophy
+import com.bundev.gexplorer_mobile.icons.outlined.Account
 import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Error
@@ -19,7 +21,6 @@ import com.bundev.gexplorer_mobile.icons.outlined.Palette
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Straighten
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
-import com.bundev.gexplorer_mobile.icons.simple.Account
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Explore
 import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
@@ -51,7 +52,6 @@ object GexplorerIcons {
                     Simple.Language,
                     Simple.Visibility,
                     Simple.VisibilityOff,
-                    Simple.Account,
                     Simple.NoAccount
                 )
                 return _simple!!
@@ -74,7 +74,8 @@ object GexplorerIcons {
                     Filled.Analytics,
                     Filled.Palette,
                     Filled.Straighten,
-                    Filled.Error
+                    Filled.Error,
+                    Filled.Account
                 )
                 return _filled!!
             }
@@ -96,7 +97,8 @@ object GexplorerIcons {
                     Outlined.Analytics,
                     Outlined.Palette,
                     Outlined.Straighten,
-                    Outlined.Error
+                    Outlined.Error,
+                    Outlined.Account
                 )
                 return _outlined!!
             }

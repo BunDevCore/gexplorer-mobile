@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
@@ -47,9 +48,10 @@ import com.bundev.gexplorer_mobile.checkLocationPermission
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
+import com.bundev.gexplorer_mobile.icons.filled.Account
 import com.bundev.gexplorer_mobile.icons.filled.Location
+import com.bundev.gexplorer_mobile.icons.outlined.Account
 import com.bundev.gexplorer_mobile.icons.outlined.Location
-import com.bundev.gexplorer_mobile.icons.simple.Account
 import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.navigateTo
@@ -194,16 +196,28 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         }) {
         if (state is ApiResource.Success)
             Icon(
+        when (state.userDto) {
+            is ApiResource.Success -> Icon(
                 modifier = Modifier,
-                imageVector = GexplorerIcons.Simple.Account,
+                imageVector = GexplorerIcons.Filled.Account,
                 contentDescription = null
             )
-        else
-            Icon(
+
+            is ApiResource.Loading -> {
+                Icon(
+                    modifier = Modifier,
+                    imageVector = GexplorerIcons.Outlined.Account,
+                    contentDescription = null
+                )
+                CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 4.dp)
+            }
+
+            else -> Icon(
                 modifier = Modifier.padding(2.5.dp),
                 imageVector = GexplorerIcons.Simple.NoAccount,
                 contentDescription = null
             )
+        }
     }
     if (tripStarted.value)
         Text(text = "Dane z lokalizacji tutaj")
