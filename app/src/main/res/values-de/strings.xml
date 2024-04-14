@@ -35,4 +35,9 @@
     <string name="get_started">Leg los!</string>
     <string name="loading">-loading</string>
     <string name="location_detailed_needed">-location_detailed_needed</string>
+    <string name="start_trip">-start_trip</string>
+    <string name="finish_trip">-finish_trip</string>
+    <string name="confirm_finish_trip">-confirm_finish_trip</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>

@@ -35,4 +35,9 @@
     <string name="get_started">Rozpocznij</string>
     <string name="loading">Ładowanie</string>
     <string name="location_detailed_needed">Aby korzystać w całości z naszej aplikacji należy zezwolić na dostęp do dokładnej lokalizacji.</string>
+    <string name="start_trip">Rozpocznij podróż</string>
+    <string name="finish_trip">Zakończ podróż</string>
+    <string name="confirm_finish_trip">Czy jesteś pewien, że chcesz zakończyć podróż?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
 </resources>

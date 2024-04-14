@@ -42,4 +42,9 @@
     <string name="get_started">get_started</string>
     <string name="loading">loading</string>
     <string name="ok" translatable="false">OK</string>
+    <string name="start_trip">start_trip</string>
+    <string name="finish_trip">finish_trip</string>
+    <string name="confirm_finish_trip">confirm_finish_trip</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 </resources>

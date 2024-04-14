@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,6 +30,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.bundev.gexplorer_mobile.ConfirmDialog
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.RequestLocationPermission
@@ -80,6 +83,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     val state by vm.state.collectAsState()
     val context = LocalContext.current
     val (permissionRequestCount, setPermissionRequestCount) = rememberSaveable { mutableIntStateOf(1) }
+    val tripStarted = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
     RequestLocationPermission(requestCount = permissionRequestCount, onPermissionDenied = { }) {}
@@ -200,6 +204,51 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 imageVector = GexplorerIcons.Simple.NoAccount,
                 contentDescription = null
             )
+    }
+    if (tripStarted.value)
+        Text(text = "Dane z lokalizacji tutaj")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 16.dp),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (context.checkLocationPermission())
+            if (tripStarted.value) {
+                val openFinishDialog = rememberSaveable { mutableStateOf(false) }
+                Button(onClick = { openFinishDialog.value = true }) {
+                    Text(text = stringResource(id = R.string.finish_trip))
+                }
+                when {
+                    openFinishDialog.value -> {
+                        ConfirmDialog(
+                            onDismissRequest = { openFinishDialog.value = false },
+                            confirmRequest = { tripStarted.value = false },
+                            textResource = R.string.confirm_finish_trip
+                        )
+                    }
+                }
+            } else
+                Button(onClick = { tripStarted.value = true }) {
+                    Text(text = stringResource(id = R.string.start_trip))
+                }
+        else
+            Button(
+                onClick = {
+                    if (permissionRequestCount > 2) context.startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", context.packageName, null)
+                        )
+                    )
+                    else setPermissionRequestCount(permissionRequestCount + 1)
+                }) {
+                if (permissionRequestCount > 2)
+                    Text(text = stringResource(R.string.onboard_open_settings))
+                else
+                    Text(text = stringResource(id = R.string.onboard_permissions_button))
+            }
     }
 }
 

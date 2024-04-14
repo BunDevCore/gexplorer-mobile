@@ -27,6 +27,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -523,14 +524,37 @@ private fun Context.checkAndRequestLocationPermission(
     }
 }
 
-fun Context.checkLocationPermission() : Boolean {
+fun Context.checkLocationPermission(): Boolean {
     val permissions = locationPermissions
     return permissions.all {
-            ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
-        }
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    }
 }
 
 val locationPermissions = arrayOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,
     android.Manifest.permission.ACCESS_COARSE_LOCATION
 )
+
+@Composable
+fun ConfirmDialog(
+    onDismissRequest: () -> Unit,
+    confirmRequest: () -> Unit,
+    textResource: Int,
+    rejectRequest: () -> Unit = {},
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = { onDismissRequest(); confirmRequest() }) {
+                Text(text = stringResource(id = R.string.yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismissRequest(); rejectRequest() }) {
+                Text(text = stringResource(id = R.string.no))
+            }
+        },
+        text = { Text(text = stringResource(id = textResource)) }
+    )
+}
