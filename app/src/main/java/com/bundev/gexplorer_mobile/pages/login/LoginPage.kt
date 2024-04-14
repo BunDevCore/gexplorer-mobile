@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -67,7 +69,7 @@ fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) 
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (register) RegisterCard(vm) { register = false }
+            if (register) RegisterCard(vm, state) { register = false }
             else LoginCard(vm, state, navController, changePage) { register = true }
         }
     }
@@ -84,6 +86,7 @@ fun LoginCard(
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var loginAttempted by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     if (state is ApiResource.Success)
         GoToPreviousPage(navController) { changePage() }
@@ -124,6 +127,11 @@ fun LoginCard(
                 if (userName == "" || password == "") return@BottomLoginButtons
                 vm?.login(userName, password)
             }
+            if (state is ApiResource.Success) {
+                Toast.makeText(context, "Logowanie zakończono pomyślnie", Toast.LENGTH_SHORT)
+                    .show()
+                changeCard()
+            }
         }
     }
 }
@@ -131,6 +139,7 @@ fun LoginCard(
 @Composable
 fun RegisterCard(
     vm: LoginViewModel? = null,
+    state: ApiResource<String>? = null,
     changeCard: () -> Unit,
 ) {
     var userName by rememberSaveable { mutableStateOf("") }
@@ -138,6 +147,8 @@ fun RegisterCard(
     var password by rememberSaveable { mutableStateOf("") }
     var confirm by rememberSaveable { mutableStateOf("") }
     var loginAttempted by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
+
     Card {
         Column(
             modifier = Modifier
@@ -190,6 +201,11 @@ fun RegisterCard(
                 loginAttempted = true
                 if (userName == "" || email == "" || password == "" || password != confirm) return@BottomLoginButtons
                 vm?.register(userName, email, password)
+            }
+            if (state is ApiResource.Success) {
+                Toast.makeText(context, "Rejestracja zakończona pomyślnie", Toast.LENGTH_SHORT)
+                    .show()
+                changeCard()
             }
         }
     }
