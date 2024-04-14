@@ -1,7 +1,15 @@
 package me.thefen.gexplorerapi
 
 import com.mapbox.geojson.Geometry
-import me.thefen.gexplorerapi.dtos.*
+import me.thefen.gexplorerapi.dtos.DetailedTripDto
+import me.thefen.gexplorerapi.dtos.DistrictDto
+import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
+import me.thefen.gexplorerapi.dtos.LoginDto
+import me.thefen.gexplorerapi.dtos.NewTripDto
+import me.thefen.gexplorerapi.dtos.RegisterDto
+import me.thefen.gexplorerapi.dtos.TokenDto
+import me.thefen.gexplorerapi.dtos.TripDto
+import me.thefen.gexplorerapi.dtos.UserDto
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -47,4 +55,7 @@ interface GexplorerApi {
 
     @GET("Trip/id/{tripId}")
     suspend fun getTrip(@Path("tripId") id: UUID): DetailedTripDto
+
+    @POST("Trip/new/mobile")
+    suspend fun sendTrip(@Body newTripDto: NewTripDto): TripDto
 }

@@ -9,7 +9,10 @@ import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
+import me.thefen.gexplorerapi.dtos.NewTripDto
 import me.thefen.gexplorerapi.dtos.RegisterDto
+import me.thefen.gexplorerapi.dtos.TimedPoint
+import me.thefen.gexplorerapi.dtos.TripDto
 import me.thefen.gexplorerapi.dtos.UserDto
 import java.util.UUID
 
@@ -124,4 +127,7 @@ class GexplorerRepository(
 
     suspend fun getTrip(tripId: String): ApiResource<DetailedTripDto> =
         apiWrapper { api.getTrip(UUID.fromString(tripId)) }
+
+    suspend fun sendTrip(timedPoints: List<TimedPoint>): ApiResource<TripDto> =
+        apiWrapper { api.sendTrip(NewTripDto(timedPoints)) }
 }

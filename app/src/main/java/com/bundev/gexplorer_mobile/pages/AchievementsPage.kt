@@ -1,6 +1,7 @@
 package com.bundev.gexplorer_mobile.pages
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -103,6 +104,14 @@ private val lockedAchievements = listOf(
 
 @Composable
 fun AchievementsPage(navController: NavHostController? = null, changePage: () -> Unit) {
+    Log.d(
+        "NAV CONTROLLER",
+        "curr: ${navController?.currentBackStackEntry?.destination?.route.toString()}"
+    )
+    Log.d(
+        "NAV CONTROLLER",
+        "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}"
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()

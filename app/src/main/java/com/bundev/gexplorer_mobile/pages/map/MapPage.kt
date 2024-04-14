@@ -3,7 +3,9 @@ package com.bundev.gexplorer_mobile.pages.map
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.net.Uri
+import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,6 +57,14 @@ import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.navigateTo
+import com.mapbox.common.location.AccuracyLevel
+import com.mapbox.common.location.DeviceLocationProvider
+import com.mapbox.common.location.IntervalSettings
+import com.mapbox.common.location.Location
+import com.mapbox.common.location.LocationObserver
+import com.mapbox.common.location.LocationProviderRequest
+import com.mapbox.common.location.LocationService
+import com.mapbox.common.location.LocationServiceFactory
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
@@ -63,7 +73,9 @@ import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
+import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 import com.mapbox.maps.extension.localization.localizeLabels
+import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
@@ -86,6 +98,30 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     val context = LocalContext.current
     val (permissionRequestCount, setPermissionRequestCount) = rememberSaveable { mutableIntStateOf(1) }
     val tripStarted = rememberSaveable { mutableStateOf(false) }
+
+    //Location service
+    val locationList = rememberSaveable { mutableListOf<Location>() }
+
+    val locationService: LocationService = LocationServiceFactory.getOrCreate()
+    var locationProvider: DeviceLocationProvider? = null
+    val request = LocationProviderRequest.Builder().interval(
+        IntervalSettings.Builder().interval(10000L).minimumInterval(5000L).maximumInterval(20000L)
+            .build()
+    ).displacement(3F).accuracy(AccuracyLevel.HIGHEST).build()
+    val result = locationService.getDeviceLocationProvider(request = request)
+    if (result.isValue) {
+        locationProvider = result.value!!
+    } else {
+        Log.e("LOCATION PROVIDER", "Failed to get device location provider")
+    }
+    val locationObserver = LocationObserver {}
+    locationProvider!!.addLocationObserver(locationObserver, looper = Looper.myLooper()!!)
+
+    locationProvider.getLastLocation { lastLocation ->
+        lastLocation?.let {
+            locationList.add(lastLocation)
+        }
+    }
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
     RequestLocationPermission(requestCount = permissionRequestCount, onPermissionDenied = { }) {}
@@ -125,6 +161,18 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green
             )
+            if (locationList.isNotEmpty()) {
+                val points = mutableListOf<Point>()
+                locationList.forEach { location ->
+                    points += Point.fromLngLat(location.longitude, location.latitude)
+                }
+                PolylineAnnotation(
+                    points = points,
+                    lineJoin = LineJoin.ROUND,
+                    lineBorderWidth = 10.0
+                )
+
+            }
         }
     }
     val changedReason = mapViewportState.mapViewportStatusChangedReason
@@ -190,12 +238,21 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     SmallFloatingActionButton(
         modifier = Modifier.padding(top = 8.dp, start = (configuration.screenWidthDp - 52).dp),
         onClick = {
-            if (state is ApiResource.Success)
-                navigateTo(navController, Screen.Account.route, true) { changePage() }
-            else navigateTo(navController, Screen.LogIn.route) { changePage() }
+            when (state.userDto) {
+                is ApiResource.Success -> navigateTo(
+                    navController,
+                    Screen.Account.route,
+                    true
+                ) { changePage() }
+
+                is ApiResource.Error -> navigateTo(
+                    navController,
+                    Screen.LogIn.route
+                ) { changePage() }
+
+                else -> {}
+            }
         }) {
-        if (state is ApiResource.Success)
-            Icon(
         when (state.userDto) {
             is ApiResource.Success -> Icon(
                 modifier = Modifier,
@@ -220,7 +277,13 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         }
     }
     if (tripStarted.value)
-        Text(text = "Dane z lokalizacji tutaj")
+        Card {
+            Text(text = "Dane z lokalizacji tutaj")
+            val currentLocation = locationList.last()
+            Text(text = "LOCATIONS GOT: ${locationList.size}")
+            Text(text = "LON: ${currentLocation.longitude} LAT: ${currentLocation.latitude}")
+            Text(text = "TIME ${currentLocation.timestamp}")
+        }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -238,7 +301,10 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                     openFinishDialog.value -> {
                         ConfirmDialog(
                             onDismissRequest = { openFinishDialog.value = false },
-                            confirmRequest = { tripStarted.value = false },
+                            confirmRequest = {
+                                tripStarted.value = false
+                                vm.sendTrip(locationList)
+                            },
                             textResource = R.string.confirm_finish_trip
                         )
                     }

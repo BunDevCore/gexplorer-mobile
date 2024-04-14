@@ -37,4 +37,19 @@ class MapViewModel @Inject constructor(
             _state.update { MapViewModelState(repo.getSelf(), it.tripDto) }
         }
     }
+
+    fun sendTrip(locationList: List<Location>) {
+        Log.d("gexapi", "send trip data called")
+        val timedPoints = locationList.map { location ->
+            TimedPoint(
+                location.longitude,
+                location.latitude,
+                location.timestamp
+            )
+        }
+        viewModelScope.launch {
+            Log.d("gexapi", "sending trip data...")
+            _state.update { MapViewModelState(it.userDto, repo.sendTrip(timedPoints)) }
+        }
+    }
 }
