@@ -505,7 +505,7 @@ fun RequestLocationPermission(
     }
 }
 
-fun Context.checkAndRequestLocationPermission(
+private fun Context.checkAndRequestLocationPermission(
     permissions: Array<String>,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
     onPermissionReady: () -> Unit,

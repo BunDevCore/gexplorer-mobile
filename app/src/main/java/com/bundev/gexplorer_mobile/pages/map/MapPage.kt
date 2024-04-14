@@ -1,30 +1,45 @@
 package com.bundev.gexplorer_mobile.pages.map
 
+import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.net.Uri
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.RequestLocationPermission
 import com.bundev.gexplorer_mobile.checkLocationPermission
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -32,20 +47,19 @@ import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.simple.Account
-import com.bundev.gexplorer_mobile.icons.simple.Explore
 import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.navigateTo
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
-import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.compose.DefaultSettingsProvider
 import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
 import com.mapbox.maps.extension.localization.localizeLabels
-import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
 import java.util.Locale
@@ -65,8 +79,10 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     val vm = hiltViewModel<MapViewModel>()
     val state by vm.state.collectAsState()
     val context = LocalContext.current
+    val (permissionRequestCount, setPermissionRequestCount) = rememberSaveable { mutableIntStateOf(1) }
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
+    RequestLocationPermission(requestCount = permissionRequestCount, onPermissionDenied = { }) {}
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -74,7 +90,15 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         //Documentation here: https://docs.mapbox.com/android/maps/guides/
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
-            mapViewportState = mapViewportState
+            mapViewportState = mapViewportState,
+            locationComponentSettings = DefaultSettingsProvider.defaultLocationComponentSettings(
+                context
+            ).toBuilder()
+                .setLocationPuck(DefaultSettingsProvider.createDefault2DPuck(withBearing = true))
+                .setPuckBearingEnabled(true)
+                .setPuckBearing(PuckBearing.HEADING)
+                .setEnabled(true)
+                .build()
         ) {
             MapEffect { mapView ->
                 mapView.mapboxMap.loadStyle(Style.STANDARD) {}
@@ -98,74 +122,32 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         }
     }
     val changedReason = mapViewportState.mapViewportStatusChangedReason
-    val animationSpeed: MapAnimationOptions
-    val tempLocation = Point.fromLngLat(18.6570989, 54.3542712)
-    val tempLocationBearing = 17.1234
-    val followingUser = remember {
+    val (followingUser, setFollowing) = remember {
         mutableStateOf(false)
     }
-    val exploreMode = remember {
-        mutableStateOf(false)
-    }
-    if (followingUser.value) {
-        animationSpeed = MapAnimationOptions.mapAnimationOptions { duration(1000L) }
-        if (changedReason == ViewportStatusChangeReason.USER_INTERACTION ||
-            changedReason == ViewportStatusChangeReason.TRANSITION_FAILED
-        ) {
-            followingUser.value = false
-            exploreMode.value = false
+    if (followingUser) {
+        if (changedReason == ViewportStatusChangeReason.USER_INTERACTION) {
+            setFollowing(false)
         }
-    } else {
-        animationSpeed = MapAnimationOptions.mapAnimationOptions { duration(500L) }
     }
-    /* //If I would ever need a small FAB here it is
-    SmallFloatingActionButton(
-        onClick = { followingUser.value = false },
-        modifier = Modifier
-            .padding(
-                top = if (configuration.orientation == ORIENTATION_PORTRAIT)
-                    (configuration.screenHeightDp - 264).dp
-                else (configuration.screenHeightDp - 40).dp,
-                start = if (configuration.orientation == ORIENTATION_PORTRAIT)
-                    (configuration.screenWidthDp - 62).dp
-                else (configuration.screenWidthDp - 208).dp
-            )
-            .width(40.dp)
-            .height(40.dp)
-    ) {
-        Text("Stop")
-    }*/
+    val openPermissionDialog = rememberSaveable { mutableStateOf(false) }
+    when {
+        openPermissionDialog.value -> {
+            PermissionsDialog { openPermissionDialog.value = false }
+        }
+    }
     // Location button
     FloatingActionButton(
-        onClick = {//TODO if no permission show dialog which sends user to settings where they can give needed permissions
-            if (followingUser.value) {
-                exploreMode.value = !exploreMode.value
-            }
-            if (exploreMode.value) {
-                mapViewportState.flyTo(
-                    cameraOptions = cameraOptions {
-                        center(tempLocation)
-                        zoom(16.0)
-                        pitch(50.0)
-                        bearing(tempLocationBearing)
-                    },
-                    animationOptions = animationSpeed
-                )
+        onClick = {
+            if (context.checkLocationPermission()) {
+                setFollowing(true)
+                mapViewportState.transitionToFollowPuckState()
             } else {
-                mapViewportState.flyTo(
-                    cameraOptions = cameraOptions {
-                        center(
-                            tempLocation
-//                        Point.fromLngLat(location.longitude, location.latitude)
-                        )
-                        zoom(16.0)
-                        pitch(0.0)
-                        bearing(0.0)
-                    },
-                    animationOptions = animationSpeed
-                )
+                setPermissionRequestCount(permissionRequestCount + 1)
+                if (permissionRequestCount > 2) {
+                    openPermissionDialog.value = true
+                }
             }
-            followingUser.value = true
         }, modifier = Modifier
             .padding(
                 top = if (configuration.orientation == ORIENTATION_PORTRAIT)
@@ -178,20 +160,12 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
             .width(56.dp)
             .height(56.dp)
     ) {
-        if (followingUser.value) {
-            if (exploreMode.value) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = GexplorerIcons.Simple.Explore,
-                    contentDescription = null
-                )
-            } else {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = GexplorerIcons.Filled.Location,
-                    contentDescription = null
-                )
-            }
+        if (followingUser) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = GexplorerIcons.Filled.Location,
+                contentDescription = null
+            )
         } else {
             Icon(
                 modifier = Modifier.size(24.dp),
@@ -226,5 +200,48 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 imageVector = GexplorerIcons.Simple.NoAccount,
                 contentDescription = null
             )
+    }
+}
+
+@Composable
+private fun PermissionsDialog(onDismissRequest: () -> Unit) {
+    val context = LocalContext.current
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.location_detailed_needed),
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 20.dp)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = { onDismissRequest() }) {
+                    Text(text = stringResource(id = R.string.cancel))
+                }
+                TextButton(
+                    onClick = {
+                        onDismissRequest()
+                        context.startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", context.packageName, null)
+                            )
+                        )
+                    }) {
+                    Text(text = stringResource(id = R.string.onboard_open_settings))
+                }
+            }
+        }
     }
 }
