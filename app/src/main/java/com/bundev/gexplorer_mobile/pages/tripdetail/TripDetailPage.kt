@@ -98,7 +98,6 @@ fun TripDetailPage(
     val mapViewportState = rememberMapViewportState {
         setCameraOptions {
             zoom(10.0)
-//            center(Point.fromLngLat(18.6570989, 54.3542712))
             center(state.data?.point ?: Point.fromLngLat(18.6570989, 54.3542712))
             pitch(0.0)
             bearing(0.0)
