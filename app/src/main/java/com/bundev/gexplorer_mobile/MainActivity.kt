@@ -64,7 +64,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bundev.gexplorer_mobile.classes.Screen
-import com.bundev.gexplorer_mobile.pages.AchievementsPage
+import com.bundev.gexplorer_mobile.pages.achievements.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.settings.SettingsPage

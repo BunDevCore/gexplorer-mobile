@@ -1,4 +1,4 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.achievements
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.util.Log
@@ -30,6 +30,9 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,11 +52,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
+import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.classes.Achievement
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Map
@@ -112,26 +118,42 @@ fun AchievementsPage(navController: NavHostController? = null, changePage: () ->
         "NAV CONTROLLER",
         "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}"
     )
+    val vm = hiltViewModel<AchievementsViewModel>()
+    val state by vm.state.collectAsState()
+
+    LaunchedEffect(Unit) { vm.fetchSelf() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         TitleBar(stringResource(id = R.string.achievements), navController) { changePage() }
-        AchievementProgressBar(achievementsGot.size, achievementsGot.size + lockedAchievements.size)
-        GroupingList(
-            items = achievementsGot,
-            groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
-            title = { formatDate(it) }
-        ) { achievement ->
-            AchievementItem(achievement = achievement)
-        }
-        GroupingList(
-            items = lockedAchievements,
-            groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
-            title = { stringResource(id = R.string.locked_achievements) }
-        ) { achievement ->
-            AchievementItem(achievement = achievement)
+        when (state.userDto) {
+            is ApiResource.Success -> {
+                AchievementProgressBar(
+                    achievementsGot.size,
+                    achievementsGot.size + lockedAchievements.size
+                )
+                GroupingList(
+                    items = achievementsGot,
+                    groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+                    title = { formatDate(it) }
+                ) { achievement ->
+                    AchievementItem(achievement = achievement)
+                }
+
+                GroupingList(
+                    items = lockedAchievements,
+                    groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+                    title = { stringResource(id = R.string.locked_achievements) }
+                ) { achievement ->
+                    AchievementItem(achievement = achievement)
+                }
+            }
+
+            is ApiResource.Loading -> LoadingCard(text = stringResource(id = R.string.loading_api))
+            is ApiResource.Error -> LoadingCard(text = stringResource(id = R.string.achievements))
         }
     }
 }
@@ -249,7 +271,6 @@ private fun AchievementDialog(achievement: Achievement, onDismissRequest: () -> 
 
 @Composable
 private fun AchievementProgressBar(got: Int, outOf: Int) {
-    if (got == 0) return //TODO when user is logged in show progress bar at 0%
     val orientation = LocalConfiguration.current.orientation
     Card(
         modifier = Modifier
