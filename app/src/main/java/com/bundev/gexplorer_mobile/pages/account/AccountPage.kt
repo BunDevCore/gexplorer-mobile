@@ -49,10 +49,6 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
 
-    if (funi.getValue() == 2024L) {
-        //TODO give achievement "The first icon"
-    }
-
     Column(
         modifier = Modifier
             .padding(top = 10.dp)
@@ -69,7 +65,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 }
             }
 
-            is ApiResource.Loading -> LoadingBar(text = stringResource(id = R.string.loading) + " api")
+            is ApiResource.Loading -> LoadingBar(text = stringResource(id = R.string.loading_api))
             else -> IconAndTextButton(
                 label = stringResource(id = R.string.log_in),
                 imageVector = Icons.Outlined.Person,
