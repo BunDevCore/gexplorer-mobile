@@ -1,4 +1,4 @@
-package com.bundev.gexplorer_mobile.pages
+package com.bundev.gexplorer_mobile.pages.settings
 
 import android.icu.util.MeasureUnit
 import android.util.Log
@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,9 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.datastore.preferences.core.edit
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.CenteredTextButton
 import com.bundev.gexplorer_mobile.DISTANCE_UNIT
+import com.bundev.gexplorer_mobile.LoadingBar
 import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.RadioList
@@ -39,6 +43,7 @@ import com.bundev.gexplorer_mobile.StackedTextButton
 import com.bundev.gexplorer_mobile.THEME
 import com.bundev.gexplorer_mobile.TitleBar
 import com.bundev.gexplorer_mobile.changeLanguage
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.dataStore
 import com.bundev.gexplorer_mobile.funi
 import kotlinx.coroutines.flow.Flow
@@ -55,6 +60,9 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
     val distanceUnitFlow: Flow<String> = context.dataStore.data.map { settings ->
         settings[DISTANCE_UNIT] ?: MeasureUnit.METER.toString()
     }
+    val vm = hiltViewModel<SettingsViewModel>()
+    val state by vm.state.collectAsState()
+
     LaunchedEffect(Unit) {
         themeFlow.collect { themeResource ->
             Log.d("DataStore READ", "Theme resource: $themeResource")
@@ -64,6 +72,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
             Log.d("DataStore READ", "DistanceUnit: $it")
             savedDistanceUnit.value = MeasureUnit.getAvailable(it).first()
         }
+        vm.fetchSelf()
     }
     if (savedTheme.intValue == -1) {
         LoadingCard(text = stringResource(id = R.string.loading))
@@ -109,7 +118,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
         val themeOptions =
             listOf(R.string.theme_light, R.string.theme_dark, R.string.theme_black_amoled)
         val (selectedTheme, onThemeSelected) = remember {
-            mutableIntStateOf(savedTheme.value) //TODO: On first load set phones defaults
+            mutableIntStateOf(savedTheme.intValue) //TODO: On first load set phones defaults
         }
         val openThemeDialog = remember {
             mutableStateOf(false)
@@ -168,11 +177,17 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
             label = stringResource(id = R.string.distance_units),
             subLabel = stringResource(id = selectedDistanceUnits)
         ) { openDistanceUnitsDialog.value = true }
-
-        HorizontalDivider(thickness = 1.dp)
-        Text(text = stringResource(id = R.string.account))
-        StackedTextButton(label = stringResource(id = R.string.change_password)) {}
-        StackedTextButton(label = stringResource(id = R.string.change_email)) {}
+        if (state is ApiResource.Success) {
+            HorizontalDivider(thickness = 1.dp)
+            Text(
+                text = stringResource(id = R.string.account),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            StackedTextButton(label = stringResource(id = R.string.change_password)) {}
+            StackedTextButton(label = stringResource(id = R.string.change_email)) {}
+        } else if (state is ApiResource.Loading){ //TODO can't load the user for some reason
+            LoadingBar(text = stringResource(id = R.string.loading_api))
+        }
         HorizontalDivider(thickness = 1.dp)
         //Open About us dialog
         val openAboutUsDialog = remember {

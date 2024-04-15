@@ -67,7 +67,7 @@ import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
-import com.bundev.gexplorer_mobile.pages.SettingsPage
+import com.bundev.gexplorer_mobile.pages.settings.SettingsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.leaderboard.LeaderboardPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage

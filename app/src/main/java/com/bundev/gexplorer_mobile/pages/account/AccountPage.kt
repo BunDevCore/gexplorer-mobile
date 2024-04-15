@@ -1,10 +1,15 @@
 package com.bundev.gexplorer_mobile.pages.account
 
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
@@ -18,9 +23,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.ConfirmDialog
@@ -51,6 +59,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
     )
     val vm = hiltViewModel<AccountViewModel>()
     val state by vm.state.collectAsState()
+    val configuration = LocalConfiguration.current
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
 
@@ -65,8 +74,37 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             is ApiResource.Success -> {
                 val user = state.data!!
                 Log.d("user is", "$user")
-                Card() {
-                    Text(text = "Witaj ${user.username}")
+                Card(modifier = Modifier.width((configuration.screenWidthDp / 2).dp)) {
+                    if (configuration.orientation == ORIENTATION_PORTRAIT) {
+                        Column(
+                            modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+
+                        ) {
+                            Text(text = stringResource(id = R.string.welcome))
+                            Text(
+                                text = user.username,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = stringResource(id = R.string.welcome))
+                            Text(
+                                text = user.username,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                 }
             }
 
@@ -115,7 +153,7 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 )
             }
         }
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+        Column(modifier = Modifier.fillMaxSize().safeDrawingPadding(), verticalArrangement = Arrangement.Bottom) {
             val openLogoutDialog = rememberSaveable { mutableStateOf(false) }
             if (state is ApiResource.Success) {
                 StackedTextButton(

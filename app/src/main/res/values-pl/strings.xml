@@ -46,4 +46,5 @@
     <string name="app">Aplikacja</string>
     <string name="change_password">Zmień hasło</string>
     <string name="change_email">Zmień email</string>
+    <string name="welcome">Witaj</string>
 </resources>
