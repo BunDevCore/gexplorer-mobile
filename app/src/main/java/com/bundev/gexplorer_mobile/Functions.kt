@@ -226,3 +226,8 @@ val locationPermissions = arrayOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,
     android.Manifest.permission.ACCESS_COARSE_LOCATION
 )
+
+fun formatLongText(text: String, join: Boolean = false): String {
+    val stringSections = text.split("|")
+    return if (join)"${stringSections[0]}${stringSections[1]}" else "${stringSections[0]}\n${stringSections[1]}"
+}

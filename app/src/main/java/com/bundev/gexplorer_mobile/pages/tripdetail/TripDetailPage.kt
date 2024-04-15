@@ -49,6 +49,7 @@ import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
+import com.bundev.gexplorer_mobile.formatLongText
 import com.bundev.gexplorer_mobile.formatPace
 import com.bundev.gexplorer_mobile.formatSpeed
 import com.bundev.gexplorer_mobile.formatTime
@@ -286,7 +287,7 @@ private fun TripContent(trip: Trip) {
                 title = if (AppCompatDelegate.getApplicationLocales()
                         .toLanguageTags() != "de"
                 ) stringResource(id = R.string.avg_speed)
-                else formatLongGermanText(stringResource(id = R.string.avg_speed))
+                else formatLongText(stringResource(id = R.string.avg_speed))
             ) {
                 formatSpeed(
                     distanceInMeters = distance,
@@ -310,7 +311,7 @@ private fun TripContent(trip: Trip) {
                 title = if (AppCompatDelegate.getApplicationLocales()
                         .toLanguageTags() != "de"
                 ) stringResource(id = R.string.avg_speed)
-                else formatLongGermanText(stringResource(id = R.string.avg_speed))
+                else formatLongText(stringResource(id = R.string.avg_speed))
             ) { "Null" }
             ValueElement(
                 imageVector = GexplorerIcons.Simple.AvgPace,
@@ -364,11 +365,6 @@ private fun ValueElement(
             }
         }
     }
-}
-
-fun formatLongGermanText(text: String): String {
-    val stringSections = text.split("|")
-    return "${stringSections[0]}\n${stringSections[1]}"
 }
 
 @Preview(locale = "pl")
