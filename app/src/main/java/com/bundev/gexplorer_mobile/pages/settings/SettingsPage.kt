@@ -63,6 +63,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
     val vm = hiltViewModel<SettingsViewModel>()
     val state by vm.state.collectAsState()
 
+    LaunchedEffect(Unit) { vm.fetchSelf() }
     LaunchedEffect(Unit) {
         themeFlow.collect { themeResource ->
             Log.d("DataStore READ", "Theme resource: $themeResource")
@@ -72,7 +73,6 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
             Log.d("DataStore READ", "DistanceUnit: $it")
             savedDistanceUnit.value = MeasureUnit.getAvailable(it).first()
         }
-        vm.fetchSelf()
     }
     if (savedTheme.intValue == -1) {
         LoadingCard(text = stringResource(id = R.string.loading))
@@ -185,7 +185,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
             )
             StackedTextButton(label = stringResource(id = R.string.change_password)) {}
             StackedTextButton(label = stringResource(id = R.string.change_email)) {}
-        } else if (state is ApiResource.Loading){ //TODO can't load the user for some reason
+        } else if (state is ApiResource.Loading) {
             LoadingBar(text = stringResource(id = R.string.loading_api))
         }
         HorizontalDivider(thickness = 1.dp)
