@@ -2,7 +2,7 @@ package me.thefen.gexplorerapi.dtos
 
 import com.mapbox.geojson.Geometry
 import kotlinx.datetime.Instant
-import java.util.*
+import java.util.UUID
 
 data class DetailedTripDto(
     val id: UUID,
@@ -15,6 +15,7 @@ data class DetailedTripDto(
     val startTime: Instant,
     val endTime: Instant,
     val uploadTime: Instant,
+    val starred: Boolean
 )
 
 data class TripDto(
@@ -26,4 +27,5 @@ data class TripDto(
     val startTime: Instant,
     val endTime: Instant,
     val uploadTime: Instant,
+    val starred: Boolean
 )

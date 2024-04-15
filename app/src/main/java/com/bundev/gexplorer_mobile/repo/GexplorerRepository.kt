@@ -11,6 +11,7 @@ import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.NewTripDto
 import me.thefen.gexplorerapi.dtos.RegisterDto
+import me.thefen.gexplorerapi.dtos.StarStatusDto
 import me.thefen.gexplorerapi.dtos.TimedPoint
 import me.thefen.gexplorerapi.dtos.TripDto
 import me.thefen.gexplorerapi.dtos.UserDto
@@ -125,11 +126,17 @@ class GexplorerRepository(
     suspend fun getUserPolygon(id: UUID): ApiResource<Geometry> =
         apiWrapper { api.getUserPolygon(id) }
 
+    suspend fun getOwnPolygon(): ApiResource<Geometry> =
+        apiWrapper { api.getUserPolygon(id!!) }
+
     suspend fun getTrip(tripId: String): ApiResource<DetailedTripDto> =
         apiWrapper { api.getTrip(UUID.fromString(tripId)) }
 
     suspend fun getStarredTrips(): ApiResource<List<TripDto>> =
         apiWrapper { api.getStarredTrips() }
+
+    suspend fun setTripStar(tripId: UUID, starStatusDto: StarStatusDto): ApiResource<DetailedTripDto> =
+        apiWrapper { api.setTripStar(tripId, starStatusDto) }
 
     suspend fun sendTrip(timedPoints: List<TimedPoint>): ApiResource<TripDto> =
         apiWrapper { api.sendTrip(NewTripDto(timedPoints)) }

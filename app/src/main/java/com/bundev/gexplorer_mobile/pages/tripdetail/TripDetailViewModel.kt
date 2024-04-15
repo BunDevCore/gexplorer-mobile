@@ -10,8 +10,10 @@ import com.mapbox.geojson.Polygon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.thefen.gexplorerapi.dtos.DetailedTripDto
+import me.thefen.gexplorerapi.dtos.StarStatusDto
 import javax.inject.Inject
 
 data class TripDetailModelState(val detailedTripDto: DetailedTripDto, val point: Point)
@@ -44,5 +46,17 @@ class TripDetailViewModel @Inject constructor(
             (maxLongitude.longitude() + minLongitude.longitude()) / 2,
             (maxLatitude.latitude() + minLatitude.latitude()) / 2
         )
+    }
+
+    fun updateStarred(){
+        Log.d("tripdetailvm", "update saved called")
+        viewModelScope.launch {
+            val detailedTrip = _state.value.data!!.detailedTripDto
+            _state.update {
+                val newTrip = detailedTrip.copy(starred = !detailedTrip.starred)
+                it.mapSuccess { TripDetailModelState(newTrip, it.point) }
+            }
+            repo.setTripStar(detailedTrip.id, StarStatusDto(!detailedTrip.starred))
+        }
     }
 }

@@ -111,7 +111,8 @@ fun TripDetailPage(
         Log.d("tripdetail", "geojson trip id: ${state.data!!.detailedTripDto.id}")
         geoJsonResource.value = state.data!!.detailedTripDto.gpsPolygon.toJson()
         mapViewportState.flyTo(
-            cameraOptions = CameraOptions.Builder().center(state.data!!.point).pitch(0.0).zoom(10.0).build()
+            cameraOptions = CameraOptions.Builder().center(state.data!!.point).pitch(0.0).zoom(10.0)
+                .build()
         )
     }
     Log.d("tripdetail", "geojson resource len = ${geoJsonResource.value.length}")
@@ -130,14 +131,15 @@ fun TripDetailPage(
     }
     val trip = Trip(
         id = state.data?.detailedTripDto?.id,
-        timeEnded = Clock.System.now(),
-        timeBegun = Clock.System.now() - 1.023.hours,
-        distance = state.data?.detailedTripDto?.length ?: 0.0
+        timeEnded = state.data?.detailedTripDto?.endTime ?: Clock.System.now(),
+        timeBegun = state.data?.detailedTripDto?.startTime ?: (Clock.System.now() - 1.hours),
+        distance = state.data?.detailedTripDto?.length ?: 0.0,
+        saved = state.data?.detailedTripDto?.starred ?: false
     )
 
     if (configuration.orientation == ORIENTATION_PORTRAIT)
         Column(modifier = Modifier.fillMaxSize()) {
-            TripTopBar(trip = trip, navController) { changePage() }
+            TripTopBar(trip = trip, vm, navController) { changePage() }
             if (state is ApiResource.Success) {
                 TripMap(
                     modifier = Modifier.weight(1f),
@@ -158,7 +160,7 @@ fun TripDetailPage(
                 modifier = Modifier.width(IntrinsicSize.Max)
             ) {
                 if (state is ApiResource.Success) {
-                    TripTopBar(trip = trip, navController) { changePage() }
+                    TripTopBar(trip = trip, vm, navController) { changePage() }
                     TripContent(trip = trip)
                 } else LoadingCard(text = stringResource(id = R.string.loading))
             }
@@ -168,6 +170,7 @@ fun TripDetailPage(
 @Composable
 private fun TripTopBar(
     trip: Trip,
+    vm: TripDetailViewModel? = null,
     navController: NavHostController? = null,
     changePage: () -> Unit,
 ) {
@@ -193,6 +196,7 @@ private fun TripTopBar(
         }
         Row {
             SaveTripButton(
+                vm,
                 GexplorerIcons.Filled.Bookmark,
                 GexplorerIcons.Outlined.Bookmark,
                 trip
@@ -205,23 +209,20 @@ private fun TripTopBar(
 
 @Composable
 private fun SaveTripButton(
+    vm: TripDetailViewModel?,
     imageVectorTrue: ImageVector,
     imageVectorFalse: ImageVector,
     trip: Trip,
 ) {
-    val isTripSaved = remember {
-        mutableStateOf(trip.saved)
-    }
     SmallFloatingActionButton(
         onClick = {
-            isTripSaved.value = !isTripSaved.value
-            trip.saved = isTripSaved.value
+            vm?.updateStarred()
         },
         modifier = Modifier
             .width(40.dp)
             .height(40.dp)
     ) {
-        if (isTripSaved.value)
+        if (trip.saved)
             Icon(
                 modifier = Modifier.size(24.dp),
                 imageVector = imageVectorTrue,

@@ -7,6 +7,7 @@ import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.NewTripDto
 import me.thefen.gexplorerapi.dtos.RegisterDto
+import me.thefen.gexplorerapi.dtos.StarStatusDto
 import me.thefen.gexplorerapi.dtos.TokenDto
 import me.thefen.gexplorerapi.dtos.TripDto
 import me.thefen.gexplorerapi.dtos.UserDto
@@ -57,6 +58,9 @@ interface GexplorerApi {
 
     @GET("Trip/starred")
     suspend fun getStarredTrips(): List<TripDto>
+
+    @POST("Trip/id/{tripId}/star")
+    suspend fun setTripStar(@Path("tripId") id: UUID, @Body starStatusDto: StarStatusDto): DetailedTripDto
 
     @POST("Trip/new/mobile")
     suspend fun sendTrip(@Body newTripDto: NewTripDto): TripDto
