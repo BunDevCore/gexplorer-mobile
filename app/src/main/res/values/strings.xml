@@ -56,4 +56,6 @@
     <string name="welcome">welcome</string>
     <string name="no_saved_trips">no_saved_trips</string>
     <string name="trips_not_logged_in">trips_not_logged_in</string>
+    <string name="login_successful">log_in_successful</string>
+    <string name="register_successful">register_successfull</string>
 </resources>

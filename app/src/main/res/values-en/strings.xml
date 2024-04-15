@@ -49,4 +49,6 @@
     <string name="welcome">Welcome</string>
     <string name="no_saved_trips">Your saved trips will show up here</string>
     <string name="trips_not_logged_in">To save your trips log in</string>
+    <string name="login_successful">Logged in successfully</string>
+    <string name="register_successful">Registered successfully</string>
 </resources>

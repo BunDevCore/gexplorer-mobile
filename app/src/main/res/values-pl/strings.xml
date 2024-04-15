@@ -49,4 +49,6 @@
     <string name="welcome">Witaj</string>
     <string name="no_saved_trips">Tu pojawią się twoje zapisane podróże</string>
     <string name="trips_not_logged_in">Aby zapisywać podróże zaloguj się</string>
+    <string name="login_successful">Logowanie zakończona pomyślnie</string>
+    <string name="register_successful">Rejestracja zakończona pomyślnie</string>
 </resources>

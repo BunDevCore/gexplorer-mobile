@@ -25,9 +25,8 @@ interface GexplorerApi {
     suspend fun checkAuthCall(): Call<Unit>
     @POST("Auth/v2/login")
     suspend fun login(@Body loginDto: LoginDto): TokenDto
-    
-    // todo: register dto & endpoint
-    @POST("Auth/register")
+
+    @POST("Auth/v2/register")
     suspend fun register(@Body registerDto: RegisterDto): TokenDto
     
     @GET("District")

@@ -1,6 +1,5 @@
 package com.bundev.gexplorer_mobile.pages.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,17 +41,14 @@ import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.GoToPreviousPage
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.ui.TitleBar
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.icons.filled.Error
 import com.bundev.gexplorer_mobile.icons.simple.Visibility
 import com.bundev.gexplorer_mobile.icons.simple.VisibilityOff
+import com.bundev.gexplorer_mobile.ui.TitleBar
 
 @Composable
 fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) {
-    //TODO find out why it drops you on mapPage after logging in
-    Log.d("NAV CONTROLLER", "curr: ${navController?.currentBackStackEntry?.destination?.route.toString()}")
-    Log.d("NAV CONTROLLER", "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}")
     val vm = hiltViewModel<LoginViewModel>()
     val state by vm.state.collectAsState()
     var register by rememberSaveable { mutableStateOf(false) }
@@ -69,8 +65,10 @@ fun LoginPage(navController: NavHostController? = null, changePage: () -> Unit) 
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (register) RegisterCard(vm, state) { register = false }
-            else LoginCard(vm, state, navController, changePage) { register = true }
+            if (register) RegisterCard(vm, state.register, navController, changePage) {
+                register = false
+            }
+            else LoginCard(vm, state.login, navController, changePage) { register = true }
         }
     }
 }
@@ -81,7 +79,7 @@ fun LoginCard(
     state: ApiResource<String>? = null,
     navController: NavHostController? = null,
     changePage: () -> Unit,
-    changeCard: () -> Unit
+    changeCard: () -> Unit,
 ) {
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -140,6 +138,8 @@ fun LoginCard(
 fun RegisterCard(
     vm: LoginViewModel? = null,
     state: ApiResource<String>? = null,
+    navController: NavHostController? = null,
+    changePage: () -> Unit,
     changeCard: () -> Unit,
 ) {
     var userName by rememberSaveable { mutableStateOf("") }
@@ -148,6 +148,9 @@ fun RegisterCard(
     var confirm by rememberSaveable { mutableStateOf("") }
     var loginAttempted by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
+
+    if (state is ApiResource.Success)
+        GoToPreviousPage(navController) { changePage() }
 
     Card {
         Column(
@@ -240,14 +243,14 @@ fun ErrorHandlingTextField(
                         Icon(imageVector = icon, contentDescription = null)
                     }
                 },
-                supportingText = { SuppotingText(loginAttempted) { errorResource() } }
+                supportingText = { SupportingText(loginAttempted) { errorResource() } }
             )
         else OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             label = { Text(stringResource(id = labelResource)) },
             singleLine = true,
-            supportingText = { SuppotingText(loginAttempted) { errorResource() } }
+            supportingText = { SupportingText(loginAttempted) { errorResource() } }
         )
         if (loginAttempted && errorResource() != -1)
             Icon(
@@ -262,7 +265,7 @@ fun ErrorHandlingTextField(
 }
 
 @Composable
-fun SuppotingText(loginTried: Boolean, errorResource: () -> Int) {
+fun SupportingText(loginTried: Boolean, errorResource: () -> Int) {
     if (loginTried && errorResource() != -1)
         Text(
             stringResource(id = errorResource()),
@@ -300,5 +303,5 @@ fun LoginCardPreview() {
 @Preview
 @Composable
 fun RegisterCardPreview() {
-    RegisterCard {}
+    RegisterCard(changePage = {}) {}
 }
