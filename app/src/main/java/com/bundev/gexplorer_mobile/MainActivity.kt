@@ -65,7 +65,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
-import com.bundev.gexplorer_mobile.pages.PlacesPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.achievements.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.leaderboard.LeaderboardPage
@@ -184,10 +183,8 @@ private fun GexplorerNavigation() {
                 composable(Screen.Trips.route) {
                     TripsPage(navController) { selectedTab = selectedTabSave }
                 }
-                composable(Screen.Achievements.route) {
-                    AchievementsPage(navController) { selectedTab = selectedTabSave }
-                }
-                composable(Screen.Places.route) { PlacesPage() }
+                composable(Screen.Achievements.route) { AchievementsPage() }
+//                composable(Screen.Places.route) { PlacesPage() } Not used anymore
                 composable(Screen.Account.route) {
                     AccountPage(navController) { selectedTab = selectedTabSave }
                 }

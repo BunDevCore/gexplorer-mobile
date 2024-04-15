@@ -1,7 +1,6 @@
 package com.bundev.gexplorer_mobile.pages.achievements
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -53,7 +52,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Achievement
@@ -108,15 +106,7 @@ private val lockedAchievements = listOf(
 )
 
 @Composable
-fun AchievementsPage(navController: NavHostController? = null, changePage: () -> Unit) {
-    Log.d(
-        "NAV CONTROLLER",
-        "curr: ${navController?.currentBackStackEntry?.destination?.route.toString()}"
-    )
-    Log.d(
-        "NAV CONTROLLER",
-        "prev: ${navController?.previousBackStackEntry?.destination?.route.toString()}"
-    )
+fun AchievementsPage() {
     val vm = hiltViewModel<AchievementsViewModel>()
     val state by vm.state.collectAsState()
 
@@ -342,5 +332,5 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
 @Preview(locale = "pl", showBackground = true)
 @Composable
 private fun AchievementsPagePreview() {
-    AchievementsPage {}
+    AchievementsPage()
 }
