@@ -115,11 +115,11 @@ fun TripDetailPage(
         )
     }
     Log.d("tripdetail", "geojson resource len = ${geoJsonResource.value.length}")
-    val secondary = colorResource(id = R.color.secondaryTemp)
+    val tripColor = colorResource(id = R.color.tripArea)
     val style = style(Style.MAPBOX_STREETS) {
         +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }
         +layerAtPosition(lineLayer("line-layer", "Trip") {
-            lineColor(secondary.hashCode())
+            lineColor(tripColor.hashCode())
             lineWidth(3.0)
             lineOpacity(0.8)
         }, at = 100)

@@ -24,9 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
-import com.bundev.gexplorer_mobile.ui.IconAndTextButton
-import com.bundev.gexplorer_mobile.ui.LoadingCard
-import com.bundev.gexplorer_mobile.ui.MiddleCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -39,6 +36,9 @@ import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.navigateTo
 import com.bundev.gexplorer_mobile.ui.GroupingList
+import com.bundev.gexplorer_mobile.ui.IconAndTextButton
+import com.bundev.gexplorer_mobile.ui.LoadingCard
+import com.bundev.gexplorer_mobile.ui.MiddleCard
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import me.thefen.gexplorerapi.dtos.TripDto
@@ -50,6 +50,7 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
     val state by vm.state.collectAsState()
     LaunchedEffect(Unit) {
         vm.checkLogin()
+        vm.reset()
         Log.d("trips", "launch effect")
     }
 
@@ -64,7 +65,7 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
         }
 
         true -> {
-            Log.d("trips", "got auth success, fetchtrips")
+            Log.d("trips", "got auth success, fetchtrips ${state.trips.data}")
             if (state.trips.data == null)
                 vm.fetchTrips()
         }
@@ -74,8 +75,10 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
     if (state.trips is ApiResource.Loading) return LoadingCard(text = stringResource(id = R.string.loading_api))
     if (state.trips.data == null) {
         Log.d("trips", "state trips data is null (${state.trips.kind})")
-        return MiddleCard { Text(stringResource(id = R.string.no_trips)) }
+        return LoadingCard(text = stringResource(id = R.string.loading_api))
     }
+    if (state.trips.data!!.isEmpty())
+        return MiddleCard { Text(stringResource(id = R.string.no_trips)) }
 
     Column(
         modifier = Modifier

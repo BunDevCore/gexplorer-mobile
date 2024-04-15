@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.TripDto
 import javax.inject.Inject
 
@@ -43,5 +42,10 @@ class TripsViewModel @Inject constructor(
         _state.update { 
             TripsPageState(it.trips, repo.username != null)
         } 
+    }
+
+    fun reset() {
+        Log.d("tripdetailvm", "reset called")
+        _state.value.trips = ApiResource.Loading()
     }
 }
