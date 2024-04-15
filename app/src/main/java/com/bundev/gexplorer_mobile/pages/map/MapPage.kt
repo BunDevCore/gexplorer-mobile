@@ -76,7 +76,6 @@ import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
-import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotationGroup
 import com.mapbox.maps.extension.localization.localizeLabels
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.lineLayer
@@ -201,7 +200,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green
             )
-            PointAnnotationGroup(annotations = )
+//            PointAnnotationGroup(annotations = )
         }
     }
     val changedReason = mapViewportState.mapViewportStatusChangedReason
