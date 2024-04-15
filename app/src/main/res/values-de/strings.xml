@@ -23,7 +23,7 @@
     <string name="trip">Reise</string>
     <string name="distance">Entfernung</string>
     <string name="total_time">Total Zeit</string>
-    <string name="avg_speed">Durchschnittsgeschwindigkeit</string>
+    <string name="avg_speed">Durchschnitts-|geschwindigkeit</string>
     <string name="avg_pace">Durchschnittstempo</string>
     <string name="no_trips">Es gibt keine Reise</string>
     <string name="log_in">Anmelden</string>

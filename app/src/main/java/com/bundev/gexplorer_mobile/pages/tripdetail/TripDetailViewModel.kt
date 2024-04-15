@@ -28,9 +28,4 @@ class TripDetailViewModel @Inject constructor(
             _state.value = repo.getTrip(tripId)
         }
     }
-
-    fun reset() {
-        Log.d("tripdetailvm", "reset called")
-        _state.value = ApiResource.Loading()
-    }
 }

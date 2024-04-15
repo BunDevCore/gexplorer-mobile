@@ -43,8 +43,10 @@ import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.ActionButton
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.GoToPreviousPage
+import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
@@ -85,12 +87,10 @@ fun TripDetailPage(
 ) {
     Log.d("tripdetail", "TRIP ID IN PARAMETER IS $tripId")
 
-//    val tripId = "72f6a540-ee0e-42d2-a2a4-9da9add529b0"
     val vm = hiltViewModel<TripDetailViewModel>()
     val state by vm.state.collectAsState()
     LaunchedEffect(vm) {
         Log.d("tripdetail", "tripdetail: getting $tripId")
-        vm.reset()
         vm.fetchTrip(tripId ?: error("no tripId provided to tripdetail page"))
     }
     val configuration = LocalConfiguration.current
@@ -134,12 +134,14 @@ fun TripDetailPage(
     if (configuration.orientation == ORIENTATION_PORTRAIT)
         Column(modifier = Modifier.fillMaxSize()) {
             TripTopBar(trip = trip, navController) { changePage() }
-            TripMap(
-                modifier = Modifier.weight(1f),
-                mapViewportState = mapViewportState,
-                style = style
-            )
-            TripContent(trip = trip)
+            if (state is ApiResource.Success) {
+                TripMap(
+                    modifier = Modifier.weight(1f),
+                    mapViewportState = mapViewportState,
+                    style = style
+                )
+                TripContent(trip = trip)
+            } else LoadingCard(text = stringResource(id = R.string.loading))
         }
     else
         Row(modifier = Modifier.fillMaxSize()) {
@@ -151,14 +153,20 @@ fun TripDetailPage(
             Column(
                 modifier = Modifier.width(IntrinsicSize.Max)
             ) {
-                TripTopBar(trip = trip, navController) { changePage() }
-                TripContent(trip = trip)
+                if (state is ApiResource.Success) {
+                    TripTopBar(trip = trip, navController) { changePage() }
+                    TripContent(trip = trip)
+                } else LoadingCard(text = stringResource(id = R.string.loading))
             }
         }
 }
 
 @Composable
-private fun TripTopBar(trip: Trip, navController: NavHostController? = null, changePage: () -> Unit) {
+private fun TripTopBar(
+    trip: Trip,
+    navController: NavHostController? = null,
+    changePage: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .padding(15.dp)
@@ -255,6 +263,7 @@ private fun TripContent(trip: Trip) {
     val distance = trip.distance
     val duration = (trip.timeEnded - trip.timeBegun)
     Column(
+        modifier = Modifier.padding(bottom = 10.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -269,7 +278,10 @@ private fun TripContent(trip: Trip) {
         if (duration.inWholeSeconds > 0 && distance > 0.0) {
             ValueElement(
                 imageVector = GexplorerIcons.Outlined.Speed,
-                title = stringResource(id = R.string.avg_speed)
+                title = if (AppCompatDelegate.getApplicationLocales()
+                        .toLanguageTags() != "de"
+                ) stringResource(id = R.string.avg_speed)
+                else formatLongGermanText(stringResource(id = R.string.avg_speed))
             ) {
                 formatSpeed(
                     distanceInMeters = distance,
@@ -290,7 +302,10 @@ private fun TripContent(trip: Trip) {
         } else {
             ValueElement(
                 imageVector = GexplorerIcons.Outlined.Speed,
-                title = stringResource(id = R.string.avg_speed)
+                title = if (AppCompatDelegate.getApplicationLocales()
+                        .toLanguageTags() != "de"
+                ) stringResource(id = R.string.avg_speed)
+                else formatLongGermanText(stringResource(id = R.string.avg_speed))
             ) { "Null" }
             ValueElement(
                 imageVector = GexplorerIcons.Simple.AvgPace,
@@ -346,6 +361,11 @@ private fun ValueElement(
     }
 }
 
+fun formatLongGermanText(text: String): String {
+    val stringSections = text.split("|")
+    return "${stringSections[0]}\n${stringSections[1]}"
+}
+
 @Preview(locale = "pl")
 @Composable
 private fun TripTopBarPreview() {
@@ -359,7 +379,7 @@ private fun TripTopBarPreview() {
     ) {}
 }
 
-@Preview(locale = "pl")
+@Preview(locale = "de")
 @Composable
 private fun TripContentPreview() {
     TripContent(

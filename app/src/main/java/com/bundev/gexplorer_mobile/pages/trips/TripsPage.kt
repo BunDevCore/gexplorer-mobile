@@ -23,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
@@ -34,7 +32,7 @@ import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.MiddleCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
-import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
@@ -43,102 +41,14 @@ import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.navigateTo
-import com.bundev.gexplorer_mobile.selectedTabSave
 import com.bundev.gexplorer_mobile.ui.GroupingList
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import me.thefen.gexplorerapi.dtos.TripDto
-import kotlin.time.Duration.Companion.hours
 
-private var DEBUG = true
-private val tempTrips = listOf(
-    Trip(
-        distance = 1000.0,
-        timeBegun = Clock.System.now() - 2.hours,
-        timeEnded = Clock.System.now() - 1.hours
-    ),
-    Trip(
-        distance = 100.3,
-        timeBegun = Clock.System.now() - 3.hours,
-        timeEnded = Clock.System.now() - 2.9.hours
-    ),
-    Trip(
-        distance = 500.3,
-        timeBegun = Clock.System.now() - 7.hours,
-        timeEnded = Clock.System.now() - 5.hours
-    ),
-    Trip(
-        distance = 123455.0,
-        timeBegun = Clock.System.now() - 7.hours,
-        timeEnded = Clock.System.now() - 5.hours
-    ),
-    Trip(
-        distance = 100.0,
-        timeBegun = Clock.System.now() - 7.hours,
-        timeEnded = Clock.System.now() - 5.hours
-    ),
-    Trip(
-        distance = 499.0,
-        timeBegun = Clock.System.now() - 7.hours,
-        timeEnded = Clock.System.now() - 5.hours
-    ),
-    Trip(
-        distance = 34500.0,
-        timeBegun = Clock.System.now() - 25.6.hours,
-        timeEnded = Clock.System.now() - 24.9.hours
-    ),
-    Trip(
-        distance = 99999.0,
-        timeBegun = Clock.System.now() - 27.hours,
-        timeEnded = Clock.System.now() - 26.1.hours
-    ),
-    Trip(
-        distance = 450.0,
-        timeBegun = Clock.System.now() - 48.hours,
-        timeEnded = Clock.System.now() - 47.7.hours
-    ),
-    Trip(
-        distance = 6700.0,
-        timeBegun = Clock.System.now() - 56.hours,
-        timeEnded = Clock.System.now() - 55.hours
-    ),
-    Trip(
-        distance = 42000.0,
-        timeBegun = Clock.System.now() - 57.hours,
-        timeEnded = Clock.System.now() - 56.8.hours
-    ),
-    Trip(
-        distance = 20200.0,
-        timeBegun = Clock.System.now() - 59.hours,
-        timeEnded = Clock.System.now() - 58.4.hours
-    ),
-    Trip(
-        distance = 987.0,
-        timeBegun = Clock.System.now() - 61.hours,
-        timeEnded = Clock.System.now() - 60.6.hours
-    ),
-    Trip(
-        distance = 987.0,
-        timeBegun = Clock.System.now() - 112.hours,
-        timeEnded = Clock.System.now() - 111.02.hours
-    ),
-    Trip(
-        distance = 0.0,
-        timeBegun = Clock.System.now() - 124.hours,
-        timeEnded = Clock.System.now() - 124.hours
-    )
-)
 
 @Composable
 fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) {
-//    val items = tempTrips
-//    
-//    if (items.isEmpty()) {
-//        EmptyTripsPage()
-//        return
-//    }
-
     val vm = hiltViewModel<TripsViewModel>()
     val state by vm.state.collectAsState()
     LaunchedEffect(Unit) {
@@ -161,12 +71,12 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
                 vm.fetchTrips()
         }
 
-        null -> return LoadingCard(text = stringResource(id = R.string.loading))
+        null -> return LoadingCard(text = stringResource(id = R.string.loading_api))
     }
-
+    if (state.trips is ApiResource.Loading) return LoadingCard(text = stringResource(id = R.string.loading_api))
     if (state.trips.data == null) {
         Log.d("trips", "state trips data is null (${state.trips.kind})")
-        return LoadingCard(text = stringResource(id = R.string.loading))
+        return MiddleCard { Text(stringResource(id = R.string.no_trips)) }
     }
 
     Column(
@@ -186,20 +96,9 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
             title = { formatDate(it) },
         ) { trip ->
             TripItem(trip) {
-//                val routeScreen = Screen.TripDetail.route + "/${trip.id}"
-                val routeScreen = "trip/${trip.id}"
-                Log.d("tripdetailentry", "entering $routeScreen")
-                if (selectedTabSave != routeScreen) {
-                    selectedTabSave = routeScreen
-                    changePage()
-                    navController?.navigate(routeScreen) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true     // the navigation WILL use stale data if it's uncommented
-                        }
-                        launchSingleTop = false
-//                        restoreState = true      // the navigation WILL use stale data if it's uncommented
-                    }
-                }
+                val routeTripDetail = "trip/${trip.id}"
+                Log.d("tripdetailentry", "entering $routeTripDetail")
+                navigateTo(navController, routeTripDetail) { changePage() }
             }
         }
     }
@@ -256,11 +155,4 @@ private fun EmptyTripsPage() {
             Text(text = stringResource(id = R.string.no_trips), Modifier.padding(10.dp))
         }
     }
-}
-
-@Preview(showBackground = true, locale = "en")
-@Composable
-private fun TripsPagePreview() {
-    DEBUG = true
-    TripsPage {}
 }
