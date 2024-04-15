@@ -33,6 +33,6 @@
     <string name="statistics">Statistiken</string>
     <string name="next">Nächste</string>
     <string name="get_started">Leg los!</string>
-    <string name="loading">-loading</string>
-    <string name="location_detailed_needed">-location_detailed_needed</string>
+    <string name="loading">Daten werden geladen</string>
+    <string name="location_detailed_needed">Detaillierte Lokalisierung erforderlich</string>
 </resources>
