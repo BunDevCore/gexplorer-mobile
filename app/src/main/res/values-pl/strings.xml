@@ -43,4 +43,7 @@
     <string name="leaderboard">Tablica wyników</string>
     <string name="loading_api">Ładowanie api</string>
     <string name="confirm_log_out">Czy na pewno chcesz się wylogować?</string>
+    <string name="app">Aplikacja</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="change_email">Zmień email</string>
 </resources>

@@ -43,4 +43,7 @@
     <string name="leaderboard">Leaderboard</string>
     <string name="loading_api">Loading api</string>
     <string name="confirm_log_out">Are you sure you want to log out?</string>
+    <string name="app">App</string>
+    <string name="change_password">Change password</string>
+    <string name="change_email">Change e-mail</string>
 </resources>

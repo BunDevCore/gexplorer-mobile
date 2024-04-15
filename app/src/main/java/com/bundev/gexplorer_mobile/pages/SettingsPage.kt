@@ -99,7 +99,7 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
                 changeLanguage(context, selectedLanguage)
             }
         }
-        Text(text = "Ogólne")
+        Text(text = stringResource(id = R.string.app))
         StackedTextButton(
             label = stringResource(id = R.string.language),
             subLabel = stringResource(id = R.string.language_chosen)
@@ -170,9 +170,9 @@ fun SettingsPage(navController: NavHostController? = null, changePage: () -> Uni
         ) { openDistanceUnitsDialog.value = true }
 
         HorizontalDivider(thickness = 1.dp)
-        Text(text = "Konto")
-        StackedTextButton(label = "Zmień hasło") {}
-        StackedTextButton(label = "Zmień email") {}
+        Text(text = stringResource(id = R.string.account))
+        StackedTextButton(label = stringResource(id = R.string.change_password)) {}
+        StackedTextButton(label = stringResource(id = R.string.change_email)) {}
         HorizontalDivider(thickness = 1.dp)
         //Open About us dialog
         val openAboutUsDialog = remember {

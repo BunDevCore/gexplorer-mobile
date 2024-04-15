@@ -50,4 +50,7 @@
     <string name="leaderboard">leaderboard</string>
     <string name="loading_api">loading_api</string>
     <string name="confirm_log_out">confirm_logout</string>
+    <string name="app">app</string>
+    <string name="change_password">change_password</string>
+    <string name="change_email">change_email</string>
 </resources>
