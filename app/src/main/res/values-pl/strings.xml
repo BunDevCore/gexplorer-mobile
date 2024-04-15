@@ -52,4 +52,7 @@
     <string name="login_successful">Logowanie zakończona pomyślnie</string>
     <string name="register_successful">Rejestracja zakończona pomyślnie</string>
     <string name="polygon_load_failed">Błąd ładowania wieloboku</string>
+    <string name="total_area">Pole całkowite</string>
+    <string name="trip_amount">Ilość podróży</string>
+    <string name="total_trip_length">Całkowity dystans podróży</string>
 </resources>

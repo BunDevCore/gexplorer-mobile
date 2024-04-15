@@ -52,4 +52,7 @@
     <string name="login_successful">-log_in_successful</string>
     <string name="register_successful">-register_successfull</string>
     <string name="polygon_load_failed">-polygon_load_failed</string>
+    <string name="total_area">-total_area</string>
+    <string name="trip_amount">-trip_amount</string>
+    <string name="total_trip_length">-total_trip_length</string>
 </resources>
