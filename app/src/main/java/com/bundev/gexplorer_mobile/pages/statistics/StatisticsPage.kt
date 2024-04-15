@@ -37,9 +37,6 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
     val vm = hiltViewModel<StatisticsViewModel>()
     val state by vm.state.collectAsState()
     LaunchedEffect(Unit) { vm.fetchStats() }
-//    Całkowite pole (metry i procenty)
-//    Długość i ilość podróży
-//    Pole poszczególnych dzielnic (metry i procenty)
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(stringResource(id = R.string.statistics), navController) { changePage() }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
@@ -109,6 +106,25 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                             Text(text = "${"%.02f".format(state.data!!.user.totalTripLength)}m")
                         }
                     }
+//                    if(state is ApiResource.Success) TODO show user ranking
+//                    Card(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 10.dp)
+//                            .padding(horizontal = 10.dp)
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(10.dp),
+//                            horizontalArrangement = Arrangement.SpaceBetween
+//                        ) {
+//                            Text(
+//                                stringResource(id = R.string.place_in_leaderboard)
+//                            )
+//                            Text(text = state.data!!.user.tripAmount.toString())
+//                        }
+//                    }
 
                     Card(
                         modifier = Modifier

@@ -10,6 +10,7 @@ import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.NewTripDto
+import me.thefen.gexplorerapi.dtos.RankingDto
 import me.thefen.gexplorerapi.dtos.RegisterDto
 import me.thefen.gexplorerapi.dtos.StarStatusDto
 import me.thefen.gexplorerapi.dtos.TimedPoint
@@ -117,6 +118,9 @@ class GexplorerRepository(
         page: Int,
     ): ApiResource<Map<Int, LeaderboardEntryDto<Double>>> =
         apiWrapper { api.getDistrictLeaderboard(districtId, page) }
+
+    suspend fun getRanking(userId: UUID): ApiResource<RankingDto> =
+        apiWrapper { api.getRanking(userId) }
 
     suspend fun getUser(username: String): ApiResource<UserDto> =
         apiWrapper { api.getUser(username) }

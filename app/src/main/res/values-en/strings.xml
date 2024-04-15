@@ -55,4 +55,5 @@
     <string name="total_area">Total area</string>
     <string name="trip_amount">Trip amount</string>
     <string name="total_trip_length">Total trip distance</string>
+    <string name="place_in_leaderboard">Place in the ranking</string>
 </resources>

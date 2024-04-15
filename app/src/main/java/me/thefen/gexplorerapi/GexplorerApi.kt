@@ -6,6 +6,7 @@ import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
 import me.thefen.gexplorerapi.dtos.LoginDto
 import me.thefen.gexplorerapi.dtos.NewTripDto
+import me.thefen.gexplorerapi.dtos.RankingDto
 import me.thefen.gexplorerapi.dtos.RegisterDto
 import me.thefen.gexplorerapi.dtos.StarStatusDto
 import me.thefen.gexplorerapi.dtos.TokenDto
@@ -44,7 +45,10 @@ interface GexplorerApi {
 
     @GET("Leaderboard/district/{id}/{page}")
     suspend fun getDistrictLeaderboard(@Path("id") districtId: UUID, @Path("page") page: Int): Map<Int, LeaderboardEntryDto<Double>>
-    
+
+    @GET("Leaderboard/overall/{userId}")
+    suspend fun getRanking(@Path("userId") userId: UUID): RankingDto
+
     @GET("User/{username}")
     suspend fun getUser(@Path("username") username: String): UserDto
     @GET("User/id/{uuid}")

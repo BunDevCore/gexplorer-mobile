@@ -55,4 +55,5 @@
     <string name="total_area">Gesamtes Gebiet</string>
     <string name="trip_amount">Gesamtmenge</string>
     <string name="total_trip_length">Gesamte Reisenlänge</string>
+    <string name="place_in_leaderboard">Platz im Ranking</string>
 </resources>
