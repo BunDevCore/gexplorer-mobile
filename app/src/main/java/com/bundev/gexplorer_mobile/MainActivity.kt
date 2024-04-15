@@ -76,6 +76,7 @@ import com.bundev.gexplorer_mobile.pages.savedtrips.SavedTripsPage
 import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
+import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.ui.theme.GexplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp

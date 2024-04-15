@@ -128,6 +128,9 @@ class GexplorerRepository(
     suspend fun getTrip(tripId: String): ApiResource<DetailedTripDto> =
         apiWrapper { api.getTrip(UUID.fromString(tripId)) }
 
+    suspend fun getStarredTrips(): ApiResource<List<TripDto>> =
+        apiWrapper { api.getStarredTrips() }
+
     suspend fun sendTrip(timedPoints: List<TimedPoint>): ApiResource<TripDto> =
         apiWrapper { api.sendTrip(NewTripDto(timedPoints)) }
 }

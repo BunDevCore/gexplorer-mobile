@@ -9,53 +9,10 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -71,138 +28,6 @@ import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-
-@Composable
-fun StackedTextButton(
-    label: String,
-    modifier: Modifier = Modifier,
-    subLabel: String = "",
-    textColor: Color = Color.Unspecified,
-    enabled: Boolean = true,
-    fontSizeLabel: TextUnit = 18.sp,
-    fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
-    onClick: () -> Unit,
-) {
-    ButtonGenerator(
-        label = label,
-        subLabel = subLabel,
-        modifier = modifier,
-        textColor = textColor,
-        enabled = enabled,
-        fontSizeLabel = fontSizeLabel,
-        fontSizeSubLabel = fontSizeSubLabel
-    ) {
-        onClick()
-    }
-}
-
-@Composable
-fun IconAndTextButton(
-    label: String,
-    modifier: Modifier = Modifier,
-    subLabel: String = "",
-    imageVector: ImageVector,
-    imageDescription: String = "",
-    fontSizeLabel: TextUnit = 18.sp,
-    fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
-    onClick: () -> Unit,
-) {
-    ButtonGenerator(
-        label = label,
-        subLabel = subLabel,
-        modifier = modifier,
-        fontSizeLabel = fontSizeLabel,
-        fontSizeSubLabel = fontSizeSubLabel,
-        imageVector = imageVector,
-        imageDescription = imageDescription
-    ) {
-        onClick()
-    }
-}
-
-@Composable
-fun CenteredTextButton(
-    label: String,
-    modifier: Modifier = Modifier,
-    subLabel: String = "",
-    fontSizeLabel: TextUnit = 20.sp,
-    fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
-    fontWeightLabel: FontWeight = FontWeight.Normal,
-    onClick: () -> Unit,
-) {
-    val textColor = LocalContentColor.current
-    val textStyle = LocalTextStyle.current
-    ButtonGenerator(
-        label = label,
-        subLabel = subLabel,
-        modifier = modifier,
-        fontSizeLabel = fontSizeLabel,
-        fontSizeSubLabel = fontSizeSubLabel,
-        textColor = textColor,
-        textStyle = textStyle,
-        fontWeightLabel = fontWeightLabel,
-        shape = ButtonDefaults.textShape,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        onClick()
-    }
-}
-
-@Composable
-private fun ButtonGenerator(
-    label: String,
-    subLabel: String,
-    modifier: Modifier,
-    fontSizeLabel: TextUnit,
-    fontSizeSubLabel: TextUnit,
-    enabled: Boolean = true,
-    imageVector: ImageVector? = null,
-    imageDescription: String? = null,
-    textStyle: TextStyle? = null,
-    textColor: Color = Color.Unspecified,
-    fontWeightLabel: FontWeight = FontWeight.Normal,
-    shape: Shape = RoundedCornerShape(0.dp),
-    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    onClick: () -> Unit,
-) {
-    TextButton(
-        modifier = modifier,
-        shape = shape,
-        enabled = enabled,
-        onClick = { onClick() }
-    ) {
-        if (imageVector is ImageVector)
-            Icon(
-                modifier = Modifier
-                    .padding(end = 5.dp)
-                    .padding(vertical = 5.dp),
-                imageVector = imageVector,
-                contentDescription = imageDescription
-            )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp),
-            horizontalAlignment = horizontalAlignment
-        ) {
-            Text(
-                fontSize = fontSizeLabel,
-                fontStyle = textStyle?.fontStyle,
-                fontWeight = if (fontWeightLabel != FontWeight.Normal) fontWeightLabel else textStyle?.fontWeight,
-                color = textColor,
-                text = label
-            )
-            if (subLabel.isNotEmpty())
-                Text(
-                    fontSize = fontSizeSubLabel,
-                    fontStyle = textStyle?.fontStyle,
-                    fontWeight = textStyle?.fontWeight,
-                    color = textColor,
-                    text = subLabel
-                )
-        }
-    }
-}
 
 fun navigateTo(
     navController: NavHostController? = null,
@@ -227,113 +52,10 @@ fun navigateTo(
     }
 }
 
-@Composable
-fun MiddleCard(display: @Composable () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Card {
-            Column(modifier = Modifier.padding(10.dp)) {
-                display()
-            }
-        }
-    }
-}
-
-@Composable
-fun LoadingCard(text: String) {
-    MiddleCard {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .padding(top = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(modifier = Modifier.size(120.dp))
-                Image(
-                    modifier = Modifier.size(100.dp),
-                    painter = painterResource(id = R.drawable.gexplorer_logo),
-                    contentDescription = null
-                )
-            }
-            Text(modifier = Modifier.padding(vertical = 5.dp), text = text)
-        }
-    }
-}
-
-@Composable
-fun LoadingBar(text: String) {
-    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-    StackedTextButton(
-        label = text,
-        enabled = false
-    ) {}
-
-}
-
-@Composable
-fun ActionButton(imageVector: ImageVector, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    SmallFloatingActionButton(
-        onClick = { onClick() },
-        modifier = modifier
-            .width(40.dp)
-            .height(40.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = imageVector,
-            contentDescription = null
-        )
-    }
-}
-
 fun GoToPreviousPage(navController: NavHostController?, changePage: () -> Unit) {
     selectedTabSave = navController?.previousBackStackEntry?.destination?.route.toString()
     changePage()
     navController?.popBackStack()
-}
-
-@Composable
-fun TitleBar(
-    text: String,
-    navController: NavHostController?,
-    changePage: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ActionButton(imageVector = Icons.AutoMirrored.Default.ArrowBack) {
-            GoToPreviousPage(navController) { changePage() }
-        }
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-                Spacer(modifier = Modifier.padding(8.dp))
-            TitleText(text = text)
-            if (text.length < 18)
-                Spacer(modifier = Modifier.width(56.dp))
-        }
-    }
-}
-
-@Composable
-fun TitleText(text: String) {
-    Text(
-        text = text,
-        fontSize = 32.sp,
-        lineHeight = if (text.length > 18) 34.sp else TextUnit.Unspecified,
-        fontWeight = FontWeight.Bold
-    )
 }
 
 fun formatDate(instant: Instant, format: Int = DateFormat.DEFAULT): String {
@@ -445,42 +167,6 @@ fun changeLanguage(
     )
 }
 
-@Composable
-fun RadioList(
-    options: List<Int>,
-    selectedOption: Int,
-    onOptionSelected: (Int) -> Unit,
-) {
-    Column(modifier = Modifier.selectableGroup()) {
-        options.forEach { option ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .selectable(
-                        selected = (option == selectedOption),
-                        onClick = {
-                            onOptionSelected(option)
-                        },
-                        role = Role.RadioButton
-                    )
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = (option == selectedOption),
-                    onClick = null
-                )
-                Text(
-                    text = stringResource(id = option),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-        }
-    }
-}
-
 fun Double.roundTo(n: Int): Double {
     return round(this * 10f.pow(n)) / 10f.pow(n)
 }
@@ -540,26 +226,3 @@ val locationPermissions = arrayOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,
     android.Manifest.permission.ACCESS_COARSE_LOCATION
 )
-
-@Composable
-fun ConfirmDialog(
-    onDismissRequest: () -> Unit,
-    confirmRequest: () -> Unit,
-    text: String,
-    rejectRequest: () -> Unit = {},
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = { onDismissRequest(); confirmRequest() }) {
-                Text(text = stringResource(id = R.string.yes))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onDismissRequest(); rejectRequest() }) {
-                Text(text = stringResource(id = R.string.no))
-            }
-        },
-        text = { Text(text = text, fontSize = 20.sp, lineHeight = 24.sp) }
-    )
-}

@@ -65,7 +65,7 @@ import androidx.datastore.preferences.core.edit
 import com.bundev.gexplorer_mobile.DISTANCE_UNIT
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.RadioList
+import com.bundev.gexplorer_mobile.ui.RadioList
 import com.bundev.gexplorer_mobile.RequestLocationPermission
 import com.bundev.gexplorer_mobile.THEME
 import com.bundev.gexplorer_mobile.changeLanguage

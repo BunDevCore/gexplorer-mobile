@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.TitleBar
+import com.bundev.gexplorer_mobile.ui.TitleBar
 
 @Composable
 fun LeaderboardPage(navController: NavHostController, changePage: () -> Unit) {

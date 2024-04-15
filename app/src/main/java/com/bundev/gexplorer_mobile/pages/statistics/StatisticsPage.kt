@@ -21,10 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.LoadingCard
-import com.bundev.gexplorer_mobile.MiddleCard
+import com.bundev.gexplorer_mobile.ui.LoadingCard
+import com.bundev.gexplorer_mobile.ui.MiddleCard
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.TitleBar
+import com.bundev.gexplorer_mobile.ui.TitleBar
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.roundTo
 

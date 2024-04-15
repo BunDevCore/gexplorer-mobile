@@ -47,4 +47,6 @@
     <string name="change_password">-change_password</string>
     <string name="change_email">-change_email</string>
     <string name="welcome">Willkomen</string>
+    <string name="no_saved_trips">-no_saved_trips</string>
+    <string name="trips_not_logged_in">-trips_not_logged_in</string>
 </resources>

@@ -42,7 +42,7 @@ import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.GoToPreviousPage
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.TitleBar
+import com.bundev.gexplorer_mobile.ui.TitleBar
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.icons.filled.Error
 import com.bundev.gexplorer_mobile.icons.simple.Visibility

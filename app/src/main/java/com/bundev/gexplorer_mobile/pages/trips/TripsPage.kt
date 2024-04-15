@@ -1,7 +1,6 @@
 package com.bundev.gexplorer_mobile.pages.trips
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -19,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
-import com.bundev.gexplorer_mobile.IconAndTextButton
-import com.bundev.gexplorer_mobile.LoadingCard
-import com.bundev.gexplorer_mobile.MiddleCard
+import com.bundev.gexplorer_mobile.ui.IconAndTextButton
+import com.bundev.gexplorer_mobile.ui.LoadingCard
+import com.bundev.gexplorer_mobile.ui.MiddleCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -60,6 +57,7 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
 
     when (state.loggedIn) {
         false -> return MiddleCard {
+            Text(text = stringResource(id = R.string.trips_not_logged_in))
             Button(onClick = { navigateTo(navController, Screen.Login.route) { changePage() } }) {
                 Text(text = stringResource(id = R.string.log_in))
             }
@@ -105,7 +103,7 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
 }
 
 @Composable
-private fun TripItem(trip: TripDto, onClick: () -> Unit) {
+fun TripItem(trip: TripDto, onClick: () -> Unit) {
     val duration = (trip.endTime - trip.startTime)
     val timeBegun = trip.startTime
     val distance = trip.length
@@ -141,18 +139,5 @@ private fun TripItem(trip: TripDto, onClick: () -> Unit) {
                 )
             }
         )
-    }
-}
-
-@Composable
-private fun EmptyTripsPage() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Card {
-            Text(text = stringResource(id = R.string.no_trips), Modifier.padding(10.dp))
-        }
     }
 }

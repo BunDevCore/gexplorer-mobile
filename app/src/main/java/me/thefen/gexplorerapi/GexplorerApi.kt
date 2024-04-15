@@ -56,6 +56,9 @@ interface GexplorerApi {
     @GET("Trip/id/{tripId}")
     suspend fun getTrip(@Path("tripId") id: UUID): DetailedTripDto
 
+    @GET("Trip/starred")
+    suspend fun getStarredTrips(): List<TripDto>
+
     @POST("Trip/new/mobile")
     suspend fun sendTrip(@Body newTripDto: NewTripDto): TripDto
 }

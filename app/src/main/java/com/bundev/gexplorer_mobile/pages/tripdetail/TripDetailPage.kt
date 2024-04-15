@@ -40,10 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.ActionButton
+import com.bundev.gexplorer_mobile.ui.ActionButton
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.GoToPreviousPage
-import com.bundev.gexplorer_mobile.LoadingCard
+import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.data.ApiResource

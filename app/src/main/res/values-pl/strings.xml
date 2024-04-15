@@ -47,4 +47,6 @@
     <string name="change_password">Zmień hasło</string>
     <string name="change_email">Zmień email</string>
     <string name="welcome">Witaj</string>
+    <string name="no_saved_trips">Tu pojawią się twoje zapisane podróże</string>
+    <string name="trips_not_logged_in">Aby zapisywać podróże zaloguj się</string>
 </resources>

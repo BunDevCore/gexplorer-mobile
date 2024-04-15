@@ -47,4 +47,6 @@
     <string name="change_password">Change password</string>
     <string name="change_email">Change e-mail</string>
     <string name="welcome">Welcome</string>
+    <string name="no_saved_trips">Your saved trips will show up here</string>
+    <string name="trips_not_logged_in">To save your trips log in</string>
 </resources>

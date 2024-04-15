@@ -55,9 +55,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
-import com.bundev.gexplorer_mobile.LoadingCard
+import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.TitleBar
+import com.bundev.gexplorer_mobile.ui.TitleBar
 import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
