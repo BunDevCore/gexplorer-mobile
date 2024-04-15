@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_name">-name</string>
-    <string name="login_name_wrong">-name_wrong</string>
-    <string name="login_name_empty">-name_empty</string>
+    <string name="login_name">Login</string>
+    <string name="login_name_wrong">falsches Login</string>
+    <string name="login_name_empty">Login leer</string>
     <string name="login_pass">Passwort</string>
-    <string name="login_pass_wrong">-pass_wrong</string>
-    <string name="login_pass_empty">-pass_empty</string>
-    <string name="register">-register</string>
+    <string name="login_pass_wrong">falsches Passwort</string>
+    <string name="login_pass_empty">Passwort leer</string>
+    <string name="register">Registrieren</string>
     <string name="register_confirm">Bestätigen</string>
     <string name="register_pass_no_match">Diese Passwörter stimmen nicht überein. Versuchen Sie es noch einmal.</string>
     <string name="register_pass_confirm">Passwort bestätigen</string>
