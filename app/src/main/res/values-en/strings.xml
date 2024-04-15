@@ -37,9 +37,10 @@
     <string name="location_detailed_needed">To use our app to its fullest you need to give the detailed location permission</string>
     <string name="start_trip">Start your trip</string>
     <string name="finish_trip">Finish the trip</string>
-    <string name="confirm_finish_trip">Are you sure ypu want to finish the trip?</string>
+    <string name="confirm_finish_trip">Are you sure you want to finish the trip?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="loading_api">Loading api</string>
+    <string name="confirm_log_out">Are you sure you want to log out?</string>
 </resources>

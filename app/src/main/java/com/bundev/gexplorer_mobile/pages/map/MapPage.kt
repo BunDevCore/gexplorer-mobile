@@ -309,7 +309,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                                 tripStarted.value = false
                                 vm.sendTrip(locationList)
                             },
-                            textResource = R.string.confirm_finish_trip
+                            text = stringResource(id = R.string.confirm_finish_trip)
                         )
                     }
                 }

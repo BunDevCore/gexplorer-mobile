@@ -1,11 +1,11 @@
 package com.bundev.gexplorer_mobile.pages.account
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -13,18 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.bundev.gexplorer_mobile.ConfirmDialog
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
 import com.bundev.gexplorer_mobile.LoadingBar
 import com.bundev.gexplorer_mobile.MiddleCard
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.StackedTextButton
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
@@ -86,20 +91,14 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             imageVector = GexplorerIcons.Outlined.SocialLeaderboard
         ) { navigateTo(navController, Screen.Leaderboard.route) { changePage() } }
 
-        if (state is ApiResource.Success){
-            IconAndTextButton(
-                label = stringResource(id = R.string.log_out),
-                imageVector = Icons.Filled.Person,
-            ) { vm.logout(); vm.fetchSelf() }
-        }
-
         //Statistics button
-        IconAndTextButton(
-            label = stringResource(id = R.string.statistics),
-            imageVector = GexplorerIcons.Outlined.Analytics
-        ) {
-            navigateTo(navController, Screen.Statistics.route) { changePage() }
-        }
+        if (state is ApiResource.Success)
+            IconAndTextButton(
+                label = stringResource(id = R.string.statistics),
+                imageVector = GexplorerIcons.Outlined.Analytics
+            ) {
+                navigateTo(navController, Screen.Statistics.route) { changePage() }
+            }
 
         //Settings button
         IconAndTextButton(
@@ -107,13 +106,6 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
             imageVector = Screen.Settings.iconOutline,
         ) { navigateTo(navController, Screen.Settings.route) { changePage() } }
 
-        MiddleCard { Text(text = "połączenie z API") }
-        if (state is ApiResource.Loading) {
-            MiddleCard { Text("loading.....") }
-        }
-        if (state is ApiResource.Success) {
-            MiddleCard { Text(state.data?.overallAreaAmount.toString()) }
-        }
         if (funi.getValue() != 0L) {
             MiddleCard {
                 Text(
@@ -121,6 +113,26 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                         funi.getValue()
                     } time left:${funi.getTimeRemaining()}"
                 )
+            }
+        }
+        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+            val openLogoutDialog = rememberSaveable { mutableStateOf(false) }
+            if (state is ApiResource.Success) {
+                StackedTextButton(
+                    label = stringResource(id = R.string.log_out),
+                    textColor = Color.Gray
+                ) { openLogoutDialog.value = true }
+            }
+            when {
+                openLogoutDialog.value -> {
+                    ConfirmDialog(
+                        onDismissRequest = { openLogoutDialog.value = false },
+                        confirmRequest = {
+                            openLogoutDialog.value = false; vm.logout(); vm.fetchSelf()
+                        },
+                        text = stringResource(id = R.string.confirm_log_out)
+                    )
+                }
             }
         }
     }

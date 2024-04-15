@@ -49,4 +49,5 @@
     <string name="no">no</string>
     <string name="leaderboard">leaderboard</string>
     <string name="loading_api">loading_api</string>
+    <string name="confirm_log_out">confirm_logout</string>
 </resources>

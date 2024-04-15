@@ -37,9 +37,10 @@
     <string name="location_detailed_needed">Aby korzystać w całości z naszej aplikacji należy zezwolić na dostęp do dokładnej lokalizacji.</string>
     <string name="start_trip">Rozpocznij podróż</string>
     <string name="finish_trip">Zakończ podróż</string>
-    <string name="confirm_finish_trip">Czy jesteś pewien, że chcesz zakończyć podróż?</string>
+    <string name="confirm_finish_trip">Czy na pewno chcesz zakończyć podróż?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="leaderboard">Tablica wyników</string>
     <string name="loading_api">Ładowanie api</string>
+    <string name="confirm_log_out">Czy na pewno chcesz się wylogować?</string>
 </resources>

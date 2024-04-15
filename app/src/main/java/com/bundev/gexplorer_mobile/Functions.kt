@@ -77,6 +77,7 @@ fun StackedTextButton(
     label: String,
     modifier: Modifier = Modifier,
     subLabel: String = "",
+    textColor: Color = Color.Unspecified,
     enabled: Boolean = true,
     fontSizeLabel: TextUnit = 18.sp,
     fontSizeSubLabel: TextUnit = (fontSizeLabel.value - 6).sp,
@@ -86,6 +87,7 @@ fun StackedTextButton(
         label = label,
         subLabel = subLabel,
         modifier = modifier,
+        textColor = textColor,
         enabled = enabled,
         fontSizeLabel = fontSizeLabel,
         fontSizeSubLabel = fontSizeSubLabel
@@ -316,8 +318,10 @@ fun TitleBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+                Spacer(modifier = Modifier.padding(8.dp))
             TitleText(text = text)
-            Spacer(modifier = Modifier.width(56.dp))
+            if (text.length < 18)
+                Spacer(modifier = Modifier.width(56.dp))
         }
     }
 }
@@ -327,6 +331,7 @@ fun TitleText(text: String) {
     Text(
         text = text,
         fontSize = 32.sp,
+        lineHeight = if (text.length > 18) 34.sp else TextUnit.Unspecified,
         fontWeight = FontWeight.Bold
     )
 }
@@ -540,7 +545,7 @@ val locationPermissions = arrayOf(
 fun ConfirmDialog(
     onDismissRequest: () -> Unit,
     confirmRequest: () -> Unit,
-    textResource: Int,
+    text: String,
     rejectRequest: () -> Unit = {},
 ) {
     AlertDialog(
@@ -555,6 +560,6 @@ fun ConfirmDialog(
                 Text(text = stringResource(id = R.string.no))
             }
         },
-        text = { Text(text = stringResource(id = textResource)) }
+        text = { Text(text = text, fontSize = 20.sp, lineHeight = 24.sp) }
     )
 }
