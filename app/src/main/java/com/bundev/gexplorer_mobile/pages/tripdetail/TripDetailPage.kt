@@ -40,10 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.ui.ActionButton
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.GoToPreviousPage
-import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Trip
 import com.bundev.gexplorer_mobile.data.ApiResource
@@ -60,7 +58,10 @@ import com.bundev.gexplorer_mobile.icons.outlined.Speed
 import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Path
+import com.bundev.gexplorer_mobile.ui.ActionButton
+import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.compose.MapEffect
@@ -97,7 +98,8 @@ fun TripDetailPage(
     val mapViewportState = rememberMapViewportState {
         setCameraOptions {
             zoom(10.0)
-            center(Point.fromLngLat(18.6570989, 54.3542712))
+//            center(Point.fromLngLat(18.6570989, 54.3542712))
+            center(state.data?.point ?: Point.fromLngLat(18.6570989, 54.3542712))
             pitch(0.0)
             bearing(0.0)
         }
@@ -107,8 +109,11 @@ fun TripDetailPage(
     }
     state.runIfSuccess {
         Log.d("tripdetail", "fetched geojson! rawr")
-        Log.d("tripdetail", "geojson trip id: ${state.data!!.id}")
-        geoJsonResource.value = state.data!!.gpsPolygon.toJson()
+        Log.d("tripdetail", "geojson trip id: ${state.data!!.detailedTripDto.id}")
+        geoJsonResource.value = state.data!!.detailedTripDto.gpsPolygon.toJson()
+        mapViewportState.flyTo(
+            cameraOptions = CameraOptions.Builder().center(state.data!!.point).pitch(0.0).zoom(10.0).build()
+        )
     }
     Log.d("tripdetail", "geojson resource len = ${geoJsonResource.value.length}")
     val secondary = colorResource(id = R.color.secondaryTemp)
@@ -125,10 +130,10 @@ fun TripDetailPage(
         }, at = 100)
     }
     val trip = Trip(
-        id = state.data?.id,
+        id = state.data?.detailedTripDto?.id,
         timeEnded = Clock.System.now(),
         timeBegun = Clock.System.now() - 1.023.hours,
-        distance = state.data?.length ?: 0.0
+        distance = state.data?.detailedTripDto?.length ?: 0.0
     )
 
     if (configuration.orientation == ORIENTATION_PORTRAIT)
