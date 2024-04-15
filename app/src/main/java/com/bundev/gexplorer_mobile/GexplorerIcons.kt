@@ -7,6 +7,7 @@ import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.filled.Error
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.filled.Map
+import com.bundev.gexplorer_mobile.icons.filled.NoAccount
 import com.bundev.gexplorer_mobile.icons.filled.Palette
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.filled.Straighten
@@ -17,6 +18,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Error
 import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Map
+import com.bundev.gexplorer_mobile.icons.outlined.NoAccount
 import com.bundev.gexplorer_mobile.icons.outlined.Palette
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Straighten
@@ -25,7 +27,6 @@ import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Explore
 import com.bundev.gexplorer_mobile.icons.simple.ExploreNearby
 import com.bundev.gexplorer_mobile.icons.simple.Language
-import com.bundev.gexplorer_mobile.icons.simple.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.icons.simple.Visibility
@@ -51,8 +52,7 @@ object GexplorerIcons {
                     Simple.QuestionMark,
                     Simple.Language,
                     Simple.Visibility,
-                    Simple.VisibilityOff,
-                    Simple.NoAccount
+                    Simple.VisibilityOff
                 )
                 return _simple!!
             }
@@ -75,7 +75,8 @@ object GexplorerIcons {
                     Filled.Palette,
                     Filled.Straighten,
                     Filled.Error,
-                    Filled.Account
+                    Filled.Account,
+                    Filled.NoAccount
                 )
                 return _filled!!
             }
@@ -98,7 +99,8 @@ object GexplorerIcons {
                     Outlined.Palette,
                     Outlined.Straighten,
                     Outlined.Error,
-                    Outlined.Account
+                    Outlined.Account,
+                    Outlined.NoAccount
                 )
                 return _outlined!!
             }

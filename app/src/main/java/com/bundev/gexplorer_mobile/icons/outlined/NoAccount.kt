@@ -1,6 +1,6 @@
 @file:Suppress("UnusedReceiverParameter")
 
-package com.bundev.gexplorer_mobile.icons.simple
+package com.bundev.gexplorer_mobile.icons.outlined
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
@@ -13,12 +13,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.bundev.gexplorer_mobile.GexplorerIcons
 
-val GexplorerIcons.Simple.NoAccount: ImageVector
+val GexplorerIcons.Outlined.NoAccount: ImageVector
     get() {
-        if (noAccount != null) {
-            return noAccount!!
+        if (noAccounts != null) {
+            return noAccounts!!
         }
-        noAccount = Builder(name = "NoAccount", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
+        noAccounts = Builder(name = "NoAccountOutlined", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
                 viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
@@ -73,10 +73,30 @@ val GexplorerIcons.Simple.NoAccount: ImageVector
                 quadTo(708.0f, 817.0f, 635.5f, 848.5f)
                 quadTo(563.0f, 880.0f, 480.0f, 880.0f)
                 close()
+                moveTo(480.0f, 800.0f)
+                quadTo(533.0f, 800.0f, 580.0f, 784.5f)
+                quadTo(627.0f, 769.0f, 666.0f, 740.0f)
+                quadTo(627.0f, 711.0f, 580.0f, 695.5f)
+                quadTo(533.0f, 680.0f, 480.0f, 680.0f)
+                quadTo(427.0f, 680.0f, 380.0f, 695.5f)
+                quadTo(333.0f, 711.0f, 294.0f, 740.0f)
+                quadTo(333.0f, 769.0f, 380.0f, 784.5f)
+                quadTo(427.0f, 800.0f, 480.0f, 800.0f)
+                close()
+                moveTo(480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                quadTo(480.0f, 740.0f, 480.0f, 740.0f)
+                close()
             }
         }
         .build()
-        return noAccount!!
+        return noAccounts!!
     }
 
-private var noAccount: ImageVector? = null
+private var noAccounts: ImageVector? = null

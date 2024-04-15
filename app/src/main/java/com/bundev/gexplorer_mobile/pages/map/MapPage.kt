@@ -54,7 +54,7 @@ import com.bundev.gexplorer_mobile.icons.filled.Account
 import com.bundev.gexplorer_mobile.icons.filled.Location
 import com.bundev.gexplorer_mobile.icons.outlined.Account
 import com.bundev.gexplorer_mobile.icons.outlined.Location
-import com.bundev.gexplorer_mobile.icons.simple.NoAccount
+import com.bundev.gexplorer_mobile.icons.outlined.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.navigateTo
 import com.mapbox.common.location.AccuracyLevel
@@ -236,7 +236,11 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     }
     // Account button
     SmallFloatingActionButton(
-        modifier = Modifier.padding(top = 8.dp, start = (configuration.screenWidthDp - 52).dp),
+        modifier = Modifier.padding(
+            top = 8.dp,
+            start = if (configuration.orientation == ORIENTATION_PORTRAIT) (configuration.screenWidthDp - 52).dp
+            else (configuration.screenWidthDp - 136).dp
+        ),
         onClick = {
             when (state.userDto) {
                 is ApiResource.Success -> navigateTo(
@@ -271,7 +275,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
 
             else -> Icon(
                 modifier = Modifier.padding(2.5.dp),
-                imageVector = GexplorerIcons.Simple.NoAccount,
+                imageVector = GexplorerIcons.Outlined.NoAccount,
                 contentDescription = null
             )
         }
