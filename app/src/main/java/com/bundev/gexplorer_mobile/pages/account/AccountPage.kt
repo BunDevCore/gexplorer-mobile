@@ -31,20 +31,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.ui.ConfirmDialog
 import com.bundev.gexplorer_mobile.GexplorerIcons
-import com.bundev.gexplorer_mobile.ui.IconAndTextButton
-import com.bundev.gexplorer_mobile.ui.LoadingBar
-import com.bundev.gexplorer_mobile.ui.MiddleCard
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.ui.StackedTextButton
 import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.funi
 import com.bundev.gexplorer_mobile.icons.outlined.Analytics
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
-import com.bundev.gexplorer_mobile.icons.outlined.Trophy
 import com.bundev.gexplorer_mobile.navigateTo
+import com.bundev.gexplorer_mobile.ui.ConfirmDialog
+import com.bundev.gexplorer_mobile.ui.IconAndTextButton
+import com.bundev.gexplorer_mobile.ui.LoadingBar
+import com.bundev.gexplorer_mobile.ui.MiddleCard
+import com.bundev.gexplorer_mobile.ui.StackedTextButton
 
 @Composable
 fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit) {
@@ -116,12 +115,6 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 navigateTo(navController, Screen.Login.route) { changePage() }
             }
         }
-//TODO show icon when intenet is off or there is no connection to database
-        //Achievements button
-        IconAndTextButton(
-            label = stringResource(id = R.string.achievements),
-            imageVector = if (funi.getValue() != 2024L) GexplorerIcons.Outlined.Trophy else GexplorerIcons.Outlined.SocialLeaderboard
-        ) { navigateTo(navController, Screen.Achievements.route) { changePage() } }
 
         //Leaderboard button
         IconAndTextButton(

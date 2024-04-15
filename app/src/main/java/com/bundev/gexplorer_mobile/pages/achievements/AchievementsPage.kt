@@ -55,9 +55,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
-import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.R
-import com.bundev.gexplorer_mobile.ui.TitleBar
 import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
@@ -65,6 +63,7 @@ import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.ui.GroupingList
+import com.bundev.gexplorer_mobile.ui.LoadingCard
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -123,14 +122,13 @@ fun AchievementsPage(navController: NavHostController? = null, changePage: () ->
 
     LaunchedEffect(Unit) { vm.fetchSelf() }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        TitleBar(stringResource(id = R.string.achievements), navController) { changePage() }
-        when (state.userDto) {
-            is ApiResource.Success -> {
+    when (state.userDto) {
+        is ApiResource.Success -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
                 AchievementProgressBar(
                     achievementsGot.size,
                     achievementsGot.size + lockedAchievements.size
@@ -151,9 +149,14 @@ fun AchievementsPage(navController: NavHostController? = null, changePage: () ->
                     AchievementItem(achievement = achievement)
                 }
             }
+        }
 
-            is ApiResource.Loading -> LoadingCard(text = stringResource(id = R.string.loading_api))
-            is ApiResource.Error -> LoadingCard(text = stringResource(id = R.string.achievements))
+        is ApiResource.Loading -> Column(modifier = Modifier.fillMaxSize()) {
+            LoadingCard(text = stringResource(id = R.string.loading_api))
+        }
+
+        is ApiResource.Error -> Column(modifier = Modifier.fillMaxSize()) {
+            LoadingCard(text = stringResource(id = R.string.achievements))
         }
     }
 }
@@ -339,5 +342,5 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
 @Preview(locale = "pl", showBackground = true)
 @Composable
 private fun AchievementsPagePreview() {
-    AchievementsPage{}
+    AchievementsPage {}
 }

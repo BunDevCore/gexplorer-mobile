@@ -64,15 +64,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bundev.gexplorer_mobile.classes.Screen
-import com.bundev.gexplorer_mobile.pages.achievements.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.OnboardScreen
 import com.bundev.gexplorer_mobile.pages.PlacesPage
-import com.bundev.gexplorer_mobile.pages.settings.SettingsPage
 import com.bundev.gexplorer_mobile.pages.account.AccountPage
+import com.bundev.gexplorer_mobile.pages.achievements.AchievementsPage
 import com.bundev.gexplorer_mobile.pages.leaderboard.LeaderboardPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage
 import com.bundev.gexplorer_mobile.pages.map.MapPage
 import com.bundev.gexplorer_mobile.pages.savedtrips.SavedTripsPage
+import com.bundev.gexplorer_mobile.pages.settings.SettingsPage
 import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
@@ -91,7 +91,7 @@ class GexplorerApplication : Application()
 private val items = listOf(
     Screen.Map,
     Screen.Trips,
-    Screen.Places,
+    Screen.Achievements,
     Screen.Account
 )
 
