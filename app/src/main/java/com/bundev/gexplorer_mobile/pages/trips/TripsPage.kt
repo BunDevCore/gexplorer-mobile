@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -29,16 +30,19 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.IconAndTextButton
+import com.bundev.gexplorer_mobile.LoadingCard
 import com.bundev.gexplorer_mobile.MiddleCard
 import com.bundev.gexplorer_mobile.R
+import com.bundev.gexplorer_mobile.classes.Screen
 import com.bundev.gexplorer_mobile.classes.Trip
+import com.bundev.gexplorer_mobile.distanceUnit
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatDistance
 import com.bundev.gexplorer_mobile.formatDuration
 import com.bundev.gexplorer_mobile.formatTime
 import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.simple.Walk
-import com.bundev.gexplorer_mobile.distanceUnit
+import com.bundev.gexplorer_mobile.navigateTo
 import com.bundev.gexplorer_mobile.selectedTabSave
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import kotlinx.datetime.Clock
@@ -145,19 +149,24 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
     Log.d("trips", "recomposed..., loggedIn=${state.loggedIn}")
 
     when (state.loggedIn) {
-        false -> return MiddleCard { Text("please log in ffs") }
+        false -> return MiddleCard {
+            Button(onClick = { navigateTo(navController, Screen.Login.route) { changePage() } }) {
+                Text(text = stringResource(id = R.string.log_in))
+            }
+        }
+
         true -> {
             Log.d("trips", "got auth success, fetchtrips")
             if (state.trips.data == null)
                 vm.fetchTrips()
         }
 
-        null -> return MiddleCard { Text("loading...") }
+        null -> return LoadingCard(text = stringResource(id = R.string.loading))
     }
 
     if (state.trips.data == null) {
         Log.d("trips", "state trips data is null (${state.trips.kind})")
-        return MiddleCard { Text("loading...2") }
+        return LoadingCard(text = stringResource(id = R.string.loading))
     }
 
     Column(
@@ -169,7 +178,7 @@ fun TripsPage(navController: NavHostController? = null, changePage: () -> Unit) 
             imageVector = GexplorerIcons.Filled.Bookmark,
             label = stringResource(id = R.string.saved_trips)
         ) {
-            //TODO show saved trips
+            navigateTo(navController, Screen.SavedTrips.route) { changePage() }
         }
         GroupingList(
             items = state.trips.data!!,

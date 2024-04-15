@@ -72,6 +72,7 @@ import com.bundev.gexplorer_mobile.pages.account.AccountPage
 import com.bundev.gexplorer_mobile.pages.leaderboard.LeaderboardPage
 import com.bundev.gexplorer_mobile.pages.login.LoginPage
 import com.bundev.gexplorer_mobile.pages.map.MapPage
+import com.bundev.gexplorer_mobile.pages.savedtrips.SavedTripsPage
 import com.bundev.gexplorer_mobile.pages.statistics.StatisticsPage
 import com.bundev.gexplorer_mobile.pages.tripdetail.TripDetailPage
 import com.bundev.gexplorer_mobile.pages.trips.TripsPage
@@ -205,6 +206,9 @@ private fun GexplorerNavigation() {
                         navController = navController
                     ) { selectedTab = selectedTabSave }
                 }
+                composable(Screen.SavedTrips.route) {
+                    SavedTripsPage(navController) { selectedTab = selectedTabSave }
+                }
                 composable(Screen.Statistics.route) {
                     StatisticsPage(navController) { selectedTab = selectedTabSave }
                 }
@@ -280,7 +284,10 @@ private fun GexplorerNavigation() {
                                     Log.w("CLICKED TAB", screen.route)
                                     //TODO Backstack does not clear after going from child page to parent page example (tripDetail -> trip) or (settings -> account)
                                     //TODO on back press does not allow to go back to the same page
-                                    Log.w("NAV BACKSTACK", navBackStackEntry?.destination?.route.toString())
+                                    Log.w(
+                                        "NAV BACKSTACK",
+                                        navBackStackEntry?.destination?.route.toString()
+                                    )
                                     selectedTab = screen.route
                                     navController.navigate(screen.route) {
                                         // Pop up to the start destination of the graph to

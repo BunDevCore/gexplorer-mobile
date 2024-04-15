@@ -10,10 +10,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.icons.filled.Analytics
+import com.bundev.gexplorer_mobile.icons.filled.Bookmark
 import com.bundev.gexplorer_mobile.icons.filled.Map
 import com.bundev.gexplorer_mobile.icons.filled.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.filled.Trophy
 import com.bundev.gexplorer_mobile.icons.outlined.Analytics
+import com.bundev.gexplorer_mobile.icons.outlined.Bookmark
 import com.bundev.gexplorer_mobile.icons.outlined.Map
 import com.bundev.gexplorer_mobile.icons.outlined.SocialLeaderboard
 import com.bundev.gexplorer_mobile.icons.outlined.Trophy
@@ -39,6 +41,14 @@ sealed class Screen(
             "trips",
             R.string.trips,
             GexplorerIcons.Simple.Walk
+        )
+
+    data object SavedTrips :
+        Screen(
+            "savedTrips",
+            R.string.saved_trips,
+            GexplorerIcons.Filled.Bookmark,
+            GexplorerIcons.Outlined.Bookmark
         )
 
     data object Achievements :
