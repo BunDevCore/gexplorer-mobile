@@ -153,7 +153,10 @@ fun AccountPage(navController: NavHostController? = null, changePage: () -> Unit
                 )
             }
         }
-        Column(modifier = Modifier.fillMaxSize().safeDrawingPadding(), verticalArrangement = Arrangement.Bottom) {
+        val logoutModifier = if (configuration.orientation == ORIENTATION_PORTRAIT)
+            Modifier.fillMaxSize()
+        else Modifier.fillMaxSize().safeDrawingPadding()
+        Column(modifier = logoutModifier, verticalArrangement = Arrangement.Bottom) {
             val openLogoutDialog = rememberSaveable { mutableStateOf(false) }
             if (state is ApiResource.Success) {
                 StackedTextButton(
