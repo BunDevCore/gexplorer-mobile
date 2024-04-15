@@ -2,7 +2,7 @@ package com.bundev.gexplorer_mobile.repo
 
 import android.util.Log
 import com.bundev.gexplorer_mobile.data.ApiResource
-import com.mapbox.geojson.Geometry
+import com.mapbox.geojson.Polygon
 import me.thefen.gexplorerapi.GexplorerApi
 import me.thefen.gexplorerapi.RetrofitClient
 import me.thefen.gexplorerapi.dtos.DetailedTripDto
@@ -123,10 +123,10 @@ class GexplorerRepository(
 
     suspend fun getUser(id: UUID): ApiResource<UserDto> = apiWrapper { api.getUser(id) }
 
-    suspend fun getUserPolygon(id: UUID): ApiResource<Geometry> =
+    suspend fun getUserPolygon(id: UUID): ApiResource<List<Polygon>> =
         apiWrapper { api.getUserPolygon(id) }
 
-    suspend fun getOwnPolygon(): ApiResource<Geometry> =
+    suspend fun getOwnPolygon(): ApiResource<List<Polygon>> =
         apiWrapper { api.getUserPolygon(id!!) }
 
     suspend fun getTrip(tripId: String): ApiResource<DetailedTripDto> =

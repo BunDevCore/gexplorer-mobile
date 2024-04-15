@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.repo.GexplorerRepository
 import com.mapbox.common.location.Location
+import com.mapbox.geojson.MultiPolygon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,7 @@ import javax.inject.Inject
 data class MapViewModelState(
     val userDto: ApiResource<UserDto> = ApiResource.Loading(),
     val tripDto: ApiResource<TripDto>? = null,
+    val userPolygon: ApiResource<MultiPolygon> = ApiResource.Loading(),
 )
 
 @HiltViewModel
@@ -34,7 +36,7 @@ class MapViewModel @Inject constructor(
 
         viewModelScope.launch {
             Log.d("gexapi", "launching self fetch...")
-            _state.update { MapViewModelState(repo.getSelf(), it.tripDto) }
+            _state.update { MapViewModelState(repo.getSelf(), it.tripDto, it.userPolygon) }
         }
     }
 
@@ -49,7 +51,19 @@ class MapViewModel @Inject constructor(
         }
         viewModelScope.launch {
             Log.d("gexapi", "sending trip data...")
-            _state.update { MapViewModelState(it.userDto, repo.sendTrip(timedPoints)) }
+            _state.update {
+                MapViewModelState(it.userDto, repo.sendTrip(timedPoints), it.userPolygon)
+            }
+        }
+    }
+
+    fun getUserPolygon() {
+        viewModelScope.launch {
+            val userPolygon = repo.getOwnPolygon().mapSuccess {
+                MultiPolygon.fromPolygons(it)
+            }
+            Log.d("gexapi", "get user polygon called")
+            _state.update { it.copy(userPolygon = userPolygon) }
         }
     }
 }

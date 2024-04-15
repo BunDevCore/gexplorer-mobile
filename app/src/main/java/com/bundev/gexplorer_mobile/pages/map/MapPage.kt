@@ -2,10 +2,12 @@ package com.bundev.gexplorer_mobile.pages.map
 
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.graphics.Color
 import android.net.Uri
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,12 +39,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.bundev.gexplorer_mobile.ui.ConfirmDialog
 import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.RequestLocationPermission
@@ -57,6 +59,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Location
 import com.bundev.gexplorer_mobile.icons.outlined.NoAccount
 import com.bundev.gexplorer_mobile.icons.simple.QuestionMark
 import com.bundev.gexplorer_mobile.navigateTo
+import com.bundev.gexplorer_mobile.ui.ConfirmDialog
 import com.mapbox.common.location.AccuracyLevel
 import com.mapbox.common.location.DeviceLocationProvider
 import com.mapbox.common.location.IntervalSettings
@@ -73,9 +76,12 @@ import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.CircleAnnotation
-import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
+import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotationGroup
 import com.mapbox.maps.extension.localization.localizeLabels
-import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
+import com.mapbox.maps.extension.style.layers.generated.fillLayer
+import com.mapbox.maps.extension.style.layers.generated.lineLayer
+import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.viewport.data.ViewportStatusChangeReason
@@ -123,8 +129,44 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         }
     }
 
-    LaunchedEffect(Unit) { vm.fetchSelf() }
+    LaunchedEffect(Unit) {
+        vm.fetchSelf()
+        vm.getUserPolygon()
+    }
+
+    val geoJsonResource = remember {
+        mutableStateOf("")
+    }
+    Log.wtf("mappage", "state userPolygon kind: ${state.userPolygon.kind}")
+    state.userPolygon.runIfSuccess {
+        Log.d("mappage", "fetched geojson!")
+        geoJsonResource.value = state.userPolygon.data!!.toJson()
+        Log.d("mappage INSIDE (tm)", "geojson resource len = ${geoJsonResource.value.length}")
+    }
+    Log.d("mappage", "geojson resource len = ${geoJsonResource.value.length}")
+    val tripColor = colorResource(id = R.color.tripArea)
+    val style = style(Style.MAPBOX_STREETS) {
+        +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }
+        +layerAtPosition(lineLayer("line-layer", "Trip") {
+            lineColor(tripColor.hashCode())
+            lineWidth(3.0)
+            lineOpacity(0.8)
+        }, at = 100)
+        +layerAtPosition(fillLayer("fill-layer", "Trip") {
+            fillOpacity(0.4)
+            fillColor(Color.GRAY)
+        }, at = 100)
+    }
+
     RequestLocationPermission(requestCount = permissionRequestCount, onPermissionDenied = { }) {}
+
+    if (state.userPolygon is ApiResource.Error) {
+        Toast.makeText(
+            context,
+            stringResource(id = R.string.polygon_load_failed),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -142,13 +184,16 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 .setEnabled(true)
                 .build()
         ) {
-            MapEffect { mapView ->
-                mapView.mapboxMap.loadStyle(Style.STANDARD) {}
-                mapView.mapboxMap.style?.localizeLabels(
-                    Locale.forLanguageTag(
-                        AppCompatDelegate.getApplicationLocales().toLanguageTags()
+            MapEffect(key1 = style) { mapView ->
+                run {
+                    mapView.mapboxMap.loadStyle(style)
+                    mapView.mapboxMap.style?.styleLayers
+                    mapView.mapboxMap.style?.localizeLabels(
+                        Locale.forLanguageTag(
+                            AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                        )
                     )
-                )
+                }
                 mapView.compass.marginTop = 180f
             }
             if (funi.getValue() == 20L) CircleAnnotation(
@@ -156,23 +201,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                 circleOpacity = 0.5,
                 circleColorInt = R.color.green
             )
-            CircleAnnotation(
-                point = Point.fromLngLat(18.6545101, 54.3542491),
-                circleOpacity = 0.5,
-                circleColorInt = R.color.green
-            )
-            if (locationList.isNotEmpty()) {
-                val points = mutableListOf<Point>()
-                locationList.forEach { location ->
-                    points += Point.fromLngLat(location.longitude, location.latitude)
-                }
-                PolylineAnnotation(
-                    points = points,
-                    lineJoin = LineJoin.ROUND,
-                    lineBorderWidth = 10.0
-                )
-
-            }
+            PointAnnotationGroup(annotations = )
         }
     }
     val changedReason = mapViewportState.mapViewportStatusChangedReason

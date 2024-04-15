@@ -51,4 +51,5 @@
     <string name="trips_not_logged_in">Aby zapisywać podróże zaloguj się</string>
     <string name="login_successful">Logowanie zakończona pomyślnie</string>
     <string name="register_successful">Rejestracja zakończona pomyślnie</string>
+    <string name="polygon_load_failed">Błąd ładowania wieloboku</string>
 </resources>
