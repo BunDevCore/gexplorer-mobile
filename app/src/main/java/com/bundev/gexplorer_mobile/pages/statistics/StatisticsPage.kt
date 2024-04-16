@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,13 +20,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.data.ApiResource
+import com.bundev.gexplorer_mobile.distanceUnit
+import com.bundev.gexplorer_mobile.formatArea
 import com.bundev.gexplorer_mobile.ui.ErrorCard
 import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.bundev.gexplorer_mobile.ui.TitleBar
@@ -58,7 +67,7 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                             Text(
                                 stringResource(id = R.string.total_area)
                             )
-                            Text(text = "${"%.0f".format(state.data!!.user.overallAreaAmount)}m²")
+                            Text(text = formatArea(state.data!!.user.overallAreaAmount, distanceUnit))
                         }
                     }
                     Card(
@@ -116,12 +125,12 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
 //                            Text(text = state.data!!.user.tripAmount.toString())
 //                        }
 //                    }
-
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(10.dp)
                     ) {
+                        var districtsLeft = state.data!!.districtEntries.size
                         state.data!!.districtEntries.sortedByDescending { it.percentage }
                             .forEach { entry ->
                                 Card(
@@ -142,12 +151,32 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                                             text = entry.name
                                         )
                                         Text(
-                                            text = "${"%.0f".format(entry.exploredArea)}m²",
+                                            text = if (entry.exploredArea != 0.0)
+                                                formatArea(
+                                                    areaInCubicMeters = entry.exploredArea,
+                                                    measureUnit = distanceUnit
+                                                )
+                                            else "0m²",
                                             textAlign = TextAlign.End
                                         )
                                         Text(
-                                            text = "${"%.04f".format(entry.percentage * 100)}%",
+                                            text = if (entry.percentage != 0.0)
+                                                formatPercentage("%.04f".format(entry.percentage * 100))
+                                            else AnnotatedString("0%"),
+//                                            text = "${
+//                                                if (entry.percentage != 0.0)
+//                                                    formatPercentage("%.04f".format(entry.percentage * 100))
+//                                                else AnnotatedString("0")
+//                                            }%",
                                             textAlign = TextAlign.End
+                                        )
+                                    }
+                                    if (districtsLeft > 1) {
+                                        districtsLeft--
+                                        HorizontalDivider(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            color = Color.Gray,
+                                            thickness = 1.dp
                                         )
                                     }
                                 }
@@ -157,5 +186,15 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                 }
             }
         }
+    }
+}
+fun formatPercentage(text: String): AnnotatedString {
+    val stringSections = listOf(text.substring(0, 4), text.substring(4))
+    return buildAnnotatedString {
+        append(stringSections[0])
+        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+            append(stringSections[1])
+        }
+        append("%")
     }
 }

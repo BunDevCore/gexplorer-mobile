@@ -86,11 +86,11 @@ fun formatDistance(distanceInMeters: Double, measureUnit: MeasureUnit): String {
         }
 
         MeasureUnit.FOOT -> {
-            if (distanceInMeters * 3.2808399 < 5280) {
+            if (distanceInMeters * 3.2808399 < 5280)
                 Measure((distanceInMeters * 3.2808399).roundToInt(), MeasureUnit.FOOT)
-            } else {
+            else
                 Measure((distanceInMeters * 0.000621371192).roundTo(3), MeasureUnit.MILE)
-            }
+
         }
 
         else -> Measure(-1, MeasureUnit.METER)
@@ -103,13 +103,11 @@ fun formatDistance(distanceInMeters: Double, measureUnit: MeasureUnit): String {
 fun formatSpeed(distanceInMeters: Double, duration: Duration, measureUnit: MeasureUnit): String {
     val avgSpeedInKph = (distanceInMeters / 1000.0) / (duration.inWholeSeconds / 3600.0)
     val measure = when (measureUnit) {
-        MeasureUnit.METER -> {
+        MeasureUnit.METER ->
             Measure(avgSpeedInKph.roundTo(3), MeasureUnit.KILOMETER_PER_HOUR)
-        }
 
-        MeasureUnit.FOOT -> {
+        MeasureUnit.FOOT ->
             Measure((avgSpeedInKph * 0.621371192).roundTo(3), MeasureUnit.MILE_PER_HOUR)
-        }
 
         else -> Measure(-1, MeasureUnit.KILOMETER_PER_HOUR)
     }
@@ -144,12 +142,38 @@ fun formatPace(duration: Duration, distanceInMeters: Double, measureUnit: Measur
     return "${formatDuration(avgPace)}/${stringResource(id = getShortUnitName(paceUnit))}"
 }
 
+@Composable
+fun formatArea(areaInCubicMeters: Double, measureUnit: MeasureUnit): String {
+    val measure = when (measureUnit) {
+        MeasureUnit.METER -> {
+            if (areaInCubicMeters < 1000000.0)
+                Measure(areaInCubicMeters.roundToInt(), MeasureUnit.CUBIC_METER)
+            else
+                Measure((areaInCubicMeters / 1000000).roundTo(6), MeasureUnit.CUBIC_KILOMETER)
+        }
+
+        MeasureUnit.FOOT -> {
+            if (areaInCubicMeters * 10.7639104 < 27878400)
+                Measure((areaInCubicMeters * 10.7639104).roundToInt(), MeasureUnit.CUBIC_FOOT)
+            else
+                Measure((areaInCubicMeters * 0.000000386102159).roundTo(6), MeasureUnit.CUBIC_MILE)
+        }
+
+        else -> Measure(-1, MeasureUnit.CUBIC_METER)
+    }
+    return "${measure.number}${stringResource(id = getShortUnitName(measure.unit))}"
+}
+
 fun getShortUnitName(unit: MeasureUnit): Int {
     return when (unit) {
         MeasureUnit.METER -> R.string.unit_meter
         MeasureUnit.KILOMETER -> R.string.unit_kilometer
         MeasureUnit.FOOT -> R.string.unit_foot
         MeasureUnit.MILE -> R.string.unit_mile
+        MeasureUnit.CUBIC_METER -> R.string.unit_cubic_meter
+        MeasureUnit.CUBIC_KILOMETER -> R.string.unit_cubic_kilometer
+        MeasureUnit.CUBIC_FOOT -> R.string.unit_cubic_foot
+        MeasureUnit.CUBIC_MILE -> R.string.unit_cubic_mile
         MeasureUnit.KILOMETER_PER_HOUR -> R.string.unit_kilometer_per_hour
         MeasureUnit.MILE_PER_HOUR -> R.string.unit_mile_per_hour
         else -> R.string.unit_not_found
@@ -229,5 +253,5 @@ val locationPermissions = arrayOf(
 
 fun formatLongText(text: String, join: Boolean = false): String {
     val stringSections = text.split("|")
-    return if (join)"${stringSections[0]}${stringSections[1]}" else "${stringSections[0]}\n${stringSections[1]}"
+    return if (join) "${stringSections[0]}${stringSections[1]}" else "${stringSections[0]}\n${stringSections[1]}"
 }
