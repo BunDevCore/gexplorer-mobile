@@ -37,7 +37,7 @@ fun LeaderboardPage(navController: NavHostController, changePage: () -> Unit) {
                 when (state.leaderboardDto) {
                     is ApiResource.Success -> {
                         MiddleCard {
-                            Text(state.leaderboardDto!!.data!!.entries.toString())
+                            Text(state.leaderboardDto.data!!.entries.toString())
                         }
                     }
 
