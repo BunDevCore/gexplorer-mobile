@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="achievements">Achievements</string>
-    <string name="locked_achievements">Locked achievements</string>
-    <string name="achievement_zsl">-zsl</string>
-    <string name="achievement_a">-a</string>
-    <string name="achievement_b">-b</string>
-    <string name="achievement_ztm1">-ztm1</string>
-    <string name="achievement_ztm2">-ztm2</string>
-    <string name="achievement_ztm3">-ztm3</string>
-    <string name="achievement_lot">-lot</string>
-    <string name="achievement_lechia">-lechia</string>
-    <string name="achievement_manhattan">-manhattan</string>
-    <string name="achievement_madison">-madison</string>
-    <string name="achievement_odpady">-odpady</string>
-    <string name="achievement_lotos">-lotos</string>
-    <string name="achievement_zsl_forum">-zsl_forum</string>
-    <string name="achievement_window">-window</string>
-    <string name="achievement_poland_b">-poland_b</string>
-    <string name="achievement_rossija">-rossija</string>
-    <string name="achievement_prawo_jazdy">-prawo_jazdy</string>
-    <string name="achievement_obr_wybrzeza">-obr_wybrzeza</string>
-    <string name="achievement_praktiker">-praktiker</string>
-    <string name="achievement_alfa">-alfa</string>
-    <string name="achievement_obwodnica">-obwodnica</string>
-    <string name="achievement_ajfon">-ajfon</string>
-    <string name="achievement_kaszebe">-kaszebe</string>
-    <string name="achievement_klukowo">-klukowo</string>
-    <string name="achievement_ecs">-ecs</string>
-    <string name="achievement_schlezwig">-schlezwig</string>
-    <string name="achievement_zus">-zus</string>
-    <string name="achievement_zuraw">-zuraw</string>
-    <string name="achievement_lot_wyzynna">-lot_wyzynna</string>
-    <string name="achievement_patient1">-patient1</string>
-    <string name="achievement_patient2">-patient2</string>
-    <string name="achievement_gates">-gates</string>
-    <string name="achievement_arrest">-arrest</string>
-    <string name="achievement_arrest2">-arrest2</string>
-    <string name="achievement_amber_gold">-amber_gold</string>
-    <string name="achievement_konsulat">-konsulat</string>
-    <string name="achievement_policaj">-policaj</string>
-    <string name="achievement_wojtek">-wojtek</string>
-    <string name="achievement_omg">-omg</string>
-    <string name="achievement_skm1">-skm1</string>
-    <string name="achievement_skm2">-skm2</string>
-    <string name="achievement_pier">-pier</string>
-    <string name="achievement_airport">-airport</string>
-    <string name="achievement_tesco">-tesco</string>
-    <string name="achievement_media_markt">-media_markt</string>
-    <string name="achievement_west_bank">-west_bank</string>
-    <string name="achievement_islam">-islam</string>
-    <string name="achievements_got_out_of">Unlocked [] out of [] ([]) achievements</string>
-</resources>
+    <resources>
+    
+        <string name="achievement_zsl_name">Welcome to the Lake of Happiness</string>
+        <string name="achievement_zsl_desc">Visit Zespół Szkół Łączności</string>
+        
+        <string name="achievement_traintonowhere_name">A train to nowhere</string>
+        <string name="achievement_traintonowhere_desc">Take a train to Sopot</string>
+        
+        <string name="achievement_booklink_name">Booklink</string>
+        <string name="achievement_booklink_desc">Visit all branches of the Gdańsk public library</string>
+        
+        <string name="achievement_lot_name">Landing on Tempelhof</string>
+        <string name="achievement_lot_desc">Visit the Gdańsk airport terminal</string>
+        
+        <string name="achievement_lechia_name">Go Lechia!!!</string>
+        <string name="achievement_lechia_desc">Visit the Polsat Plus Arena </string>
+        
+        <string name="achievement_manhattan_name">Welcome To New York</string>
+        <string name="achievement_manhattan_desc">Enter the Manhattan shopping center</string>
+        
+        <string name="achievement_madison_name">Madison Square Garden</string>
+        <string name="achievement_madison_desc">Enter the Madison shopping center</string>
+        
+        <string name="achievement_odpady_name">What a smell!</string>
+        <string name="achievement_odpady_desc">Visit the Szadółki utilization center</string>
+        
+        <string name="achievement_lotos_name">Lotus Flower</string>
+        <string name="achievement_lotos_desc">Go near the Refinery</string>
+        
+        <string name="achievement_window_name">A Glasslike Performance</string>
+        <string name="achievement_window_desc">Watch the Teatr w Oknie</string>
+        
+        <string name="achievement_rossija_name">Dangerously close to Russia</string>
+        <string name="achievement_rossija_desc">Go to the eastern border of Gdańsk</string>
+        
+        <string name="achievement_prawo_jazdy_name">Passed?</string>
+        <string name="achievement_prawo_jazdy_desc">Visit the PORD</string>
+        
+        <string name="achievement_obr_wybrzeza_name">The Longest In Europe</string>
+        <string name="achievement_obr_wybrzeza_desc">Go near the Falowiec</string>
+        
+        <string name="achievement_praktiker_name">Be Practical!</string>
+        <string name="achievement_praktiker_desc">Visit the old Praktiker store (now an OBI)</string>
+        
+        <string name="achievement_alfa_name">Greece</string>
+        <string name="achievement_alfa_desc">Go inside the Alfa shopping center</string>
+        
+        <string name="achievement_obwodnica_name">Drive Thru</string>
+        <string name="achievement_obwodnica_desc">Ride the Tricity Bypass</string>
+        
+        <string name="achievement_kaszebe_name">Stolëca Kaszëb Witô</string>
+        <string name="achievement_kaszebe_desc">Drive by the sign saying that Gdańsk is the historical capital of Cashubia</string>
+        
+        <string name="achievement_ecs_name">Fe2O3</string>
+        <string name="achievement_ecs_desc">Visit the European Solidarity Center</string>
+        
+        <string name="achievement_schlezwig_name">Westerplatten</string>
+        <string name="achievement_schlezwig_desc">Visit Westerplatte and the Westerplatte Defenders’ street</string>
+        
+        <string name="achievement_zuraw_name">The Heron</string>
+        <string name="achievement_zuraw_desc">Go under the Crane</string>
+        
+        <string name="achievement_lot_wyzynna_name">This is a landmarked building?</string>
+        <string name="achievement_lot_wyzynna_desc">Visit the old LOT building (yes, it is landmarked)</string>
+        
+        <string name="achievement_patient2_name">Good Patient</string>
+        <string name="achievement_patient2_desc">Visit all public hospitals in Gdańsk</string>
+        
+        <string name="achievement_gates_name">Bill Gates</string>
+        <string name="achievement_gates_desc">Go through all the (surviving) Old City gates</string>
+        
+        <string name="achievement_arrest2_name">Crash</string>
+        <string name="achievement_arrest2_desc">Go near both of Gdańsk’s prisons</string>
+        
+        <string name="achievement_amber_gold_name">Amber Gold</string>
+        <string name="achievement_amber_gold_desc">Go near the old Amber Gold headquarters</string>
+        
+        <string name="achievement_konsulat_name">March of the Volunteers</string>
+        <string name="achievement_konsulat_desc">Visit the Chinese consulate</string>
+        
+        <string name="achievement_podcien_name">The oldest arcade</string>
+        <string name="achievement_podcien_desc">Visit the Lion Court, the oldest surviving arcaded house in the area</string>
+        
+        <string name="achievement_omg_name">Oh My God GS</string>
+        <string name="achievement_omg_desc">Visit the Mevo OMGGS station</string>
+        
+        <string name="achievement_pier_name">The Pier</string>
+        <string name="achievement_pier_desc">Get to the end of the pier in Brzeźno</string>
+        
+        <string name="achievement_airport_name">The Airport</string>
+        <string name="achievement_airport_desc">Visit the runway of the old airport</string>
+        
+        <string name="achievement_tesco_name">Kauflan’t</string>
+        <string name="achievement_tesco_desc">Visit the Chełm shopping center, where instead of the Kaufland there used to be a Tesco</string>
+        
+        <string name="achievement_west_bank_name">West Bank</string>
+        <string name="achievement_west_bank_desc">Visit the beach in Górki Zachodnie</string>
+        
+    </resources>

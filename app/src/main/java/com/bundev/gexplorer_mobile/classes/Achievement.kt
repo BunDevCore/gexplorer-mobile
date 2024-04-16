@@ -8,7 +8,7 @@ import kotlinx.datetime.Instant
 import java.util.UUID
 
 class Achievement(
-    val id: UUID? = null,
+    val id: String = "",
     val imageVector: ImageVector = GexplorerIcons.Filled.Trophy,
     val color: Color? = null,
     val name: String,

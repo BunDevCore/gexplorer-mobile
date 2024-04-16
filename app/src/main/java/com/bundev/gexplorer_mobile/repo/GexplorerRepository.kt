@@ -5,6 +5,7 @@ import com.bundev.gexplorer_mobile.data.ApiResource
 import com.mapbox.geojson.Polygon
 import me.thefen.gexplorerapi.GexplorerApi
 import me.thefen.gexplorerapi.RetrofitClient
+import me.thefen.gexplorerapi.dtos.AchievementListDto
 import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
@@ -100,6 +101,9 @@ class GexplorerRepository(
     // this will throw an exception if username is null and therefore produce an ApiResource.Error, which is exactly what we want
     // maybe replace this with a custom error type further down the line
     suspend fun getSelf(): ApiResource<UserDto> = apiWrapper { api.getUser(username!!) }
+
+    suspend fun getAchievements(): ApiResource<AchievementListDto> =
+        apiWrapper { api.getAchievements() }
 
     suspend fun getDistricts(): ApiResource<List<DistrictDto>> =
         ApiResource.fromResult(runCatching { api.getDistricts() })

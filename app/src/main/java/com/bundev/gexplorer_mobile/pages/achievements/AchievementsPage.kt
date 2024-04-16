@@ -1,5 +1,6 @@
 package com.bundev.gexplorer_mobile.pages.achievements
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -66,6 +68,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import me.thefen.gexplorerapi.dtos.AchievementGetDto
 import java.text.DateFormat
 import kotlin.math.roundToInt
 
@@ -110,7 +113,10 @@ fun AchievementsPage() {
     val vm = hiltViewModel<AchievementsViewModel>()
     val state by vm.state.collectAsState()
 
-    LaunchedEffect(Unit) { vm.fetchSelf() }
+    LaunchedEffect(Unit) {
+        vm.fetchSelf()
+        vm.getAchievements()
+    }
 
     when (state.userDto) {
         is ApiResource.Success -> {
@@ -120,23 +126,23 @@ fun AchievementsPage() {
                     .verticalScroll(rememberScrollState())
             ) {
                 AchievementProgressBar(
-                    achievementsGot.size,
-                    achievementsGot.size + lockedAchievements.size
+                    state.userDto.data!!.achievements.size,
+                    state.achievementDto.data!!.achievementCount
                 )
                 GroupingList(
-                    items = achievementsGot,
+                    items = state.userDto.data!!.achievements,
                     groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
                     title = { formatDate(it) }
                 ) { achievement ->
-                    AchievementItem(achievement = achievement)
+                    AchievementItem(achievement = convertAchievements(achievementGetDto = achievement))
                 }
 
                 GroupingList(
-                    items = lockedAchievements,
-                    groupBy = { it.timeAchieved.toLocalDateTime(TimeZone.currentSystemDefault()).date },
+                    items = state.achievementDto.data!!.achievements.minus(state.userDto.data!!.achievements.map { it.achievementId }),
+                    groupBy = { 1 },
                     title = { stringResource(id = R.string.locked_achievements) }
-                ) { achievement ->
-                    AchievementItem(achievement = achievement)
+                ) { achievementId ->
+                    LockedAchievementItem(achievementId = achievementId)
                 }
             }
         }
@@ -146,10 +152,59 @@ fun AchievementsPage() {
         }
 
         is ApiResource.Error -> Column(modifier = Modifier.fillMaxSize()) {
-            LoadingCard(text = stringResource(id = R.string.achievements))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                GroupingList(
+                    items = state.achievementDto.data!!.achievements,
+                    groupBy = { 1 },
+                    title = { stringResource(id = R.string.locked_achievements) }
+                ) { achievementId ->
+                    LockedAchievementItem(achievementId = achievementId)
+                }
+            }
         }
     }
 }
+
+@SuppressLint("DiscouragedApi")
+@Composable
+private fun LockedAchievementItem(achievementId: String) {
+    val context = LocalContext.current
+
+    val nameId = "Achievement_${achievementId}_name"
+    val name = try {
+        context.resources.getString(
+            context.resources.getIdentifier(
+                nameId, "string", context.packageName
+            )
+        )
+    } catch (e: Exception) {
+        achievementId
+    }
+
+    val descriptionId = "Achievement_${achievementId}_desc"
+    val description = try {
+//        context.resources.configuration.locales.toLanguageTags()
+
+        context.resources.getString(
+            context.resources.getIdentifier(
+                descriptionId, "string", context.packageName
+            )
+        )
+    } catch (e: Exception) {
+        achievementId
+    }
+    val achievement = Achievement(
+        id = achievementId,
+        name = name,
+        description = description
+    )
+    AchievementItem(achievement = achievement)
+}
+
 
 @Composable
 private fun AchievementItem(achievement: Achievement) {
@@ -327,6 +382,40 @@ private fun achievementsDoneAnnotatedString(got: Int, outOf: Int): AnnotatedStri
         append("${((got / outOf.toFloat()) * 100).roundToInt()}%")
         append(stringSections[3])
     }
+}
+
+@SuppressLint("DiscouragedApi")
+@Composable
+fun convertAchievements(achievementGetDto: AchievementGetDto): Achievement {
+    val context = LocalContext.current
+    val nameId = "Achievement_${achievementGetDto.achievementId}_name"
+    val name = try {
+        context.resources.getString(
+            context.resources.getIdentifier(
+                nameId, "string", context.packageName
+            )
+        )
+    } catch (e: Exception) {
+        achievementGetDto.achievementId
+    }
+
+    val descriptionId = "Achievement_${achievementGetDto.achievementId}_desc"
+    val description = try {
+        context.resources.getString(
+            context.resources.getIdentifier(
+                descriptionId, "string", context.packageName
+            )
+        )
+    } catch (e: Exception) {
+        achievementGetDto.achievementId
+    }
+    return Achievement(
+        id = achievementGetDto.achievementId,
+        name = name,
+        description = description,
+        timeAchieved = achievementGetDto.timeAchieved,
+        achievedOnTripId = achievementGetDto.achievedOnTripId
+    )
 }
 
 @Preview(locale = "pl", showBackground = true)

@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="achievements">achievements</string>
-    <string name="locked_achievements">locked_achievements</string>
-    <string name="achievements_got_out_of">unlocked[]out_of[] ([]) achievements</string>
-    <string name="achievement_zsl">zsl</string>
-    <string name="achievement_a">a</string>
-    <string name="achievement_b">b</string>
-    <string name="achievement_ztm1">ztm1</string>
-    <string name="achievement_ztm2">ztm2</string>
-    <string name="achievement_ztm3">ztm3</string>
-    <string name="achievement_lot">lot</string>
-    <string name="achievement_lechia">lechia</string>
-    <string name="achievement_manhattan">manhattan</string>
-    <string name="achievement_madison">madison</string>
-    <string name="achievement_odpady">odpady</string>
-    <string name="achievement_lotos">lotos</string>
-    <string name="achievement_zsl_forum">zsl_forum</string>
-    <string name="achievement_window">window</string>
-    <string name="achievement_poland_b">poland_b</string>
-    <string name="achievement_rossija">rossija</string>
-    <string name="achievement_prawo_jazdy">prawo_jazdy</string>
-    <string name="achievement_obr_wybrzeza">obr_wybrzeza</string>
-    <string name="achievement_praktiker">praktiker</string>
-    <string name="achievement_alfa">alfa</string>
-    <string name="achievement_obwodnica">obwodnica</string>
-    <string name="achievement_ajfon">ajfon</string>
-    <string name="achievement_kaszebe">kaszebe</string>
-    <string name="achievement_klukowo">klukowo</string>
-    <string name="achievement_ecs">ecs</string>
-    <string name="achievement_schlezwig">schlezwig</string>
-    <string name="achievement_zus">zus</string>
-    <string name="achievement_zuraw">zuraw</string>
-    <string name="achievement_lot_wyzynna">lot_wyzynna</string>
-    <string name="achievement_patient1">patient1</string>
-    <string name="achievement_patient2">patient2</string>
-    <string name="achievement_gates">gates</string>
-    <string name="achievement_arrest">arrest</string>
-    <string name="achievement_arrest2">arrest2</string>
-    <string name="achievement_amber_gold">amber_gold</string>
-    <string name="achievement_konsulat">konsulat</string>
-    <string name="achievement_policaj">policaj</string>
-    <string name="achievement_wojtek">wojtek</string>
-    <string name="achievement_omg">omg</string>
-    <string name="achievement_skm1">skm1</string>
-    <string name="achievement_skm2">skm2</string>
-    <string name="achievement_pier">pier</string>
-    <string name="achievement_airport">airport</string>
-    <string name="achievement_tesco">tesco</string>
-    <string name="achievement_media_markt">media_markt</string>
-    <string name="achievement_west_bank">west_bank</string>
-    <string name="achievement_islam">islam</string>
-</resources>
+    <resources>
+    
+        <string name="achievement_zsl_name">zsl</string>
+        <string name="achievement_zsl_desc">zsl</string>
+        
+        <string name="achievement_traintonowhere_name">traintonowhere</string>
+        <string name="achievement_traintonowhere_desc">traintonowhere</string>
+        
+        <string name="achievement_booklink_name">booklink</string>
+        <string name="achievement_booklink_desc">booklink</string>
+        
+        <string name="achievement_lot_name">lot</string>
+        <string name="achievement_lot_desc">lot</string>
+        
+        <string name="achievement_lechia_name">lechia</string>
+        <string name="achievement_lechia_desc">lechia</string>
+        
+        <string name="achievement_manhattan_name">manhattan</string>
+        <string name="achievement_manhattan_desc">manhattan</string>
+        
+        <string name="achievement_madison_name">madison</string>
+        <string name="achievement_madison_desc">madison</string>
+        
+        <string name="achievement_odpady_name">odpady</string>
+        <string name="achievement_odpady_desc">odpady</string>
+        
+        <string name="achievement_lotos_name">lotos</string>
+        <string name="achievement_lotos_desc">lotos</string>
+        
+        <string name="achievement_window_name">window</string>
+        <string name="achievement_window_desc">window</string>
+        
+        <string name="achievement_rossija_name">rossija</string>
+        <string name="achievement_rossija_desc">rossija</string>
+        
+        <string name="achievement_prawo_jazdy_name">prawo_jazdy</string>
+        <string name="achievement_prawo_jazdy_desc">prawo_jazdy</string>
+        
+        <string name="achievement_obr_wybrzeza_name">obr_wybrzeza</string>
+        <string name="achievement_obr_wybrzeza_desc">obr_wybrzeza</string>
+        
+        <string name="achievement_praktiker_name">praktiker</string>
+        <string name="achievement_praktiker_desc">praktiker</string>
+        
+        <string name="achievement_alfa_name">alfa</string>
+        <string name="achievement_alfa_desc">alfa</string>
+        
+        <string name="achievement_obwodnica_name">obwodnica</string>
+        <string name="achievement_obwodnica_desc">obwodnica</string>
+        
+        <string name="achievement_kaszebe_name">kaszebe</string>
+        <string name="achievement_kaszebe_desc">kaszebe</string>
+        
+        <string name="achievement_ecs_name">ecs</string>
+        <string name="achievement_ecs_desc">ecs</string>
+        
+        <string name="achievement_schlezwig_name">schlezwig</string>
+        <string name="achievement_schlezwig_desc">schlezwig</string>
+        
+        <string name="achievement_zuraw_name">zuraw</string>
+        <string name="achievement_zuraw_desc">zuraw</string>
+        
+        <string name="achievement_lot_wyzynna_name">lot_wyzynna</string>
+        <string name="achievement_lot_wyzynna_desc">lot_wyzynna</string>
+        
+        <string name="achievement_patient2_name">patient2</string>
+        <string name="achievement_patient2_desc">patient2</string>
+        
+        <string name="achievement_gates_name">gates</string>
+        <string name="achievement_gates_desc">gates</string>
+        
+        <string name="achievement_arrest2_name">arrest2</string>
+        <string name="achievement_arrest2_desc">arrest2</string>
+        
+        <string name="achievement_amber_gold_name">amber_gold</string>
+        <string name="achievement_amber_gold_desc">amber_gold</string>
+        
+        <string name="achievement_konsulat_name">konsulat</string>
+        <string name="achievement_konsulat_desc">konsulat</string>
+        
+        <string name="achievement_podcien_name">podcien</string>
+        <string name="achievement_podcien_desc">podcien</string>
+        
+        <string name="achievement_omg_name">omg</string>
+        <string name="achievement_omg_desc">omg</string>
+        
+        <string name="achievement_pier_name">pier</string>
+        <string name="achievement_pier_desc">pier</string>
+        
+        <string name="achievement_airport_name">airport</string>
+        <string name="achievement_airport_desc">airport</string>
+        
+        <string name="achievement_tesco_name">tesco</string>
+        <string name="achievement_tesco_desc">tesco</string>
+        
+        <string name="achievement_west_bank_name">west_bank</string>
+        <string name="achievement_west_bank_desc">west_bank</string>
+        
+    </resources>

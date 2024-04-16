@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.thefen.gexplorerapi.dtos.AchievementGetDto
+import me.thefen.gexplorerapi.dtos.AchievementListDto
 import me.thefen.gexplorerapi.dtos.UserDto
 import javax.inject.Inject
 
 data class AchievementsModelState(
     val userDto: ApiResource<UserDto> = ApiResource.Loading(),
-    val achievementDto: ApiResource<AchievementGetDto>? = null,
+    val achievementDto: ApiResource<AchievementListDto> = ApiResource.Loading(),
 )
 
 @HiltViewModel
@@ -32,7 +32,16 @@ class AchievementsViewModel @Inject constructor(
 
         viewModelScope.launch {
             Log.d("gexapi", "launching self fetch...")
-            _state.update { AchievementsModelState(repo.getSelf(), it.achievementDto) }
+            _state.update { it.copy(userDto = repo.getSelf()) }
+        }
+    }
+
+    fun getAchievements() {
+        Log.d("gexapi", "getAchievements called")
+
+        viewModelScope.launch {
+            Log.d("gexapi", "launching get achievements...")
+            _state.update { it.copy(achievementDto = repo.getAchievements()) }
         }
     }
 }

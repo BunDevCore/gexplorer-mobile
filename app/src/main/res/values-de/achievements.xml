@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="achievements">Erfolge</string>
-    <string name="locked_achievements">Blockierte Erfolge</string>
-    <string name="achievement_zsl">Fernmeldetechnische Gesamtschule</string>
-    <string name="achievement_a">Mit dem Bahn nach Zoppot</string>
-    <string name="achievement_b">BookLink</string>
-    <string name="achievement_ztm1">Stadtverkehrsanlage Enthusiast</string>
-    <string name="achievement_ztm2">Stadtverkehrsanlage Enthusiast 2</string>
-    <string name="achievement_ztm3">Stadtverkehrsanlage Enthusiast Spezial</string>
-    <string name="achievement_lot">Landing On Tempelhof</string>
-    <string name="achievement_lechia">Baltischer Sportverein</string>
-    <string name="achievement_manhattan">Willkomen zu New York</string>
-    <string name="achievement_madison">Madison Sqaure Garden</string>
-    <string name="achievement_odpady">Müll</string>
-    <string name="achievement_lotos">Lotos Blume</string>
-    <string name="achievement_zsl_forum">Beste Schule in Danzig + "Forum" Einkaufszentrum</string>
-    <string name="achievement_window">Ulanen kamen am Fenster an</string>
-    <string name="achievement_poland_b">Ostflanke</string>
-    <string name="achievement_rossija">Moskau! Moskau! Komm, wir tanzen auf dem Tisch, Bis der Tisch zusammenbricht, Ha, ha, ha, ha, ha, hey</string>
-    <string name="achievement_prawo_jazdy">Fahrschein</string>
-    <string name="achievement_obr_wybrzeza">-obr_wybrzeza</string>
-    <string name="achievement_praktiker">-praktiker</string>
-    <string name="achievement_alfa">-alfa</string>
-    <string name="achievement_obwodnica">-obwodnica</string>
-    <string name="achievement_ajfon">-ajfon</string>
-    <string name="achievement_kaszebe">-kaszebe</string>
-    <string name="achievement_klukowo">-klukowo</string>
-    <string name="achievement_ecs">-ecs</string>
-    <string name="achievement_schlezwig">-schlezwig</string>
-    <string name="achievement_zus">-zus</string>
-    <string name="achievement_zuraw">-zuraw</string>
-    <string name="achievement_lot_wyzynna">-lot_wyzynna</string>
-    <string name="achievement_patient1">-patient1</string>
-    <string name="achievement_patient2">-patient2</string>
-    <string name="achievement_gates">-gates</string>
-    <string name="achievement_arrest">-arrest</string>
-    <string name="achievement_arrest2">-arrest2</string>
-    <string name="achievement_amber_gold">-amber_gold</string>
-    <string name="achievement_konsulat">-konsulat</string>
-    <string name="achievement_policaj">-policaj</string>
-    <string name="achievement_wojtek">-wojtek</string>
-    <string name="achievement_omg">-omg</string>
-    <string name="achievement_skm1">-skm1</string>
-    <string name="achievement_skm2">-skm2</string>
-    <string name="achievement_pier">-pier</string>
-    <string name="achievement_airport">-airport</string>
-    <string name="achievement_tesco">-tesco</string>
-    <string name="achievement_media_markt">-media_markt</string>
-    <string name="achievement_west_bank">-west_bank</string>
-    <string name="achievement_islam">-islam</string>
-    <string name="achievements_got_out_of">[]aus[]_([])_Erfolge entsperrt</string>
-</resources>
+    <resources>
+    
+        <string name="achievement_zsl_name">Fernmeldetechnische Gesamtschule</string>
+        <string name="achievement_zsl_desc">Besuch die Fernmeldetechnische Gesamtschule</string>
+        
+        <string name="achievement_traintonowhere_name">Mit dem Bahn nach Zoppot</string>
+        <string name="achievement_traintonowhere_desc">Fahr mit dem Bahn nach Zoppot</string>
+        
+        <string name="achievement_booklink_name">Booklink</string>
+        <string name="achievement_booklink_desc">Besuch alle WBPG filien</string>
+        
+        <string name="achievement_lot_name">Landing on Tempelhof</string>
+        <string name="achievement_lot_desc">Besuch der Terminal des Lech Wałęsa Flughafens</string>
+        
+        <string name="achievement_lechia_name">Baltischer Sportverein</string>
+        <string name="achievement_lechia_desc">Besuch die Polsat Plus Arena</string>
+        
+        <string name="achievement_manhattan_name">Willkomen zu New York</string>
+        <string name="achievement_manhattan_desc">Geh zu “Manhattan” Einkaufszentrum</string>
+        
+        <string name="achievement_madison_name">Madison Square Garden</string>
+        <string name="achievement_madison_desc">Besuch das “Madison” Einkaufszentrum</string>
+        
+        <string name="achievement_odpady_name">Müll</string>
+        <string name="achievement_odpady_desc">Besuch Szadółki Müllhalde</string>
+        
+        <string name="achievement_lotos_name">Lotos Blume</string>
+        <string name="achievement_lotos_desc">Geh neben der Raffinerie</string>
+        
+        <string name="achievement_window_name">Ulanen kamen am Fenster an</string>
+        <string name="achievement_window_desc">Seh Fenstertheater</string>
+        
+        <string name="achievement_rossija_name">Moskau! Moskau! Komm, wir tanzen auf dem Tisch, Bis der Tisch zusammenbricht, Ha, ha, ha, ha, ha, hey</string>
+        <string name="achievement_rossija_desc">Fahr nach oste Stadtgrenze</string>
+        
+        <string name="achievement_prawo_jazdy_name">Fahrschein</string>
+        <string name="achievement_prawo_jazdy_desc">Besuch PORD Gebäude</string>
+        
+        <string name="achievement_obr_wybrzeza_name">Längste in Europa</string>
+        <string name="achievement_obr_wybrzeza_desc">Geh neben dem Falowiec</string>
+        
+        <string name="achievement_praktiker_name">Sei praktisch!</string>
+        <string name="achievement_praktiker_desc">Besuch ehemalige Praktiker Geschäft (OBI jetzt)</string>
+        
+        <string name="achievement_alfa_name">Griechenland</string>
+        <string name="achievement_alfa_desc">Geh ins “Alfa” Einkaufszentrum</string>
+        
+        <string name="achievement_obwodnica_name">Drive Thru</string>
+        <string name="achievement_obwodnica_desc">Durchfahr Dreistadterring</string>
+        
+        <string name="achievement_kaszebe_name">Stolëca Kaszëb Witô</string>
+        <string name="achievement_kaszebe_desc">Fahr neben dem Schild, die über die historische Haupstadt von Kaschubei informiert</string>
+        
+        <string name="achievement_ecs_name">Fe2O3</string>
+        <string name="achievement_ecs_desc">Besuch europäische Solidaritätszentrum</string>
+        
+        <string name="achievement_schlezwig_name">Westerplatten</string>
+        <string name="achievement_schlezwig_desc">Besuch Westerplatte und Westerplatteverteidigerstraße</string>
+        
+        <string name="achievement_zuraw_name">Der Reiher</string>
+        <string name="achievement_zuraw_desc">Geh unter dem Kran</string>
+        
+        <string name="achievement_lot_wyzynna_name">Ist es ein Denkmal?</string>
+        <string name="achievement_lot_wyzynna_desc">Geh neben dem ehemaliges LOT Gebäude (ja, es ist ein Denkmal)</string>
+        
+        <string name="achievement_patient2_name">Tapferer Patient</string>
+        <string name="achievement_patient2_desc">Besuch alle publische Krankenhäuse</string>
+        
+        <string name="achievement_gates_name">Bill Gates</string>
+        <string name="achievement_gates_desc">Durchgeh alle Innenstadttore</string>
+        
+        <string name="achievement_arrest2_name">Eins, zwei, Polizei; Drei, vier, Offizier</string>
+        <string name="achievement_arrest2_desc">Geh neben beiden Gefängnissen</string>
+        
+        <string name="achievement_amber_gold_name">Bernstein Gold</string>
+        <string name="achievement_amber_gold_desc">Geh neben “AmberGold” Finanzpyramide Hauptquartier</string>
+        
+        <string name="achievement_konsulat_name">Marsch der Freiwilligen</string>
+        <string name="achievement_konsulat_desc">Besuch chinesische Generalkonsulat</string>
+        
+        <string name="achievement_podcien_name">Alte Hause Oruniensis</string>
+        <string name="achievement_podcien_desc">Besuch der Löwehof</string>
+        
+        <string name="achievement_omg_name">Oh My God GS</string>
+        <string name="achievement_omg_desc">Besuch OMGGS Mevo-Publikradfahren station</string>
+        
+        <string name="achievement_pier_name">Die Seebrücke</string>
+        <string name="achievement_pier_desc">Geh zu ende der Seebrücken</string>
+        
+        <string name="achievement_airport_name">Der Flughafen</string>
+        <string name="achievement_airport_desc">Besuch die Startbahn des altes Flughafens in Zaspa</string>
+        
+        <string name="achievement_tesco_name">Helm</string>
+        <string name="achievement_tesco_desc">Besuch Chełm Einkaufszentrum, ehemalige Tesco Geschäft</string>
+        
+        <string name="achievement_west_bank_name">Westufer</string>
+        <string name="achievement_west_bank_desc">Besuch Górki Zachodnie (Westhügel) Strand</string>
+        
+    </resources>

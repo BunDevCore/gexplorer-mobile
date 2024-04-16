@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="achievements">Osiągnięcia</string>
-    <string name="locked_achievements">Zablokowane osiągnięcia</string>
-    <string name="achievement_zsl">Witaj w jeziorze szczęśliwości</string>
-    <string name="achievement_a">A train to nowhere</string>
-    <string name="achievement_b">BookLink</string>
-    <string name="achievement_ztm1">ZTM Enjoyer</string>
-    <string name="achievement_ztm2">ZTM Enjoyer 2</string>
-    <string name="achievement_ztm3">ZTM Enjoyer DLC</string>
-    <string name="achievement_lot">Landing on Tempelhof</string>
-    <string name="achievement_lechia">Lechia Gola!!!</string>
-    <string name="achievement_manhattan">Welcome To New York</string>
-    <string name="achievement_madison">Madison Square Garden</string>
-    <string name="achievement_odpady">Cóż za zapach</string>
-    <string name="achievement_lotos">Kwiat Lotosu</string>
-    <string name="achievement_zsl_forum">wolna lekcja</string>
-    <string name="achievement_window">Przybyli ułani pod okienko</string>
-    <string name="achievement_poland_b">Wschodnia Flanka</string>
-    <string name="achievement_rossija">Niebezpiecznie Blisko Rosji</string>
-    <string name="achievement_prawo_jazdy">Zdane?</string>
-    <string name="achievement_obr_wybrzeza">The Longest In Europe</string>
-    <string name="achievement_praktiker">Be Practic!</string>
-    <string name="achievement_alfa">Griechenland</string>
-    <string name="achievement_obwodnica">Drive Thru</string>
-    <string name="achievement_ajfon">Zbita Szybka?</string>
-    <string name="achievement_kaszebe">Stoleco Kaszeb Wito</string>
-    <string name="achievement_klukowo">Zespół Ulic Telekomunikacji</string>
-    <string name="achievement_ecs">Rust.com</string>
-    <string name="achievement_schlezwig">Pan Cernik</string>
-    <string name="achievement_zus">Zaufaj. Ubezpiecz. Spierdalaj.</string>
-    <string name="achievement_zuraw">Czapla</string>
-    <string name="achievement_lot_wyzynna">To Jest Zabytek</string>
-    <string name="achievement_patient1">Pacjent 1</string>
-    <string name="achievement_patient2">Pacjent 2</string>
-    <string name="achievement_gates">Bill Gates</string>
-    <string name="achievement_arrest">Kraksa</string>
-    <string name="achievement_arrest2">Kraksa^2</string>
-    <string name="achievement_amber_gold">Bursztynowe Złoto</string>
-    <string name="achievement_konsulat">Bing Chilling</string>
-    <string name="achievement_policaj">Hau Hau</string>
-    <string name="achievement_wojtek">Add Albert to Adalbert</string>
-    <string name="achievement_omg">Oh My God</string>
-    <string name="achievement_skm1">Metro Rail Enthusiast 1</string>
-    <string name="achievement_skm2">Metro Rail Enthusiast 2</string>
-    <string name="achievement_pier">Piotr</string>
-    <string name="achievement_airport">Lotnisko</string>
-    <string name="achievement_tesco">Trochę Ekonomicznie Chyba Słabo Obliczyli</string>
-    <string name="achievement_media_markt">Nie Dla idiotów!</string>
-    <string name="achievement_west_bank">Zachodni Brzeg</string>
-    <string name="achievement_islam">Salam alejkum</string>
-    <string name="achievements_got_out_of">Odblokowano [] z [] ([]) osiągnięć</string>
-</resources>
+    <resources>
+    
+        <string name="achievement_zsl_name">Witaj w jeziorze szczęśliwości</string>
+        <string name="achievement_zsl_desc">Odwiedź Zespół Szkół Łączności</string>
+        
+        <string name="achievement_traintonowhere_name">Pociąg donikąd</string>
+        <string name="achievement_traintonowhere_desc">Wyjedź pociągiem do Sopotu</string>
+        
+        <string name="achievement_booklink_name">Booklink</string>
+        <string name="achievement_booklink_desc">Odwiedź wszystkie filie WBPG</string>
+        
+        <string name="achievement_lot_name">Landing on Tempelhof</string>
+        <string name="achievement_lot_desc">Odwiedź terminal lotniczy gdańskiego lotniska im. Lecha Wałęsy</string>
+        
+        <string name="achievement_lechia_name">Lechia Gola!!!</string>
+        <string name="achievement_lechia_desc">Zajrzyj na Polsat Plus Arena</string>
+        
+        <string name="achievement_manhattan_name">Witaj w Nowym Jorku</string>
+        <string name="achievement_manhattan_desc">Wejdź do centrum handlowego Manhattan</string>
+        
+        <string name="achievement_madison_name">Madison Square Garden</string>
+        <string name="achievement_madison_desc">Odwiedź centrum handlowe Madison</string>
+        
+        <string name="achievement_odpady_name">Cóż za zapach!</string>
+        <string name="achievement_odpady_desc">Odwiedź Szadółki (nie ponosimy odpowiedzialności za urazy aparatu węchu)</string>
+        
+        <string name="achievement_lotos_name">Kwiat Lotosu</string>
+        <string name="achievement_lotos_desc">Podejdź pod Rafinerię</string>
+        
+        <string name="achievement_window_name">Przybyli ułani pod okienko</string>
+        <string name="achievement_window_desc">Zobacz Teatr w Oknie</string>
+        
+        <string name="achievement_rossija_name">Niebezpiecznie Blisko Rosji</string>
+        <string name="achievement_rossija_desc">Udaj się na wschodnią granicę miasta</string>
+        
+        <string name="achievement_prawo_jazdy_name">Zdane?</string>
+        <string name="achievement_prawo_jazdy_desc">Odwiedź budynek PORDu</string>
+        
+        <string name="achievement_obr_wybrzeza_name">Najdłuższy w Europie</string>
+        <string name="achievement_obr_wybrzeza_desc">Udaj się pod Falowiec</string>
+        
+        <string name="achievement_praktiker_name">Bądź Praktyczny</string>
+        <string name="achievement_praktiker_desc">Odwiedź dawny sklep Praktiker (teraz OBI)</string>
+        
+        <string name="achievement_alfa_name">Grecja</string>
+        <string name="achievement_alfa_desc">Wejdź do centrum handlowego Alfa</string>
+        
+        <string name="achievement_obwodnica_name">Drive Thru</string>
+        <string name="achievement_obwodnica_desc">Przejedź przez Obwodnicę Trójmiasta</string>
+        
+        <string name="achievement_kaszebe_name">Stolëca Kaszëb Witô</string>
+        <string name="achievement_kaszebe_desc">Przejedź koło znaku o historycznej stolicy Kaszub przy granicy Osowej I Chwaszczyna</string>
+        
+        <string name="achievement_ecs_name">Fe2O3</string>
+        <string name="achievement_ecs_desc">Odwiedź Europejskie Centrum Solidarności</string>
+        
+        <string name="achievement_schlezwig_name">Westerplatten</string>
+        <string name="achievement_schlezwig_desc">Odwiedź Westerplatte oraz ulicę Obrońców Westerplatte</string>
+        
+        <string name="achievement_zuraw_name">Czapla</string>
+        <string name="achievement_zuraw_desc">Wejdź pod Żurawia</string>
+        
+        <string name="achievement_lot_wyzynna_name">To Jest Zabytek?</string>
+        <string name="achievement_lot_wyzynna_desc">Podejdź pod dawny budynek LOTu (tak, to jest zabytek)</string>
+        
+        <string name="achievement_patient2_name">Dzielny Pacjent</string>
+        <string name="achievement_patient2_desc">Odwiedź wszystkie państwowe szpitale w Gdańsku</string>
+        
+        <string name="achievement_gates_name">Bill Gates</string>
+        <string name="achievement_gates_desc">Przejdź przez wszystkie bramy Śródmieścia</string>
+        
+        <string name="achievement_arrest2_name">Kraksa</string>
+        <string name="achievement_arrest2_desc">Podejdź w okolicę aresztu śledczego na Kurkowej oraz zakładu karnego na Przeróbce</string>
+        
+        <string name="achievement_amber_gold_name">Bursztynowe Złoto</string>
+        <string name="achievement_amber_gold_desc">Przejdź pod dawną siedzibą Amber Gold</string>
+        
+        <string name="achievement_konsulat_name">Marsz Ochotników</string>
+        <string name="achievement_konsulat_desc">Odwiedź Konsulat Generalny Chińskiej Republiki Ludowej</string>
+        
+        <string name="achievement_podcien_name">Witaj w podcieniu</string>
+        <string name="achievement_podcien_desc">Odwiedź Lwi Dwór</string>
+        
+        <string name="achievement_omg_name">Oh My God GS</string>
+        <string name="achievement_omg_desc">Odwiedź stację Mevo OMGGS</string>
+        
+        <string name="achievement_pier_name">Molo</string>
+        <string name="achievement_pier_desc">Dojdź do końca mola w Brzeźnie</string>
+        
+        <string name="achievement_airport_name">Lotnisko</string>
+        <string name="achievement_airport_desc">Odwiedź pas startowy starego lotniska na Zaspie</string>
+        
+        <string name="achievement_tesco_name">Trochę Ekonomicznie Chyba Słabo Obliczyli</string>
+        <string name="achievement_tesco_desc">Odwiedź pasaż Chełm, gdzie znajdowało się kiedyś Tesco</string>
+        
+        <string name="achievement_west_bank_name">Zachodni Brzeg</string>
+        <string name="achievement_west_bank_desc">Odwiedź plażę w Górkach Zachodnich</string>
+        
+    </resources>

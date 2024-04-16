@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="achievements">achievements</string>
+    <string name="locked_achievements">locked_achievements</string>
+    <string name="achievements_got_out_of">unlocked[]out_of[] ([]) achievements</string>
+</resources>

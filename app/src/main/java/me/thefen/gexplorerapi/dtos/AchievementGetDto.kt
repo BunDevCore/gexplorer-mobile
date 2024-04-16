@@ -1,5 +1,6 @@
 package me.thefen.gexplorerapi.dtos
 
-import java.util.*
+import kotlinx.datetime.Instant
+import java.util.UUID
 
-data class AchievementGetDto(val achievementId: String, val timeAchieved: Date, val achievedOnTripId: UUID)
+data class AchievementGetDto(val achievementId: String, val timeAchieved: Instant, val achievedOnTripId: UUID)

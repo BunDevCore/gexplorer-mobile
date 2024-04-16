@@ -1,6 +1,7 @@
 package me.thefen.gexplorerapi
 
 import com.mapbox.geojson.Polygon
+import me.thefen.gexplorerapi.dtos.AchievementListDto
 import me.thefen.gexplorerapi.dtos.DetailedTripDto
 import me.thefen.gexplorerapi.dtos.DistrictDto
 import me.thefen.gexplorerapi.dtos.LeaderboardEntryDto
@@ -33,6 +34,9 @@ interface GexplorerApi {
     
     @GET("District")
     suspend fun getDistricts(): List<DistrictDto>
+
+    @GET("Achievement")
+    suspend fun getAchievements(): AchievementListDto
     
     @GET("Leaderboard/overall")
     suspend fun getOverallLeaderboard(): Map<Int, LeaderboardEntryDto<Double>>

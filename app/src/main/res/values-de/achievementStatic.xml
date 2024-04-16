@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="achievements">Erfolge</string>
+    <string name="locked_achievements">Blockierte Erfolge</string>
+    <string name="achievements_got_out_of">[]aus[]_([])_Erfolge entsperrt</string>
+</resources>
