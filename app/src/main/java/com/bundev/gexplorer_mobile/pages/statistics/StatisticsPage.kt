@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -133,7 +132,7 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                     ) {
                         state.data!!.districtEntries.sortedByDescending { it.percentage }
                             .forEach { entry ->
-                                ListItem(
+                                Card(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(horizontal = 5.dp)
