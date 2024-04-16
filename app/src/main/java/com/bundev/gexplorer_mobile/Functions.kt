@@ -13,6 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -143,7 +148,7 @@ fun formatPace(duration: Duration, distanceInMeters: Double, measureUnit: Measur
 }
 
 @Composable
-fun formatArea(areaInCubicMeters: Double, measureUnit: MeasureUnit): String {
+fun formatArea(areaInCubicMeters: Double, measureUnit: MeasureUnit): AnnotatedString {
     val measure = when (measureUnit) {
         MeasureUnit.METER -> {
             if (areaInCubicMeters < 1000000.0)
@@ -161,7 +166,24 @@ fun formatArea(areaInCubicMeters: Double, measureUnit: MeasureUnit): String {
 
         else -> Measure(-1, MeasureUnit.CUBIC_METER)
     }
-    return "${measure.number}${stringResource(id = getShortUnitName(measure.unit))}"
+    if (measure.unit == MeasureUnit.CUBIC_KILOMETER || measure.unit == MeasureUnit.CUBIC_MILE) {
+        val string = measure.number.toString()
+        val length = string.length
+        val sections = if (length > 3) listOf(
+            string.substring(0, length - 3),
+            string.substring(length - 3)
+        ) else {
+            listOf(string, "")
+        }
+        return buildAnnotatedString {
+            append(sections[0])
+            withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                append(sections[1])
+            }
+            append(stringResource(id = getShortUnitName(measure.unit)))
+        }
+    }
+    return AnnotatedString(measure.number.toString() + stringResource(id = getShortUnitName(measure.unit)))
 }
 
 fun getShortUnitName(unit: MeasureUnit): Int {

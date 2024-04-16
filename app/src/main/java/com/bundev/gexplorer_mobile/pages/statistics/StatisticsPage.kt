@@ -156,18 +156,13 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
                                                     areaInCubicMeters = entry.exploredArea,
                                                     measureUnit = distanceUnit
                                                 )
-                                            else "0m²",
+                                            else AnnotatedString("0m²"),
                                             textAlign = TextAlign.End
                                         )
                                         Text(
                                             text = if (entry.percentage != 0.0)
                                                 formatPercentage("%.04f".format(entry.percentage * 100))
                                             else AnnotatedString("0%"),
-//                                            text = "${
-//                                                if (entry.percentage != 0.0)
-//                                                    formatPercentage("%.04f".format(entry.percentage * 100))
-//                                                else AnnotatedString("0")
-//                                            }%",
                                             textAlign = TextAlign.End
                                         )
                                     }
