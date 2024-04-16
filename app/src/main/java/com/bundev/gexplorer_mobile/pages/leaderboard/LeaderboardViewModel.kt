@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 data class LeaderboardModelState(
     val userDto: ApiResource<UserDto> = ApiResource.Loading(),
-    val leaderboardDto: ApiResource<LeaderboardEntryDto<Double>>? = null,
+    val leaderboardDto: ApiResource<Map<Int, LeaderboardEntryDto<Double>>> = ApiResource.Loading(),
 )
 
 @HiltViewModel
@@ -34,7 +34,16 @@ class LeaderboardViewModel @Inject constructor(
 
         viewModelScope.launch {
             Log.d("gexapi", "launching self fetch...")
-            _state.update { LeaderboardModelState(repo.getSelf(), it.leaderboardDto) }
+            _state.update { it.copy(userDto = repo.getSelf()) }
+        }
+    }
+
+    fun getOverallLeaderboard(){
+        Log.d("gexapi", "getOverallLeaderboard called")
+
+        viewModelScope.launch {
+            Log.d("gexapi", "launching get overall leaderboard...")
+            _state.update { it.copy(leaderboardDto = repo.getOverallLeaderboard(1)) }
         }
     }
 }
