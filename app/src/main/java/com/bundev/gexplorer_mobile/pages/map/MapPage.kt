@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -144,22 +145,28 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
     }
     Log.d("mappage", "geojson resource len = ${geoJsonResource.value.length}")
     val tripColor = colorResource(id = R.color.tripArea)
-    val style = style(Style.MAPBOX_STREETS) {
-        +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }
-        +layerAtPosition(lineLayer("line-layer", "Trip") {
-            lineColor(tripColor.hashCode())
-            lineWidth(3.0)
-            lineOpacity(0.8)
-        }, at = 100)
-        +layerAtPosition(fillLayer("fill-layer", "Trip") {
-            fillOpacity(0.4)
-            fillColor(Color.GRAY)
-        }, at = 100)
+    val style = when (state.userDto) {
+        is ApiResource.Success -> {
+            style(Style.MAPBOX_STREETS) {
+                +geoJsonSource(id = "Trip") { data(geoJsonResource.value) }
+                +layerAtPosition(lineLayer("line-layer", "Trip") {
+                    lineColor(tripColor.hashCode())
+                    lineWidth(3.0)
+                    lineOpacity(0.8)
+                }, at = 100)
+                +layerAtPosition(fillLayer("fill-layer", "Trip") {
+                    fillOpacity(0.4)
+                    fillColor(Color.GRAY)
+                }, at = 100)
+            }
+        }
+
+        else -> style(Style.MAPBOX_STREETS) {}
     }
 
     RequestLocationPermission(requestCount = permissionRequestCount, onPermissionDenied = { }) {}
 
-    if (state.userPolygon is ApiResource.Error) {
+    if (state.userPolygon is ApiResource.Error && state.userDto is ApiResource.Success) {
         Toast.makeText(
             context,
             stringResource(id = R.string.polygon_load_failed),
@@ -282,7 +289,7 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
                     Screen.Login.route
                 ) { changePage() }
 
-                else -> {}
+                is ApiResource.Loading -> {}
             }
         }) {
         when (state.userDto) {
@@ -324,27 +331,59 @@ fun MapPage(navController: NavHostController, changePage: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (context.checkLocationPermission())
-            if (tripStarted.value) {
-                val openFinishDialog = rememberSaveable { mutableStateOf(false) }
-                Button(onClick = { openFinishDialog.value = true }) {
-                    Text(text = stringResource(id = R.string.finish_trip))
+            when (state.userDto) {
+                is ApiResource.Success -> {
+                    if (tripStarted.value) {
+                        val openFinishDialog = rememberSaveable { mutableStateOf(false) }
+                        Button(onClick = { openFinishDialog.value = true }) {
+                            Text(text = stringResource(id = R.string.finish_trip))
+                        }
+                        when {
+                            openFinishDialog.value -> {
+                                ConfirmDialog(
+                                    onDismissRequest = { openFinishDialog.value = false },
+                                    confirmRequest = {
+                                        tripStarted.value = false
+                                        vm.sendTrip(locationList)
+                                    },
+                                    text = stringResource(id = R.string.confirm_finish_trip)
+                                )
+                            }
+                        }
+                    } else
+                        Button(onClick = { tripStarted.value = true }) {
+                            Text(text = stringResource(id = R.string.start_trip))
+                        }
                 }
-                when {
-                    openFinishDialog.value -> {
-                        ConfirmDialog(
-                            onDismissRequest = { openFinishDialog.value = false },
-                            confirmRequest = {
-                                tripStarted.value = false
-                                vm.sendTrip(locationList)
-                            },
-                            text = stringResource(id = R.string.confirm_finish_trip)
-                        )
+
+                is ApiResource.Loading -> {
+                    Card(
+                        modifier = Modifier.height(40.dp),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 24.dp),
+                                text = stringResource(id = R.string.loading_api)
+                            )
+                        }
                     }
                 }
-            } else
-                Button(onClick = { tripStarted.value = true }) {
-                    Text(text = stringResource(id = R.string.start_trip))
+
+                is ApiResource.Error -> {
+                    Button(onClick = {
+                        navigateTo(
+                            navController,
+                            Screen.Login.route
+                        ) { changePage() }
+                    }) {
+                        Text(text = stringResource(id = R.string.log_in))
+                    }
                 }
+            }
         else
             Button(
                 onClick = {

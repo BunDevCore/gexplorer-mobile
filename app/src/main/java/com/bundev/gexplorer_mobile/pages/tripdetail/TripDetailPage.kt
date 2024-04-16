@@ -60,6 +60,7 @@ import com.bundev.gexplorer_mobile.icons.outlined.Timer
 import com.bundev.gexplorer_mobile.icons.simple.AvgPace
 import com.bundev.gexplorer_mobile.icons.simple.Path
 import com.bundev.gexplorer_mobile.ui.ActionButton
+import com.bundev.gexplorer_mobile.ui.ErrorCard
 import com.bundev.gexplorer_mobile.ui.LoadingCard
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -141,14 +142,19 @@ fun TripDetailPage(
     if (configuration.orientation == ORIENTATION_PORTRAIT)
         Column(modifier = Modifier.fillMaxSize()) {
             TripTopBar(trip = trip, vm, navController) { changePage() }
-            if (state is ApiResource.Success) {
-                TripMap(
-                    modifier = Modifier.weight(1f),
-                    mapViewportState = mapViewportState,
-                    style = style
-                )
-                TripContent(trip = trip)
-            } else LoadingCard(text = stringResource(id = R.string.loading))
+            when (state) {
+                is ApiResource.Success -> {
+                    TripMap(
+                        modifier = Modifier.weight(1f),
+                        mapViewportState = mapViewportState,
+                        style = style
+                    )
+                    TripContent(trip = trip)
+                }
+
+                is ApiResource.Loading -> LoadingCard(text = stringResource(id = R.string.loading))
+                is ApiResource.Error -> ErrorCard(error = state.error)
+            }
         }
     else
         Row(modifier = Modifier.fillMaxSize()) {
@@ -160,10 +166,15 @@ fun TripDetailPage(
             Column(
                 modifier = Modifier.width(IntrinsicSize.Max)
             ) {
-                if (state is ApiResource.Success) {
-                    TripTopBar(trip = trip, vm, navController) { changePage() }
-                    TripContent(trip = trip)
-                } else LoadingCard(text = stringResource(id = R.string.loading))
+                when (state) {
+                    is ApiResource.Success -> {
+                        TripTopBar(trip = trip, vm, navController) { changePage() }
+                        TripContent(trip = trip)
+                    }
+
+                    is ApiResource.Loading -> LoadingCard(text = stringResource(id = R.string.loading))
+                    is ApiResource.Error -> ErrorCard(error = state.error)
+                }
             }
         }
 }

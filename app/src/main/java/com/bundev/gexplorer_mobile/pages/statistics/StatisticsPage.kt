@@ -26,8 +26,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.data.ApiResource
+import com.bundev.gexplorer_mobile.ui.ErrorCard
 import com.bundev.gexplorer_mobile.ui.LoadingCard
-import com.bundev.gexplorer_mobile.ui.MiddleCard
 import com.bundev.gexplorer_mobile.ui.TitleBar
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -38,19 +38,11 @@ fun StatisticsPage(navController: NavHostController? = null, changePage: () -> U
     LaunchedEffect(Unit) { vm.fetchStats() }
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(stringResource(id = R.string.statistics), navController) { changePage() }
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            when (state) {
-                is ApiResource.Error -> {
-                    MiddleCard {
-                        Text(text = "BRUH")
-                    }
-                }
-
-                is ApiResource.Loading -> {
-                    LoadingCard(text = stringResource(id = R.string.loading))
-                }
-
-                is ApiResource.Success -> {
+        when (state) {
+            is ApiResource.Error -> ErrorCard(error = state.error)
+            is ApiResource.Loading -> LoadingCard(text = stringResource(id = R.string.loading))
+            is ApiResource.Success -> {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()

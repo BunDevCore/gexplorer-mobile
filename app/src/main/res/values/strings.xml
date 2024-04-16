@@ -63,4 +63,5 @@
     <string name="trip_amount">trip_amount</string>
     <string name="total_trip_length">total_trip_length</string>
     <string name="place_in_leaderboard">place_in_leaderboard</string>
+    <string name="api_error">api_error</string>
 </resources>

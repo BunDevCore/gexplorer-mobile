@@ -32,17 +32,17 @@ fun SavedTripsPage(navController: NavHostController, changePage: () -> Unit) {
     val state by vm.state.collectAsState()
     LaunchedEffect(Unit) { vm.fetchSavedTrips() }
 
-    if (state is ApiResource.Loading) return LoadingCard(text = stringResource(id = R.string.loading_api))
-    if (state.data == null) {
-        Log.d("trips", "state trips data is null (${state.kind})")
-        return LoadingCard(text = stringResource(id = R.string.loading))
-    }
     Column(Modifier.fillMaxSize()) {
         TitleBar(text = stringResource(id = R.string.saved_trips), navController = navController) {
             changePage()
         }
+        if (state is ApiResource.Loading) return LoadingCard(text = stringResource(id = R.string.loading_api))
+        if (state.data == null) {
+            Log.d("trips", "state trips data is null (${state.kind})")
+            return LoadingCard(text = stringResource(id = R.string.loading))
+        }
         if (state.data!!.isEmpty())
-        return MiddleCard { Text(stringResource(id = R.string.no_saved_trips)) }
+            return MiddleCard { Text(stringResource(id = R.string.no_saved_trips)) }
         Column(
             modifier = Modifier
                 .fillMaxSize()

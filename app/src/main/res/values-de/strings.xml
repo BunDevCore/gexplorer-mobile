@@ -56,4 +56,5 @@
     <string name="trip_amount">Gesamtmenge</string>
     <string name="total_trip_length">Gesamte Reisenlänge</string>
     <string name="place_in_leaderboard">Platz im Ranking</string>
+    <string name="api_error">API-Fehler</string>
 </resources>

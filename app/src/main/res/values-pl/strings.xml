@@ -56,4 +56,5 @@
     <string name="trip_amount">Ilość podróży</string>
     <string name="total_trip_length">Całkowity dystans podróży</string>
     <string name="place_in_leaderboard">Miejsce w rankingu</string>
+    <string name="api_error">Błąd api</string>
 </resources>
