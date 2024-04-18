@@ -18,9 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -54,59 +51,19 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bundev.gexplorer_mobile.GexplorerIcons
 import com.bundev.gexplorer_mobile.R
 import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
-import com.bundev.gexplorer_mobile.icons.filled.Map
-import com.bundev.gexplorer_mobile.icons.simple.Walk
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import com.bundev.gexplorer_mobile.ui.LoadingCard
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import me.thefen.gexplorerapi.dtos.AchievementGetDto
 import java.text.DateFormat
 import kotlin.math.roundToInt
-
-private val achievementsGot = listOf(
-    Achievement(
-        name = "Moje pierwsze osiągnięcie",
-        description = "I jego opis",
-        timeAchieved = Clock.System.now()
-    ),
-    Achievement(
-        name = "short",
-        timeAchieved = Clock.System.now(),
-        imageVector = GexplorerIcons.Simple.Walk
-    ),
-    Achievement(
-        timeAchieved = Clock.System.now(),
-        name = "Bardzo długa nazwa nie wiem po co, ale się domyślam",
-        description = "I jego opis, który też zajmie co najmniej 2 linijki, a może nawet i 3 to będzie zajmować",
-        imageVector = GexplorerIcons.Filled.Map
-    )
-)
-private val lockedAchievements = listOf(
-    Achievement(name = "Nowe osiągnięcie, którego nikt jeszcze nie ma!!!"),
-    Achievement(name = "Ta? to pa"),
-    Achievement(name = "nice ok"),
-    Achievement(name = "bruh"),
-    Achievement(name = "wtf is going on here", imageVector = Icons.Default.Close),
-    Achievement(
-        name = "Hello world",
-        description = "Open the app for the first time",
-        imageVector = Icons.Default.Favorite
-    ),
-    Achievement(
-        name = "KOLEJNE\nDŁUGIE\nBEZSENSOWNE\nOSIĄGNIĘCIE",
-        description = "Bo chcę sprawdzić, czy scroll działa"
-    ),
-    Achievement(name = "69 nice")
-)
 
 @Composable
 fun AchievementsPage() {
