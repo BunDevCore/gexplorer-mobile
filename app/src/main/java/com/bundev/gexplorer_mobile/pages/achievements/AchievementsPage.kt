@@ -56,6 +56,7 @@ import com.bundev.gexplorer_mobile.classes.Achievement
 import com.bundev.gexplorer_mobile.data.ApiResource
 import com.bundev.gexplorer_mobile.formatDate
 import com.bundev.gexplorer_mobile.formatTime
+import com.bundev.gexplorer_mobile.ui.ErrorCard
 import com.bundev.gexplorer_mobile.ui.GroupingList
 import com.bundev.gexplorer_mobile.ui.LoadingCard
 import kotlinx.datetime.Instant
@@ -108,18 +109,24 @@ fun AchievementsPage() {
             LoadingCard(text = stringResource(id = R.string.loading_api))
         }
 
-        is ApiResource.Error -> Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                GroupingList(
-                    items = state.achievementDto.data!!.achievements,
-                    groupBy = { 1 },
-                    title = { stringResource(id = R.string.locked_achievements) }
-                ) { achievementId ->
-                    LockedAchievementItem(achievementId = achievementId)
+        is ApiResource.Error -> {
+            when (state.achievementDto) {
+                is ApiResource.Error -> ErrorCard(error = state.achievementDto.error)
+                is ApiResource.Loading -> LoadingCard(text = stringResource(R.string.loading))
+                is ApiResource.Success -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        GroupingList(
+                            items = state.achievementDto.data!!.achievements,
+                            groupBy = { 1 },
+                            title = { stringResource(id = R.string.locked_achievements) }
+                        ) { achievementId ->
+                            LockedAchievementItem(achievementId = achievementId)
+                        }
+                    }
                 }
             }
         }
